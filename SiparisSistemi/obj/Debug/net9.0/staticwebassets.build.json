@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "pJJAYBqaU0+UxggqRA3u1nxsbaD+PSLIzx0Uf27qdyI=",
+  "Hash": "BmeheqZuifo8bfpv8IqKQItIXMWVC9VBf7ijn04pVhw=",
   "Source": "SiparisSistemi",
   "BasePath": "_content/SiparisSistemi",
   "Mode": "Default",
@@ -1025,12 +1025,12 @@
       "OriginalItemSpec": "C:\\Users\\nisa_\\source\\repos\\SiparisSistemi\\SiparisSistemi\\wwwroot\\lib\\jquery-validation\\dist\\additional-methods.min.js"
     },
     {
-      "Identity": "C:\\Users\\nisa_\\source\\repos\\SiparisSistemi\\SiparisSistemi\\obj\\Debug\\net9.0\\compressed\\rr0dbmp4x1-b9sayid5wm.gz",
+      "Identity": "C:\\Users\\nisa_\\source\\repos\\SiparisSistemi\\SiparisSistemi\\obj\\Debug\\net9.0\\compressed\\rr0dbmp4x1-0gc60jg03i.gz",
       "SourceId": "SiparisSistemi",
       "SourceType": "Discovered",
       "ContentRoot": "C:\\Users\\nisa_\\source\\repos\\SiparisSistemi\\SiparisSistemi\\obj\\Debug\\net9.0\\compressed\\",
       "BasePath": "_content/SiparisSistemi",
-      "RelativePath": "css/site#[.{fingerprint=b9sayid5wm}]?.css.gz",
+      "RelativePath": "css/site#[.{fingerprint=0gc60jg03i}]?.css.gz",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Alternative",
@@ -1039,8 +1039,8 @@
       "RelatedAsset": "C:\\Users\\nisa_\\source\\repos\\SiparisSistemi\\SiparisSistemi\\wwwroot\\css\\site.css",
       "AssetTraitName": "Content-Encoding",
       "AssetTraitValue": "gzip",
-      "Fingerprint": "wf4wcyqcqt",
-      "Integrity": "fNKkLSNFLZMVTc2zVrpMXQqOwPU3sU4GWcfEbCR2V1I=",
+      "Fingerprint": "5nny0ii6zz",
+      "Integrity": "zyuU1K4V8ZmcLv8O5Om4O2aDgNfMgQD6awpBpDehMoo=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "C:\\Users\\nisa_\\source\\repos\\SiparisSistemi\\SiparisSistemi\\wwwroot\\css\\site.css"
@@ -1417,8 +1417,8 @@
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
-      "Fingerprint": "b9sayid5wm",
-      "Integrity": "j6fhJSuuyLpOSLuPJU0TsDV0iNjor5S3rDnvxJrt4bg=",
+      "Fingerprint": "0gc60jg03i",
+      "Integrity": "gE8F3mb+mWaiaS3yoplu4G7nBh05pIvMkJwlZtzYp6U=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\css\\site.css"
@@ -2728,13 +2728,13 @@
   ],
   "Endpoints": [
     {
-      "Route": "css/site.b9sayid5wm.css",
-      "AssetFile": "C:\\Users\\nisa_\\source\\repos\\SiparisSistemi\\SiparisSistemi\\obj\\Debug\\net9.0\\compressed\\rr0dbmp4x1-b9sayid5wm.gz",
+      "Route": "css/site.0gc60jg03i.css",
+      "AssetFile": "C:\\Users\\nisa_\\source\\repos\\SiparisSistemi\\SiparisSistemi\\obj\\Debug\\net9.0\\compressed\\rr0dbmp4x1-0gc60jg03i.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
           "Value": "gzip",
-          "Quality": "0.003125000000"
+          "Quality": "0.000677048070"
         }
       ],
       "ResponseHeaders": [
@@ -2744,15 +2744,15 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "319"
+          "Value": "1476"
         },
         {
           "Name": "ETag",
-          "Value": "\"fNKkLSNFLZMVTc2zVrpMXQqOwPU3sU4GWcfEbCR2V1I=\""
+          "Value": "\"zyuU1K4V8ZmcLv8O5Om4O2aDgNfMgQD6awpBpDehMoo=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 14 Dec 2024 20:51:44 GMT"
+          "Value": "Sat, 14 Dec 2024 22:12:51 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -2772,13 +2772,13 @@
         },
         {
           "Name": "ETag",
-          "Value": "W/\"j6fhJSuuyLpOSLuPJU0TsDV0iNjor5S3rDnvxJrt4bg=\""
+          "Value": "W/\"gE8F3mb+mWaiaS3yoplu4G7nBh05pIvMkJwlZtzYp6U=\""
         }
       ],
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "b9sayid5wm"
+          "Value": "0gc60jg03i"
         },
         {
           "Name": "label",
@@ -2786,12 +2786,12 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-j6fhJSuuyLpOSLuPJU0TsDV0iNjor5S3rDnvxJrt4bg="
+          "Value": "sha256-gE8F3mb+mWaiaS3yoplu4G7nBh05pIvMkJwlZtzYp6U="
         }
       ]
     },
     {
-      "Route": "css/site.b9sayid5wm.css",
+      "Route": "css/site.0gc60jg03i.css",
       "AssetFile": "C:\\Users\\nisa_\\source\\repos\\SiparisSistemi\\SiparisSistemi\\wwwroot\\css\\site.css",
       "Selectors": [],
       "ResponseHeaders": [
@@ -2801,7 +2801,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "667"
+          "Value": "5489"
         },
         {
           "Name": "Content-Type",
@@ -2809,11 +2809,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"j6fhJSuuyLpOSLuPJU0TsDV0iNjor5S3rDnvxJrt4bg=\""
+          "Value": "\"gE8F3mb+mWaiaS3yoplu4G7nBh05pIvMkJwlZtzYp6U=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 14 Dec 2024 20:51:44 GMT"
+          "Value": "Sat, 14 Dec 2024 22:12:51 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -2823,7 +2823,7 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "b9sayid5wm"
+          "Value": "0gc60jg03i"
         },
         {
           "Name": "label",
@@ -2831,13 +2831,13 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-j6fhJSuuyLpOSLuPJU0TsDV0iNjor5S3rDnvxJrt4bg="
+          "Value": "sha256-gE8F3mb+mWaiaS3yoplu4G7nBh05pIvMkJwlZtzYp6U="
         }
       ]
     },
     {
-      "Route": "css/site.b9sayid5wm.css.gz",
-      "AssetFile": "C:\\Users\\nisa_\\source\\repos\\SiparisSistemi\\SiparisSistemi\\obj\\Debug\\net9.0\\compressed\\rr0dbmp4x1-b9sayid5wm.gz",
+      "Route": "css/site.0gc60jg03i.css.gz",
+      "AssetFile": "C:\\Users\\nisa_\\source\\repos\\SiparisSistemi\\SiparisSistemi\\obj\\Debug\\net9.0\\compressed\\rr0dbmp4x1-0gc60jg03i.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -2846,7 +2846,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "319"
+          "Value": "1476"
         },
         {
           "Name": "Content-Type",
@@ -2854,11 +2854,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"fNKkLSNFLZMVTc2zVrpMXQqOwPU3sU4GWcfEbCR2V1I=\""
+          "Value": "\"zyuU1K4V8ZmcLv8O5Om4O2aDgNfMgQD6awpBpDehMoo=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 14 Dec 2024 20:51:44 GMT"
+          "Value": "Sat, 14 Dec 2024 22:12:51 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -2876,7 +2876,7 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "b9sayid5wm"
+          "Value": "0gc60jg03i"
         },
         {
           "Name": "label",
@@ -2884,18 +2884,18 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-fNKkLSNFLZMVTc2zVrpMXQqOwPU3sU4GWcfEbCR2V1I="
+          "Value": "sha256-zyuU1K4V8ZmcLv8O5Om4O2aDgNfMgQD6awpBpDehMoo="
         }
       ]
     },
     {
       "Route": "css/site.css",
-      "AssetFile": "C:\\Users\\nisa_\\source\\repos\\SiparisSistemi\\SiparisSistemi\\obj\\Debug\\net9.0\\compressed\\rr0dbmp4x1-b9sayid5wm.gz",
+      "AssetFile": "C:\\Users\\nisa_\\source\\repos\\SiparisSistemi\\SiparisSistemi\\obj\\Debug\\net9.0\\compressed\\rr0dbmp4x1-0gc60jg03i.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
           "Value": "gzip",
-          "Quality": "0.003125000000"
+          "Quality": "0.000677048070"
         }
       ],
       "ResponseHeaders": [
@@ -2905,15 +2905,15 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "319"
+          "Value": "1476"
         },
         {
           "Name": "ETag",
-          "Value": "\"fNKkLSNFLZMVTc2zVrpMXQqOwPU3sU4GWcfEbCR2V1I=\""
+          "Value": "\"zyuU1K4V8ZmcLv8O5Om4O2aDgNfMgQD6awpBpDehMoo=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 14 Dec 2024 20:51:44 GMT"
+          "Value": "Sat, 14 Dec 2024 22:12:51 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -2933,13 +2933,13 @@
         },
         {
           "Name": "ETag",
-          "Value": "W/\"j6fhJSuuyLpOSLuPJU0TsDV0iNjor5S3rDnvxJrt4bg=\""
+          "Value": "W/\"gE8F3mb+mWaiaS3yoplu4G7nBh05pIvMkJwlZtzYp6U=\""
         }
       ],
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-j6fhJSuuyLpOSLuPJU0TsDV0iNjor5S3rDnvxJrt4bg="
+          "Value": "sha256-gE8F3mb+mWaiaS3yoplu4G7nBh05pIvMkJwlZtzYp6U="
         }
       ]
     },
@@ -2954,7 +2954,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "667"
+          "Value": "5489"
         },
         {
           "Name": "Content-Type",
@@ -2962,11 +2962,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"j6fhJSuuyLpOSLuPJU0TsDV0iNjor5S3rDnvxJrt4bg=\""
+          "Value": "\"gE8F3mb+mWaiaS3yoplu4G7nBh05pIvMkJwlZtzYp6U=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 14 Dec 2024 20:51:44 GMT"
+          "Value": "Sat, 14 Dec 2024 22:12:51 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -2976,13 +2976,13 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-j6fhJSuuyLpOSLuPJU0TsDV0iNjor5S3rDnvxJrt4bg="
+          "Value": "sha256-gE8F3mb+mWaiaS3yoplu4G7nBh05pIvMkJwlZtzYp6U="
         }
       ]
     },
     {
       "Route": "css/site.css.gz",
-      "AssetFile": "C:\\Users\\nisa_\\source\\repos\\SiparisSistemi\\SiparisSistemi\\obj\\Debug\\net9.0\\compressed\\rr0dbmp4x1-b9sayid5wm.gz",
+      "AssetFile": "C:\\Users\\nisa_\\source\\repos\\SiparisSistemi\\SiparisSistemi\\obj\\Debug\\net9.0\\compressed\\rr0dbmp4x1-0gc60jg03i.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -2991,7 +2991,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "319"
+          "Value": "1476"
         },
         {
           "Name": "Content-Type",
@@ -2999,11 +2999,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"fNKkLSNFLZMVTc2zVrpMXQqOwPU3sU4GWcfEbCR2V1I=\""
+          "Value": "\"zyuU1K4V8ZmcLv8O5Om4O2aDgNfMgQD6awpBpDehMoo=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 14 Dec 2024 20:51:44 GMT"
+          "Value": "Sat, 14 Dec 2024 22:12:51 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3021,7 +3021,7 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-fNKkLSNFLZMVTc2zVrpMXQqOwPU3sU4GWcfEbCR2V1I="
+          "Value": "sha256-zyuU1K4V8ZmcLv8O5Om4O2aDgNfMgQD6awpBpDehMoo="
         }
       ]
     },

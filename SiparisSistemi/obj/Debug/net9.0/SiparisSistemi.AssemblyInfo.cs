@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SiparisSistemi")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f839548b29044915f49e7942301bac3f18364ea4")]
 [assembly: System.Reflection.AssemblyProductAttribute("SiparisSistemi")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SiparisSistemi")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

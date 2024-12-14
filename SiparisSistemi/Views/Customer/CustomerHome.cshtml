@@ -1,0 +1,144 @@
+﻿@model List<ProductViewModel>
+@{
+    ViewData["Title"] = "TechStore - Teknoloji Mağazanız";
+}
+
+<header>
+    <div class="logo">Tech<span class="store-highlight">Store</span></div>
+    <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="Ürün aramak için yazın..." />
+        <button><i class="fas fa-search"></i></button>
+    </div>
+    <div class="header-icons">
+        <a href="/account"><i class="fas fa-user"></i> Hesabım</a>
+        <a href="/cart"><i class="fas fa-shopping-cart"></i> Sepetim</a>
+    </div>
+</header>
+
+<nav class="nav-bar">
+    <a href="#"><i class="fas fa-laptop"></i> Laptoplar</a>
+    <a href="#"><i class="fas fa-mobile-alt"></i> Telefonlar</a>
+    <a href="#"><i class="fas fa-headphones"></i> Aksesuarlar</a>
+    <a href="#"><i class="fas fa-gamepad"></i> Oyun Ürünleri</a>
+    <a href="#"><i class="fas fa-home"></i> Akıllı Ev</a>
+</nav>
+
+<div class="hero-section">
+    <h1>Teknolojinin Adresi</h1>
+    <p>En yeni ürünler, en uygun fiyatlarla!</p>
+</div>
+
+<main>
+    <aside class="filter-panel">
+        <h3><i class="fas fa-filter"></i> Filtreler</h3>
+        <div class="filter">
+            <label>Fiyat Aralığı</label>
+            <div class="price-range">
+                <input type="range" min="0" max="50000" class="range-input" />
+                <div class="price-labels">
+                    <span>0₺</span>
+                    <span>50.000₺</span>
+                </div>
+            </div>
+        </div>
+        <div class="filter">
+            <label><i class="fas fa-tag"></i> Marka</label>
+            <select class="custom-select">
+                <option>Tüm Markalar</option>
+                <option>Apple</option>
+                <option>Samsung</option>
+                <option>Lenovo</option>
+                <option>HP</option>
+            </select>
+        </div>
+        <div class="filter">
+            <label><i class="fas fa-list"></i> Kategori</label>
+            <select class="custom-select">
+                <option>Tüm Kategoriler</option>
+                <option>Laptoplar</option>
+                <option>Telefonlar</option>
+                <option>Oyun Ekipmanları</option>
+            </select>
+        </div>
+    </aside>
+
+    <section class="product-grid">
+        @foreach (var product in Model)
+        {
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="@product.ImageUrl" alt="@product.ProductName">
+                </div>
+                <div class="product-info">
+                    <h4>@product.ProductName</h4>
+                    <div class="product-price">₺@product.Price.ToString("N2")</div>
+                    <button onclick="addToCart(@product.ProductID, 1)" class="btn-add-to-cart">
+                        <i class="fas fa-shopping-cart"></i> Sepete Ekle
+                    </button>
+                </div>
+            </div>
+        }
+    </section>
+</main>
+
+<footer>
+    <div class="footer-content">
+        <div class="footer-section">
+            <h5>Hakkımızda</h5>
+            <p>TechStore, teknoloji tutkunları için en iyi ürünleri sunar.</p>
+        </div>
+        <div class="footer-section">
+            <h5>Bizi Takip Edin</h5>
+            <div class="social-media">
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+            </div>
+        </div>
+        <div class="footer-section">
+            <h5>İletişim</h5>
+            <p><i class="fas fa-envelope"></i> info@techstore.com</p>
+            <p><i class="fas fa-phone"></i> +90 555 123 4567</p>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>© 2024 TechStore. Tüm Hakları Saklıdır.</p>
+    </div>
+</footer>
+
+@section Scripts {
+    <script>
+        function addToCart(productId, quantity) {
+            $.ajax({
+                url: '@Url.Action("AddToCart", "Customer")',
+                type: 'POST',
+                data: { productId: productId, quantity: quantity },
+                success: function(response) {
+                    if (response.success) {
+                        alert(response.message);
+                    } else {
+                        alert(response.message);
+                    }
+                },
+                error: function() {
+                    alert('Bir hata oluştu.');
+                }
+            });
+        }
+
+        // Arama fonksiyonu
+        $('#searchInput').on('keyup', function() {
+            var searchTerm = $(this).val();
+            if (searchTerm.length > 2) {
+                $.ajax({
+                    url: '@Url.Action("Search", "Customer")',
+                    type: 'POST',
+                    data: { searchTerm: searchTerm },
+                    success: function(response) {
+                        $('.product-grid').html(response);
+                    }
+                });
+            }
+        });
+    </script>
+}

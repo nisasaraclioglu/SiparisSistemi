@@ -1,0 +1,11 @@
+@model List<ProductViewModel>
+
+@foreach (var product in Model)
+{
+    <div class="product-card" data-product-id="@product.ProductID">
+        <img src="@product.ImageUrl" alt="@product.ProductName">
+        <h4>@product.ProductName</h4>
+        <p>₺@product.Price.ToString("N2")</p>
+        <button onclick="addToCart(@product.ProductID, 1)" class="btn-add-to-cart">Sepete Ekle</button>
+    </div>
+} 

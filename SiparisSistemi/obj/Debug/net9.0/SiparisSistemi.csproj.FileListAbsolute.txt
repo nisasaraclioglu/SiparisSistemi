@@ -91,7 +91,6 @@ C:\Users\nisa_\source\repos\SiparisSistemi\SiparisSistemi\obj\Debug\net9.0\Sipar
 C:\Users\nisa_\source\repos\SiparisSistemi\SiparisSistemi\obj\Debug\net9.0\scopedcss\Pages\Shared\_Layout.cshtml.rz.scp.css
 C:\Users\nisa_\source\repos\SiparisSistemi\SiparisSistemi\obj\Debug\net9.0\scopedcss\bundle\SiparisSistemi.styles.css
 C:\Users\nisa_\source\repos\SiparisSistemi\SiparisSistemi\obj\Debug\net9.0\scopedcss\projectbundle\SiparisSistemi.bundle.scp.css
-C:\Users\nisa_\source\repos\SiparisSistemi\SiparisSistemi\obj\Debug\net9.0\compressed\rr0dbmp4x1-b9sayid5wm.gz
 C:\Users\nisa_\source\repos\SiparisSistemi\SiparisSistemi\obj\Debug\net9.0\compressed\tqeihr6aq8-61n19gt1b8.gz
 C:\Users\nisa_\source\repos\SiparisSistemi\SiparisSistemi\obj\Debug\net9.0\compressed\d9vfaug2lu-xtxxf3hu2r.gz
 C:\Users\nisa_\source\repos\SiparisSistemi\SiparisSistemi\obj\Debug\net9.0\compressed\62f2cdpr96-bqjiyaj88i.gz
@@ -171,3 +170,5 @@ C:\Users\nisa_\source\repos\SiparisSistemi\SiparisSistemi\obj\Debug\net9.0\Sipar
 C:\Users\nisa_\source\repos\SiparisSistemi\SiparisSistemi\obj\Debug\net9.0\SiparisSistemi.genruntimeconfig.cache
 C:\Users\nisa_\source\repos\SiparisSistemi\SiparisSistemi\obj\Debug\net9.0\ref\SiparisSistemi.dll
 C:\Users\nisa_\source\repos\SiparisSistemi\SiparisSistemi\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt
+C:\Users\nisa_\source\repos\SiparisSistemi\SiparisSistemi\obj\Debug\net9.0\SiparisSistemi.sourcelink.json
+C:\Users\nisa_\source\repos\SiparisSistemi\SiparisSistemi\obj\Debug\net9.0\compressed\rr0dbmp4x1-0gc60jg03i.gz
