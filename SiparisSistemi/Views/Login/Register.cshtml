@@ -1,0 +1,46 @@
+@model Customers
+@{
+    ViewData["Title"] = "Kayıt Ol";
+}
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card mt-5">
+                <div class="card-header">
+                    <h3 class="text-center">Yeni Hesap Oluştur</h3>
+                </div>
+                <div class="card-body">
+                    @if (!ViewData.ModelState.IsValid)
+                    {
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach (var modelError in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                                {
+                                    <li>@modelError.ErrorMessage</li>
+                                }
+                            </ul>
+                        </div>
+                    }
+
+                    <form method="post" asp-controller="Login" asp-action="Register">
+                        <div class="form-group mb-3">
+                            <label asp-for="CustomerName">Kullanıcı Adı:</label>
+                            <input asp-for="CustomerName" class="form-control" required>
+                            <span asp-validation-for="CustomerName" class="text-danger"></span>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label asp-for="PasswordHash">Şifre:</label>
+                            <input asp-for="PasswordHash" type="password" class="form-control" required>
+                            <span asp-validation-for="PasswordHash" class="text-danger"></span>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-success">Kayıt Ol</button>
+                            <a asp-controller="Login" asp-action="CustomerLogin" class="btn btn-secondary">Giriş Sayfasına Dön</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 

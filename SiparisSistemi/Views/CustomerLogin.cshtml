@@ -1,0 +1,17 @@
+﻿@{
+    ViewData["Title"] = "Müşteri Giriş";
+}
+<h2>Müşteri Giriş</h2>
+<form method="post" action="/Login/CustomerLogin">
+    <label for="customerName">Kullanıcı Adı:</label>
+    <input type="text" id="customerName" name="customerName" required>
+
+    <label for="password">Şifre:</label>
+    <input type="password" id="password" name="passwordHash" required>
+
+    <button type="submit">Giriş Yap</button>
+</form>
+@if (ViewBag.ErrorMessage != null)
+{
+    <p style="color:red;">@ViewBag.ErrorMessage</p>
+}

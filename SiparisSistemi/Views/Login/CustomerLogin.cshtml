@@ -1,0 +1,41 @@
+@{
+    ViewData["Title"] = "Müşteri Girişi";
+}
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card mt-5">
+                <div class="card-header">
+                    <h3 class="text-center">Müşteri Girişi</h3>
+                </div>
+                <div class="card-body">
+                    <form method="post" asp-controller="Login" asp-action="CustomerLogin">
+                        <div class="form-group mb-3">
+                            <label for="CustomerName">Kullanıcı Adı:</label>
+                            <input type="text" class="form-control" id="CustomerName" name="CustomerName" required>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="PasswordHash">Şifre:</label>
+                            <input type="password" class="form-control" id="PasswordHash" name="PasswordHash" required>
+                        </div>
+                        @if (ViewBag.ErrorMessage != null)
+                        {
+                            <div class="alert alert-danger">
+                                @ViewBag.ErrorMessage
+                            </div>
+                        }
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary">Giriş Yap</button>
+                        </div>
+                    </form>
+                    <hr />
+                    <div class="text-center">
+                        <p>Hesabınız yok mu?</p>
+                        <a asp-controller="Login" asp-action="Register" class="btn btn-success">Yeni Hesap Oluştur</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 
