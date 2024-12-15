@@ -3,9 +3,61 @@
 @foreach (var product in Model)
 {
     <div class="product-card" data-product-id="@product.ProductID">
-        <img src="@product.ImageUrl" alt="@product.ProductName">
-        <h4>@product.ProductName</h4>
-        <p>₺@product.Price.ToString("N2")</p>
-        <button onclick="addToCart(@product.ProductID, 1)" class="btn-add-to-cart">Sepete Ekle</button>
+        <div class="product-type-badge">@product.ProductType</div>
+        <div class="product-image">
+            <img src="@Url.Content(product.ImageUrl)" alt="@product.ProductName" 
+                 onerror="this.src='/images/products/default.jpg';" />
+        </div>
+        <div class="product-info">
+            <h4>@product.ProductName</h4>
+            <div class="product-price">₺@product.Price.ToString("N2")</div>
+            <div class="stock-info">Stok: @product.Stock</div>
+            <div class="quantity-selector">
+                <button class="quantity-btn minus" onclick="decreaseQuantity(@product.ProductID)">-</button>
+                <input type="number" id="quantity-@product.ProductID" class="quantity-input" value="1" min="1" max="@product.Stock">
+                <button class="quantity-btn plus" onclick="increaseQuantity(@product.ProductID)">+</button>
+            </div>
+            <button onclick="addToCart(@product.ProductID)" class="btn-add-to-cart">
+                <i class="fas fa-shopping-cart"></i> Sepete Ekle
+            </button>
+        </div>
     </div>
-} 
+}
+
+<script>
+function decreaseQuantity(productId) {
+    var input = document.getElementById('quantity-' + productId);
+    var value = parseInt(input.value);
+    if (value > 1) {
+        input.value = value - 1;
+    }
+}
+
+function increaseQuantity(productId) {
+    var input = document.getElementById('quantity-' + productId);
+    var value = parseInt(input.value);
+    var max = parseInt(input.max);
+    if (value < max) {
+        input.value = value + 1;
+    }
+}
+
+function addToCart(productId) {
+    var quantity = document.getElementById('quantity-' + productId).value;
+    $.ajax({
+        url: '@Url.Action("AddToCart", "Customer")',
+        type: 'POST',
+        data: { productId: productId, quantity: quantity },
+        success: function(response) {
+            if (response.success) {
+                alert(response.message);
+            } else {
+                alert(response.message);
+            }
+        },
+        error: function() {
+            alert('Bir hata oluştu.');
+        }
+    });
+}
+</script> 

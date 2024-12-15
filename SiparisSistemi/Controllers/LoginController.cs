@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SiparisSistemi.Models;
+using SiparisSistemi.Helpers;
 
 namespace SiparisSistemi.Controllers
 {
@@ -30,14 +31,16 @@ namespace SiparisSistemi.Controllers
         [HttpPost]
         public IActionResult CustomerLogin(string CustomerName, string PasswordHash)
         {
-            var customers = _context.Customers.FirstOrDefault(c => c.CustomerName == CustomerName && c.PasswordHash == PasswordHash);
+            // Gelen şifreyi hashle
+            var hashedPassword = HashHelper.HashPassword(PasswordHash);
+            
+            var customer = _context.Customers.FirstOrDefault(c => 
+                c.CustomerName == CustomerName && 
+                c.PasswordHash == hashedPassword);
 
-            if (customers != null)
+            if (customer != null)
             {
-                // Oturuma CustomerID'yi ekle
-                HttpContext.Session.SetInt32("CustomerID", customers.CustomerID);
-
-                // Müşteri Dashboard'a yönlendirme
+                HttpContext.Session.SetInt32("CustomerID", customer.CustomerID);
                 return RedirectToAction("Dashboard", "Customer");
             }
 
@@ -76,51 +79,27 @@ namespace SiparisSistemi.Controllers
                         return View(customer);
                     }
 
-                    try
-                    {
-                        // Varsayılan değerleri ayarla
-                        customer.CustomerType = "Standard";
-                        customer.TotalSpent = 0;
-                        customer.Orders = new List<Orders>();
-                        customer.Logs = new List<Logs>();
+                    // Şifreyi hashle
+                    customer.PasswordHash = HashHelper.HashPassword(customer.PasswordHash);
 
-                        // customer.Budget değeri doğrudan formdan alınacak
-                        _context.Customers.Add(customer);
-                        var result = _context.SaveChanges();
+                    // Varsayılan değerleri ayarla
+                    customer.CustomerType = "Standard";
+                    customer.TotalSpent = 0;
+                    customer.Orders = new List<Orders>();
+                    customer.Logs = new List<Logs>();
 
-                        System.Diagnostics.Debug.WriteLine($"Kayıt sonucu: {result} satır etkilendi");
+                    _context.Customers.Add(customer);
+                    _context.SaveChanges();
 
-                        TempData["SuccessMessage"] = "Kayıt başarıyla oluşturuldu!";
-                        return RedirectToAction("CustomerLogin");
-                    }
-                    catch (Exception dbEx)
-                    {
-                        // Veritabanı işlemi sırasındaki hatayı detaylı logla
-                        System.Diagnostics.Debug.WriteLine($"Veritabanı hatası: {dbEx.Message}");
-                        System.Diagnostics.Debug.WriteLine($"İç hata: {dbEx.InnerException?.Message}");
-                        System.Diagnostics.Debug.WriteLine($"Stack trace: {dbEx.StackTrace}");
-
-                        ModelState.AddModelError("", "Veritabanına kayıt sırasında bir hata oluştu.");
-                        return View(customer);
-                    }
-                }
-
-                // ModelState geçerli değilse hataları logla
-                foreach (var modelError in ModelState.Values.SelectMany(v => v.Errors))
-                {
-                    System.Diagnostics.Debug.WriteLine($"Model hatası: {modelError.ErrorMessage}");
+                    TempData["SuccessMessage"] = "Kayıt başarıyla oluşturuldu!";
+                    return RedirectToAction("CustomerLogin");
                 }
 
                 return View(customer);
             }
             catch (Exception ex)
             {
-                // Genel hata mesajını logla
-                System.Diagnostics.Debug.WriteLine($"Genel hata: {ex.Message}");
-                System.Diagnostics.Debug.WriteLine($"İç hata: {ex.InnerException?.Message}");
-                System.Diagnostics.Debug.WriteLine($"Stack trace: {ex.StackTrace}");
-
-                ModelState.AddModelError("", "Kayıt sırasında beklenmeyen bir hata oluştu.");
+                ModelState.AddModelError("", "Kayıt sırasında bir hata oluştu.");
                 return View(customer);
             }
         }

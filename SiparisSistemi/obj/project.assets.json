@@ -5,7 +5,7 @@
       "Humanizer.Core/2.14.1": {
         "type": "package",
         "compile": {
-          "lib/net6.0/Humanizer.dll": {
+          "lib/net6.0/_._": {
             "related": ".xml"
           }
         },
@@ -18,7 +18,7 @@
       "Microsoft.Bcl.AsyncInterfaces/6.0.0": {
         "type": "package",
         "compile": {
-          "lib/netstandard2.1/Microsoft.Bcl.AsyncInterfaces.dll": {
+          "lib/netstandard2.1/_._": {
             "related": ".xml"
           }
         },
@@ -44,7 +44,7 @@
           "System.Text.Encoding.CodePages": "6.0.0"
         },
         "compile": {
-          "lib/netcoreapp3.1/Microsoft.CodeAnalysis.dll": {
+          "lib/netcoreapp3.1/_._": {
             "related": ".pdb;.xml"
           }
         },
@@ -101,7 +101,7 @@
           "Microsoft.CodeAnalysis.Common": "[4.5.0]"
         },
         "compile": {
-          "lib/netcoreapp3.1/Microsoft.CodeAnalysis.CSharp.dll": {
+          "lib/netcoreapp3.1/_._": {
             "related": ".pdb;.xml"
           }
         },
@@ -161,7 +161,7 @@
           "Microsoft.CodeAnalysis.Workspaces.Common": "[4.5.0]"
         },
         "compile": {
-          "lib/netcoreapp3.1/Microsoft.CodeAnalysis.CSharp.Workspaces.dll": {
+          "lib/netcoreapp3.1/_._": {
             "related": ".pdb;.xml"
           }
         },
@@ -223,7 +223,7 @@
           "System.Threading.Channels": "6.0.0"
         },
         "compile": {
-          "lib/netcoreapp3.1/Microsoft.CodeAnalysis.Workspaces.dll": {
+          "lib/netcoreapp3.1/_._": {
             "related": ".pdb;.xml"
           }
         },
@@ -274,11 +274,11 @@
           }
         }
       },
-      "Microsoft.EntityFrameworkCore/8.0.2": {
+      "Microsoft.EntityFrameworkCore/8.0.0": {
         "type": "package",
         "dependencies": {
-          "Microsoft.EntityFrameworkCore.Abstractions": "8.0.2",
-          "Microsoft.EntityFrameworkCore.Analyzers": "8.0.2",
+          "Microsoft.EntityFrameworkCore.Abstractions": "8.0.0",
+          "Microsoft.EntityFrameworkCore.Analyzers": "8.0.0",
           "Microsoft.Extensions.Caching.Memory": "8.0.0",
           "Microsoft.Extensions.Logging": "8.0.0"
         },
@@ -296,7 +296,7 @@
           "buildTransitive/net8.0/Microsoft.EntityFrameworkCore.props": {}
         }
       },
-      "Microsoft.EntityFrameworkCore.Abstractions/8.0.2": {
+      "Microsoft.EntityFrameworkCore.Abstractions/8.0.0": {
         "type": "package",
         "compile": {
           "lib/net8.0/Microsoft.EntityFrameworkCore.Abstractions.dll": {
@@ -309,7 +309,7 @@
           }
         }
       },
-      "Microsoft.EntityFrameworkCore.Analyzers/8.0.2": {
+      "Microsoft.EntityFrameworkCore.Analyzers/8.0.0": {
         "type": "package",
         "compile": {
           "lib/netstandard2.0/_._": {}
@@ -318,17 +318,17 @@
           "lib/netstandard2.0/_._": {}
         }
       },
-      "Microsoft.EntityFrameworkCore.Design/8.0.2": {
+      "Microsoft.EntityFrameworkCore.Design/8.0.0": {
         "type": "package",
         "dependencies": {
           "Humanizer.Core": "2.14.1",
           "Microsoft.CodeAnalysis.CSharp.Workspaces": "4.5.0",
-          "Microsoft.EntityFrameworkCore.Relational": "8.0.2",
+          "Microsoft.EntityFrameworkCore.Relational": "8.0.0",
           "Microsoft.Extensions.DependencyModel": "8.0.0",
           "Mono.TextTemplating": "2.2.1"
         },
         "compile": {
-          "lib/net8.0/Microsoft.EntityFrameworkCore.Design.dll": {
+          "lib/net8.0/_._": {
             "related": ".xml"
           }
         },
@@ -341,10 +341,10 @@
           "build/net8.0/Microsoft.EntityFrameworkCore.Design.props": {}
         }
       },
-      "Microsoft.EntityFrameworkCore.Relational/8.0.2": {
+      "Microsoft.EntityFrameworkCore.Relational/8.0.0": {
         "type": "package",
         "dependencies": {
-          "Microsoft.EntityFrameworkCore": "8.0.2",
+          "Microsoft.EntityFrameworkCore": "8.0.0",
           "Microsoft.Extensions.Configuration.Abstractions": "8.0.0"
         },
         "compile": {
@@ -358,10 +358,10 @@
           }
         }
       },
-      "Microsoft.EntityFrameworkCore.Tools/8.0.2": {
+      "Microsoft.EntityFrameworkCore.Tools/8.0.0": {
         "type": "package",
         "dependencies": {
-          "Microsoft.EntityFrameworkCore.Design": "8.0.2"
+          "Microsoft.EntityFrameworkCore.Design": "8.0.0"
         },
         "compile": {
           "lib/net8.0/_._": {}
@@ -473,7 +473,7 @@
           "System.Text.Json": "8.0.0"
         },
         "compile": {
-          "lib/net8.0/Microsoft.Extensions.DependencyModel.dll": {
+          "lib/net8.0/_._": {
             "related": ".xml"
           }
         },
@@ -568,7 +568,7 @@
           "System.CodeDom": "4.4.0"
         },
         "compile": {
-          "lib/netstandard2.0/Mono.TextTemplating.dll": {}
+          "lib/netstandard2.0/_._": {}
         },
         "runtime": {
           "lib/netstandard2.0/Mono.TextTemplating.dll": {}
@@ -610,7 +610,7 @@
       "System.CodeDom/4.4.0": {
         "type": "package",
         "compile": {
-          "ref/netstandard2.0/System.CodeDom.dll": {
+          "ref/netstandard2.0/_._": {
             "related": ".xml"
           }
         },
@@ -624,7 +624,7 @@
           "System.Runtime.CompilerServices.Unsafe": "6.0.0"
         },
         "compile": {
-          "lib/net6.0/System.Collections.Immutable.dll": {
+          "lib/net6.0/_._": {
             "related": ".xml"
           }
         },
@@ -653,7 +653,7 @@
       "System.Composition.AttributedModel/6.0.0": {
         "type": "package",
         "compile": {
-          "lib/net6.0/System.Composition.AttributedModel.dll": {
+          "lib/net6.0/_._": {
             "related": ".xml"
           }
         },
@@ -672,7 +672,7 @@
           "System.Composition.AttributedModel": "6.0.0"
         },
         "compile": {
-          "lib/net6.0/System.Composition.Convention.dll": {
+          "lib/net6.0/_._": {
             "related": ".xml"
           }
         },
@@ -691,7 +691,7 @@
           "System.Composition.Runtime": "6.0.0"
         },
         "compile": {
-          "lib/net6.0/System.Composition.Hosting.dll": {
+          "lib/net6.0/_._": {
             "related": ".xml"
           }
         },
@@ -707,7 +707,7 @@
       "System.Composition.Runtime/6.0.0": {
         "type": "package",
         "compile": {
-          "lib/net6.0/System.Composition.Runtime.dll": {
+          "lib/net6.0/_._": {
             "related": ".xml"
           }
         },
@@ -728,7 +728,7 @@
           "System.Composition.Runtime": "6.0.0"
         },
         "compile": {
-          "lib/net6.0/System.Composition.TypedParts.dll": {
+          "lib/net6.0/_._": {
             "related": ".xml"
           }
         },
@@ -744,7 +744,7 @@
       "System.IO.Pipelines/6.0.3": {
         "type": "package",
         "compile": {
-          "lib/net6.0/System.IO.Pipelines.dll": {
+          "lib/net6.0/_._": {
             "related": ".xml"
           }
         },
@@ -763,7 +763,7 @@
           "System.Collections.Immutable": "6.0.0"
         },
         "compile": {
-          "lib/net6.0/System.Reflection.Metadata.dll": {
+          "lib/net6.0/_._": {
             "related": ".xml"
           }
         },
@@ -779,7 +779,7 @@
       "System.Runtime.CompilerServices.Unsafe/6.0.0": {
         "type": "package",
         "compile": {
-          "lib/net6.0/System.Runtime.CompilerServices.Unsafe.dll": {
+          "lib/net6.0/_._": {
             "related": ".xml"
           }
         },
@@ -798,7 +798,7 @@
           "System.Runtime.CompilerServices.Unsafe": "6.0.0"
         },
         "compile": {
-          "lib/net6.0/System.Text.Encoding.CodePages.dll": {
+          "lib/net6.0/_._": {
             "related": ".xml"
           }
         },
@@ -820,7 +820,7 @@
       "System.Text.Encodings.Web/8.0.0": {
         "type": "package",
         "compile": {
-          "lib/net8.0/System.Text.Encodings.Web.dll": {
+          "lib/net8.0/_._": {
             "related": ".xml"
           }
         },
@@ -845,7 +845,7 @@
           "System.Text.Encodings.Web": "8.0.0"
         },
         "compile": {
-          "lib/net8.0/System.Text.Json.dll": {
+          "lib/net8.0/_._": {
             "related": ".xml"
           }
         },
@@ -861,7 +861,7 @@
       "System.Threading.Channels/6.0.0": {
         "type": "package",
         "compile": {
-          "lib/net6.0/System.Threading.Channels.dll": {
+          "lib/net6.0/_._": {
             "related": ".xml"
           }
         },
@@ -1347,10 +1347,10 @@
         "microsoft.codeanalysis.workspaces.common.nuspec"
       ]
     },
-    "Microsoft.EntityFrameworkCore/8.0.2": {
-      "sha512": "6QlvBx4rdawW3AkkCsGVV+8qRLk34aknV5JD40s1hbVR18vKmT2KDl2DW83nHcPX7f4oebQ3BD1UMNCI/gkE0g==",
+    "Microsoft.EntityFrameworkCore/8.0.0": {
+      "sha512": "SoODat83pGQUpWB9xULdMX6tuKpq/RTXDuJ2WeC1ldUKcKzLkaFJD1n+I0nOLY58odez/e7z8b6zdp235G/kyg==",
       "type": "package",
-      "path": "microsoft.entityframeworkcore/8.0.2",
+      "path": "microsoft.entityframeworkcore/8.0.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -1358,42 +1358,42 @@
         "buildTransitive/net8.0/Microsoft.EntityFrameworkCore.props",
         "lib/net8.0/Microsoft.EntityFrameworkCore.dll",
         "lib/net8.0/Microsoft.EntityFrameworkCore.xml",
-        "microsoft.entityframeworkcore.8.0.2.nupkg.sha512",
+        "microsoft.entityframeworkcore.8.0.0.nupkg.sha512",
         "microsoft.entityframeworkcore.nuspec"
       ]
     },
-    "Microsoft.EntityFrameworkCore.Abstractions/8.0.2": {
-      "sha512": "DjDKp++BTKFZmX+xLTow7grQTY+pImKfhGW68Zf8myiL3zyJ3b8RZbnLsWGNCqKQIF6hJIz/zA/zmERobFwV0A==",
+    "Microsoft.EntityFrameworkCore.Abstractions/8.0.0": {
+      "sha512": "VR22s3+zoqlVI7xauFKn1znSIFHO8xuILT+noSwS8bZCKcHz0ydkTDQMuaxSa5WBaQrZmwtTz9rmRvJ7X8mSPQ==",
       "type": "package",
-      "path": "microsoft.entityframeworkcore.abstractions/8.0.2",
+      "path": "microsoft.entityframeworkcore.abstractions/8.0.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "Icon.png",
         "lib/net8.0/Microsoft.EntityFrameworkCore.Abstractions.dll",
         "lib/net8.0/Microsoft.EntityFrameworkCore.Abstractions.xml",
-        "microsoft.entityframeworkcore.abstractions.8.0.2.nupkg.sha512",
+        "microsoft.entityframeworkcore.abstractions.8.0.0.nupkg.sha512",
         "microsoft.entityframeworkcore.abstractions.nuspec"
       ]
     },
-    "Microsoft.EntityFrameworkCore.Analyzers/8.0.2": {
-      "sha512": "LI7awhc0fiAKvcUemsqxXUWqzAH9ywTSyM1rpC1un4p5SE1bhr5nRLvyRVbKRzKakmnNNY3to8NPDnoySEkxVw==",
+    "Microsoft.EntityFrameworkCore.Analyzers/8.0.0": {
+      "sha512": "ZXxEeLs2zoZ1TA+QoMMcw4f3Tirf8PzgdDax8RoWo0dxI2KmqiEGWYjhm2B/XyWfglc6+mNRyB8rZiQSmxCpeg==",
       "type": "package",
-      "path": "microsoft.entityframeworkcore.analyzers/8.0.2",
+      "path": "microsoft.entityframeworkcore.analyzers/8.0.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "Icon.png",
         "analyzers/dotnet/cs/Microsoft.EntityFrameworkCore.Analyzers.dll",
         "lib/netstandard2.0/_._",
-        "microsoft.entityframeworkcore.analyzers.8.0.2.nupkg.sha512",
+        "microsoft.entityframeworkcore.analyzers.8.0.0.nupkg.sha512",
         "microsoft.entityframeworkcore.analyzers.nuspec"
       ]
     },
-    "Microsoft.EntityFrameworkCore.Design/8.0.2": {
-      "sha512": "lpSEopadyq4VjgErVbKXznlzmrdR+1zG4jjJlumgnDTz6Ov60qZkBn8uTfPYk0PUZ3wn+GNFOi3ouSTK4JKEIA==",
+    "Microsoft.EntityFrameworkCore.Design/8.0.0": {
+      "sha512": "94reKYu63jg4O75UI3LMJHwOSi8tQ6IfubiZhdnSsWcgtmAuF8OyLfjK/MIxuvaQRJZAF6E747FIuxjOtb8/og==",
       "type": "package",
-      "path": "microsoft.entityframeworkcore.design/8.0.2",
+      "path": "microsoft.entityframeworkcore.design/8.0.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -1401,35 +1401,35 @@
         "build/net8.0/Microsoft.EntityFrameworkCore.Design.props",
         "lib/net8.0/Microsoft.EntityFrameworkCore.Design.dll",
         "lib/net8.0/Microsoft.EntityFrameworkCore.Design.xml",
-        "microsoft.entityframeworkcore.design.8.0.2.nupkg.sha512",
+        "microsoft.entityframeworkcore.design.8.0.0.nupkg.sha512",
         "microsoft.entityframeworkcore.design.nuspec"
       ]
     },
-    "Microsoft.EntityFrameworkCore.Relational/8.0.2": {
-      "sha512": "NoGfcq2OPw0z8XAPf74YFwGlTKjedWdsIEJqq4SvKcPjcu+B+/XDDNrDRxTvILfz4Ug8POSF49s1jz1JvUqTAg==",
+    "Microsoft.EntityFrameworkCore.Relational/8.0.0": {
+      "sha512": "fFKkr24cYc7Zw5T6DC4tEyOEPgPbq23BBmym1r9kn4ET9F3HKaetpOeQtV2RryYyUxEeNkJuxgfiZHTisqZc+A==",
       "type": "package",
-      "path": "microsoft.entityframeworkcore.relational/8.0.2",
+      "path": "microsoft.entityframeworkcore.relational/8.0.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "Icon.png",
         "lib/net8.0/Microsoft.EntityFrameworkCore.Relational.dll",
         "lib/net8.0/Microsoft.EntityFrameworkCore.Relational.xml",
-        "microsoft.entityframeworkcore.relational.8.0.2.nupkg.sha512",
+        "microsoft.entityframeworkcore.relational.8.0.0.nupkg.sha512",
         "microsoft.entityframeworkcore.relational.nuspec"
       ]
     },
-    "Microsoft.EntityFrameworkCore.Tools/8.0.2": {
-      "sha512": "PWy3X3Z1fnWlbU6pQMSnBvMwqERoKsriJ688TMl1xT2NyqcSk6/dX22eI5eV+qYXYmYna72Dq2u0P8tNZ6AYtg==",
+    "Microsoft.EntityFrameworkCore.Tools/8.0.0": {
+      "sha512": "zRdaXiiB1gEA0b+AJTd2+drh78gkEA4HyZ1vqNZrKq4xwW8WwavSiQsoeb1UsIMZkocLMBbhQYWClkZzuTKEgQ==",
       "type": "package",
-      "path": "microsoft.entityframeworkcore.tools/8.0.2",
+      "path": "microsoft.entityframeworkcore.tools/8.0.0",
       "hasTools": true,
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "Icon.png",
         "lib/net8.0/_._",
-        "microsoft.entityframeworkcore.tools.8.0.2.nupkg.sha512",
+        "microsoft.entityframeworkcore.tools.8.0.0.nupkg.sha512",
         "microsoft.entityframeworkcore.tools.nuspec",
         "tools/EntityFrameworkCore.PS2.psd1",
         "tools/EntityFrameworkCore.PS2.psm1",
@@ -2293,29 +2293,30 @@
   },
   "projectFileDependencyGroups": {
     "net9.0": [
-      "Microsoft.EntityFrameworkCore >= 8.0.2",
-      "Microsoft.EntityFrameworkCore.Tools >= 8.0.2",
+      "Microsoft.EntityFrameworkCore >= 8.0.0",
+      "Microsoft.EntityFrameworkCore.Relational >= 8.0.0",
+      "Microsoft.EntityFrameworkCore.Tools >= 8.0.0",
       "Pomelo.EntityFrameworkCore.MySql >= 8.0.0"
     ]
   },
   "packageFolders": {
-    "C:\\Users\\asliy\\.nuget\\packages\\": {},
+    "C:\\Users\\nisa_\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\asliy\\Source\\Repos\\SiparisSistemi\\SiparisSistemi\\SiparisSistemi.csproj",
+      "projectUniqueName": "C:\\Users\\nisa_\\source\\repos\\SiparisSistemi\\SiparisSistemi\\SiparisSistemi.csproj",
       "projectName": "SiparisSistemi",
-      "projectPath": "C:\\Users\\asliy\\Source\\Repos\\SiparisSistemi\\SiparisSistemi\\SiparisSistemi.csproj",
-      "packagesPath": "C:\\Users\\asliy\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\asliy\\Source\\Repos\\SiparisSistemi\\SiparisSistemi\\obj\\",
+      "projectPath": "C:\\Users\\nisa_\\source\\repos\\SiparisSistemi\\SiparisSistemi\\SiparisSistemi.csproj",
+      "packagesPath": "C:\\Users\\nisa_\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\nisa_\\source\\repos\\SiparisSistemi\\SiparisSistemi\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\asliy\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\nisa_\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -2350,11 +2351,17 @@
         "dependencies": {
           "Microsoft.EntityFrameworkCore": {
             "target": "Package",
-            "version": "[8.0.2, )"
+            "version": "[8.0.0, )"
+          },
+          "Microsoft.EntityFrameworkCore.Relational": {
+            "target": "Package",
+            "version": "[8.0.0, )"
           },
           "Microsoft.EntityFrameworkCore.Tools": {
+            "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+            "suppressParent": "All",
             "target": "Package",
-            "version": "[8.0.2, )"
+            "version": "[8.0.0, )"
           },
           "Pomelo.EntityFrameworkCore.MySql": {
             "target": "Package",
@@ -2380,7 +2387,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.100/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.101/PortableRuntimeIdentifierGraph.json"
       }
     }
   },
@@ -2389,7 +2396,7 @@
       "code": "NU1903",
       "level": "Warning",
       "warningLevel": 1,
-      "message": "'Microsoft.Extensions.Caching.Memory' 8.0.0 paketinde önem derecesi yüksek olan bilinen bir https://github.com/advisories/GHSA-qj66-m88j-hmgj güvenlik açığı var",
+      "message": "Package 'Microsoft.Extensions.Caching.Memory' 8.0.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-qj66-m88j-hmgj",
       "libraryId": "Microsoft.Extensions.Caching.Memory",
       "targetGraphs": [
         "net9.0"
@@ -2399,7 +2406,7 @@
       "code": "NU1903",
       "level": "Warning",
       "warningLevel": 1,
-      "message": "'System.Text.Json' 8.0.0 paketinde önem derecesi yüksek olan bilinen bir https://github.com/advisories/GHSA-8g4q-xg66-9fp4 güvenlik açığı var",
+      "message": "Package 'System.Text.Json' 8.0.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-8g4q-xg66-9fp4",
       "libraryId": "System.Text.Json",
       "targetGraphs": [
         "net9.0"
@@ -2409,7 +2416,7 @@
       "code": "NU1903",
       "level": "Warning",
       "warningLevel": 1,
-      "message": "'System.Text.Json' 8.0.0 paketinde önem derecesi yüksek olan bilinen bir https://github.com/advisories/GHSA-hh2w-p6rv-4g7w güvenlik açığı var",
+      "message": "Package 'System.Text.Json' 8.0.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-hh2w-p6rv-4g7w",
       "libraryId": "System.Text.Json",
       "targetGraphs": [
         "net9.0"

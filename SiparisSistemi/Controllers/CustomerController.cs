@@ -31,7 +31,12 @@ namespace SiparisSistemi.Controllers
                         ProductName = p.ProductName,
                         Price = p.Price,
                         Stock = p.Stock,
-                        ImageUrl = "/images/products/default.jpg" // Varsayılan resim
+                        ProductType = p.ProductType,
+                        ImageUrl = !string.IsNullOrEmpty(p.ImagePath) 
+                            ? p.ImagePath.StartsWith("/") 
+                                ? p.ImagePath 
+                                : $"/images/products/{p.ImagePath}"
+                            : "/images/products/default.jpg"
                     })
                     .ToListAsync();
 
@@ -74,7 +79,10 @@ namespace SiparisSistemi.Controllers
                     ProductName = p.ProductName,
                     Price = p.Price,
                     Stock = p.Stock,
-                    ImageUrl = "/images/products/default.jpg"
+                    ProductType = p.ProductType,
+                    ImageUrl = string.IsNullOrEmpty(p.ImagePath) 
+                        ? "/images/products/default.jpg" 
+                        : p.ImagePath
                 })
                 .ToListAsync();
 

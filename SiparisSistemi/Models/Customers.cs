@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SiparisSistemi.Models
 {
     public class Customers
     {
+        [Key]
         public int CustomerID { get; set; }
         
         [Required(ErrorMessage = "Kullanıcı adı zorunludur")]
@@ -20,7 +22,10 @@ namespace SiparisSistemi.Models
         [Required(ErrorMessage = "Şifre zorunludur")]
         public string PasswordHash { get; set; }
 
-        // İlişkiler - nullable olarak işaretle
+        [NotMapped]
+        [Compare("PasswordHash", ErrorMessage = "Şifreler eşleşmiyor")]
+        public string? ConfirmPassword { get; set; }
+
         public virtual ICollection<Orders>? Orders { get; set; }
         public virtual ICollection<Logs>? Logs { get; set; }
 
