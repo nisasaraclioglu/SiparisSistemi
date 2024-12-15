@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Reflection.Emit;
 using Microsoft.EntityFrameworkCore;
+using SiparisSistemi.Helpers;
 
 namespace SiparisSistemi.Models
 {
@@ -15,10 +16,14 @@ namespace SiparisSistemi.Models
         public DbSet<Orders> Orders { get; set; }
         public DbSet<Products> Products { get; set; }
         public DbSet<Logs> Logs { get; set; }
+        public DbSet<Admin> Admins { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            // Admin tablosu için tablo adını belirt
+            modelBuilder.Entity<Admin>().ToTable("admin");
 
             // Customers tablosu için konfigürasyon
             modelBuilder.Entity<Customers>(entity =>
@@ -52,6 +57,16 @@ namespace SiparisSistemi.Models
                     .WithMany()
                     .HasForeignKey(d => d.OrderID);
             });
+
+            // Varsayılan admin hesabı
+            modelBuilder.Entity<Admin>().HasData(
+                new Admin
+                {
+                    AdminID = 1,
+                    Username = "admin",
+                    PasswordHash = HashHelper.HashPassword("admin123") // Güvenli bir şifre kullanın
+                }
+            );
         }
     }
 }

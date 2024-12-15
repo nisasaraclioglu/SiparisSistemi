@@ -1,0 +1,118 @@
+@model Products
+
+<div class="admin-container">
+    <div class="admin-sidebar">
+        <div class="admin-header">
+            <h2>Tech<span class="store-highlight">Store</span></h2>
+            <p>Admin Panel</p>
+        </div>
+        <nav class="admin-nav">
+            <a href="@Url.Action("Dashboard", "Admin")" class="admin-nav-item">
+                <i class="fas fa-home"></i> Ana Sayfa
+            </a>
+            <a href="@Url.Action("AddProduct", "Admin")" class="admin-nav-item active">
+                <i class="fas fa-plus"></i> Ürün Ekle
+            </a>
+            <a href="@Url.Action("Logout", "Login")" class="admin-nav-item">
+                <i class="fas fa-sign-out-alt"></i> Çıkış Yap
+            </a>
+        </nav>
+    </div>
+    <div class="admin-content">
+        <div class="admin-content-header">
+            <div class="header-left">
+                <h3><i class="fas fa-plus"></i> Yeni Ürün Ekle</h3>
+                <p>Ürün bilgilerini girin</p>
+            </div>
+        </div>
+
+        <div class="edit-form-container">
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach (var modelState in ViewData.ModelState.Values)
+                        {
+                            foreach (var error in modelState.Errors)
+                            {
+                                <li>@error.ErrorMessage</li>
+                            }
+                        }
+                    </ul>
+                </div>
+            }
+
+            <form method="post" enctype="multipart/form-data">
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label asp-for="ProductName">
+                            <i class="fas fa-tag"></i> Ürün Adı
+                        </label>
+                        <input asp-for="ProductName" class="form-control" required>
+                        <span asp-validation-for="ProductName" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        <label asp-for="ProductType">
+                            <i class="fas fa-list"></i> Ürün Tipi
+                        </label>
+                        <select asp-for="ProductType" class="form-control" required>
+                            <option value="">Seçiniz</option>
+                            <option value="Laptop">Laptop</option>
+                            <option value="Telefon">Telefon</option>
+                            <option value="Aksesuar">Aksesuar</option>
+                        </select>
+                        <span asp-validation-for="ProductType" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label asp-for="Price">
+                            <i class="fas fa-dollar-sign"></i> Fiyat
+                        </label>
+                        <input asp-for="Price" type="number" step="0.01" class="form-control" required>
+                        <span asp-validation-for="Price" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        <label asp-for="Stock">
+                            <i class="fas fa-boxes"></i> Stok
+                        </label>
+                        <input asp-for="Stock" type="number" class="form-control" required>
+                        <span asp-validation-for="Stock" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>
+                        <i class="fas fa-image"></i> Ürün Resmi
+                    </label>
+                    <div class="custom-file">
+                        <input type="file" name="imageFile" class="custom-file-input" accept="image/*">
+                        <label class="custom-file-label">Resim seç...</label>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Ürün Ekle
+                    </button>
+                    <a asp-action="Dashboard" class="btn btn-secondary">
+                        <i class="fas fa-times"></i> İptal
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Dosya seçildiğinde label'ı güncelle
+        $('.custom-file-input').on('change', function() {
+            var fileName = $(this).val().split('\\').pop();
+            $(this).next('.custom-file-label').html(fileName);
+        });
+    </script>
+} 

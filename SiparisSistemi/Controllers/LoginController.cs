@@ -15,10 +15,32 @@ namespace SiparisSistemi.Controllers
 
         // Admin Giriş Metodu
         [HttpPost]
-        public IActionResult AdminLogin(string username, decimal passwordHash)
+        public IActionResult AdminLogin(string username, string password)
         {
-            // Admin işlevselliğini daha sonra ekleyeceğiz
-            return RedirectToAction("CustomerLogin");
+            var hashedPassword = HashHelper.HashPassword(password);
+            var admin = _context.Admins.FirstOrDefault(a => 
+                a.Username == username && 
+                a.PasswordHash == hashedPassword);
+
+            if (admin != null)
+            {
+                HttpContext.Session.SetInt32("AdminID", admin.AdminID);
+                return RedirectToAction("Dashboard", "Admin");
+            }
+
+            // Admin değilse müşteri girişini kontrol et
+            var customer = _context.Customers.FirstOrDefault(c => 
+                c.CustomerName == username && 
+                c.PasswordHash == hashedPassword);
+
+            if (customer != null)
+            {
+                HttpContext.Session.SetInt32("CustomerID", customer.CustomerID);
+                return RedirectToAction("Dashboard", "Customer");
+            }
+
+            ViewBag.ErrorMessage = "Kullanıcı adı veya şifre hatalı.";
+            return View("CustomerLogin");
         }
 
         // Müşteri Giriş Metodu
@@ -31,21 +53,28 @@ namespace SiparisSistemi.Controllers
         [HttpPost]
         public IActionResult CustomerLogin(string CustomerName, string PasswordHash)
         {
-            // Gelen şifreyi hashle
-            var hashedPassword = HashHelper.HashPassword(PasswordHash);
-            
-            var customer = _context.Customers.FirstOrDefault(c => 
-                c.CustomerName == CustomerName && 
-                c.PasswordHash == hashedPassword);
-
-            if (customer != null)
+            try
             {
-                HttpContext.Session.SetInt32("CustomerID", customer.CustomerID);
-                return RedirectToAction("Dashboard", "Customer");
-            }
+                var hashedPassword = HashHelper.HashPassword(PasswordHash);
+                var customer = _context.Customers
+                    .FirstOrDefault(c => c.CustomerName == CustomerName);
 
-            ViewBag.ErrorMessage = "Kullanıcı adı veya şifre hatalı.";
-            return View();
+                if (customer != null && customer.PasswordHash == hashedPassword)
+                {
+                    HttpContext.Session.SetInt32("CustomerID", customer.CustomerID);
+                    return RedirectToAction("Dashboard", "Customer");
+                }
+
+                ViewBag.ErrorMessage = "Kullanıcı adı veya şifre hatalı.";
+                return View();
+            }
+            catch (Exception ex)
+            {
+                // Hata logla
+                System.Diagnostics.Debug.WriteLine($"Login hatası: {ex.Message}");
+                ViewBag.ErrorMessage = "Giriş sırasında bir hata oluştu.";
+                return View();
+            }
         }
 
 [HttpGet]

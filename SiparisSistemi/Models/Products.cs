@@ -17,10 +17,10 @@ namespace SiparisSistemi.Models
         public decimal Price { get; set; }
 
         [Required(ErrorMessage = "Ürün türü zorunludur")]
-        public string ProductType { get; set; }  // Laptop, Telefon, Aksesuar vb.
+        public string ProductType { get; set; }
 
-        public string? ImagePath { get; set; }  // Ürün resminin yolu
+        public string? ImagePath { get; set; }
 
-        public virtual ICollection<Orders> Orders { get; set; }
+        public virtual ICollection<Orders>? Orders { get; set; }
     }
 }

@@ -1,9 +1,16 @@
-﻿namespace SiparisSistemi.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace SiparisSistemi.Models
 {
     public class Admin
-{
-    public int AdminID { get; set; }
-    public string Username { get; set; }
-    public decimal PasswordHash { get; set; }
-}
+    {
+        [Key]
+        public int AdminID { get; set; }
+        
+        [Required]
+        public string Username { get; set; }
+        
+        [Required]
+        public string PasswordHash { get; set; }
+    }
 }

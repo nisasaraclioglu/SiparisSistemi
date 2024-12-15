@@ -12,8 +12,8 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>x5l7stktba</Fingerprint>
-      <Integrity>G+lqt7WeTqrsDXAKlhqxw8AwHOoFyNEvo6ZS8GnOAjk=</Integrity>
+      <Fingerprint>9nts8zidb4</Fingerprint>
+      <Integrity>FVmpQfsffkop9zXvpHuGE37q+92QQiX/IZ/4fPDXicU=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\site.css'))</OriginalItemSpec>
@@ -35,6 +35,42 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\favicon.ico'))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\products\9b5e5749-a245-4b49-b9a2-4bc84c2d1bac_RGBLedSerit.jpg'))">
+      <SourceType>Package</SourceType>
+      <SourceId>SiparisSistemi</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/SiparisSistemi</BasePath>
+      <RelativePath>images/products/9b5e5749-a245-4b49-b9a2-4bc84c2d1bac_RGBLedSerit.jpg</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <Fingerprint>z5d3l1ereq</Fingerprint>
+      <Integrity>Z95wfwLnkLIOSR0EbiGhAaGIuzXlcYFoRpeiwYobAJc=</Integrity>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\products\9b5e5749-a245-4b49-b9a2-4bc84c2d1bac_RGBLedSerit.jpg'))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\products\f02b8db3-71ad-4e97-bfa6-3aa62aca37c9_msi.jpeg'))">
+      <SourceType>Package</SourceType>
+      <SourceId>SiparisSistemi</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/SiparisSistemi</BasePath>
+      <RelativePath>images/products/f02b8db3-71ad-4e97-bfa6-3aa62aca37c9_msi.jpeg</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <Fingerprint>ix1yi46fhg</Fingerprint>
+      <Integrity>ur9OxGqO08jyePsZXrZqlSsF+jv8osqqbDlNcNNYc2k=</Integrity>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\products\f02b8db3-71ad-4e97-bfa6-3aa62aca37c9_msi.jpeg'))</OriginalItemSpec>
     </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\products\iphone.jpeg'))">
       <SourceType>Package</SourceType>

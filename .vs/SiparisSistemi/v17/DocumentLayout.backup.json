@@ -3,32 +3,28 @@
   "WorkspaceRootPath": "C:\\Users\\nisa_\\source\\repos\\SiparisSistemi\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{D0AB24FD-B36D-4324-9AF7-F2A894D82C57}|SiparisSistemi\\SiparisSistemi.csproj|c:\\users\\nisa_\\source\\repos\\siparissistemi\\siparissistemi\\views\\customer\\customerhome.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{D0AB24FD-B36D-4324-9AF7-F2A894D82C57}|SiparisSistemi\\SiparisSistemi.csproj|solutionrelative:siparissistemi\\views\\customer\\customerhome.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{D0AB24FD-B36D-4324-9AF7-F2A894D82C57}|SiparisSistemi\\SiparisSistemi.csproj|c:\\users\\nisa_\\source\\repos\\siparissistemi\\siparissistemi\\controllers\\customercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{D0AB24FD-B36D-4324-9AF7-F2A894D82C57}|SiparisSistemi\\SiparisSistemi.csproj|solutionrelative:siparissistemi\\controllers\\customercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{D0AB24FD-B36D-4324-9AF7-F2A894D82C57}|SiparisSistemi\\SiparisSistemi.csproj|c:\\users\\nisa_\\source\\repos\\siparissistemi\\siparissistemi\\views\\login\\customerlogin.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{D0AB24FD-B36D-4324-9AF7-F2A894D82C57}|SiparisSistemi\\SiparisSistemi.csproj|solutionrelative:siparissistemi\\views\\login\\customerlogin.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{D0AB24FD-B36D-4324-9AF7-F2A894D82C57}|SiparisSistemi\\SiparisSistemi.csproj|c:\\users\\nisa_\\source\\repos\\siparissistemi\\siparissistemi\\controllers\\admincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D0AB24FD-B36D-4324-9AF7-F2A894D82C57}|SiparisSistemi\\SiparisSistemi.csproj|solutionrelative:siparissistemi\\controllers\\admincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{D0AB24FD-B36D-4324-9AF7-F2A894D82C57}|SiparisSistemi\\SiparisSistemi.csproj|c:\\users\\nisa_\\source\\repos\\siparissistemi\\siparissistemi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D0AB24FD-B36D-4324-9AF7-F2A894D82C57}|SiparisSistemi\\SiparisSistemi.csproj|solutionrelative:siparissistemi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{D0AB24FD-B36D-4324-9AF7-F2A894D82C57}|SiparisSistemi\\SiparisSistemi.csproj|c:\\users\\nisa_\\source\\repos\\siparissistemi\\siparissistemi\\wwwroot\\css\\site.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{D0AB24FD-B36D-4324-9AF7-F2A894D82C57}|SiparisSistemi\\SiparisSistemi.csproj|solutionrelative:siparissistemi\\wwwroot\\css\\site.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{D0AB24FD-B36D-4324-9AF7-F2A894D82C57}|SiparisSistemi\\SiparisSistemi.csproj|c:\\users\\nisa_\\source\\repos\\siparissistemi\\siparissistemi\\controllers\\logincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D0AB24FD-B36D-4324-9AF7-F2A894D82C57}|SiparisSistemi\\SiparisSistemi.csproj|solutionrelative:siparissistemi\\controllers\\logincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{D0AB24FD-B36D-4324-9AF7-F2A894D82C57}|SiparisSistemi\\SiparisSistemi.csproj|c:\\users\\nisa_\\source\\repos\\siparissistemi\\siparissistemi\\models\\products.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D0AB24FD-B36D-4324-9AF7-F2A894D82C57}|SiparisSistemi\\SiparisSistemi.csproj|solutionrelative:siparissistemi\\models\\products.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{D0AB24FD-B36D-4324-9AF7-F2A894D82C57}|SiparisSistemi\\SiparisSistemi.csproj|c:\\users\\nisa_\\source\\repos\\siparissistemi\\siparissistemi\\views\\login\\register.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{D0AB24FD-B36D-4324-9AF7-F2A894D82C57}|SiparisSistemi\\SiparisSistemi.csproj|solutionrelative:siparissistemi\\views\\login\\register.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{D0AB24FD-B36D-4324-9AF7-F2A894D82C57}|SiparisSistemi\\SiparisSistemi.csproj|c:\\users\\nisa_\\source\\repos\\siparissistemi\\siparissistemi\\views\\customerlogin.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{D0AB24FD-B36D-4324-9AF7-F2A894D82C57}|SiparisSistemi\\SiparisSistemi.csproj|solutionrelative:siparissistemi\\views\\customerlogin.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{D0AB24FD-B36D-4324-9AF7-F2A894D82C57}|SiparisSistemi\\SiparisSistemi.csproj|c:\\users\\nisa_\\source\\repos\\siparissistemi\\siparissistemi\\views\\customer\\customerhome.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{D0AB24FD-B36D-4324-9AF7-F2A894D82C57}|SiparisSistemi\\SiparisSistemi.csproj|solutionrelative:siparissistemi\\views\\customer\\customerhome.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     }
   ],
   "DocumentGroupContainers": [
@@ -38,95 +34,85 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 4,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
+              "Title": "AdminController.cs",
+              "DocumentMoniker": "C:\\Users\\nisa_\\source\\repos\\SiparisSistemi\\SiparisSistemi\\Controllers\\AdminController.cs",
+              "RelativeDocumentMoniker": "SiparisSistemi\\Controllers\\AdminController.cs",
+              "ToolTip": "C:\\Users\\nisa_\\source\\repos\\SiparisSistemi\\SiparisSistemi\\Controllers\\AdminController.cs",
+              "RelativeToolTip": "SiparisSistemi\\Controllers\\AdminController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-15T23:19:15.742Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "site.css",
+              "DocumentMoniker": "C:\\Users\\nisa_\\source\\repos\\SiparisSistemi\\SiparisSistemi\\wwwroot\\css\\site.css",
+              "RelativeDocumentMoniker": "SiparisSistemi\\wwwroot\\css\\site.css",
+              "ToolTip": "C:\\Users\\nisa_\\source\\repos\\SiparisSistemi\\SiparisSistemi\\wwwroot\\css\\site.css",
+              "RelativeToolTip": "SiparisSistemi\\wwwroot\\css\\site.css",
+              "ViewState": "AgIAADgBAAAAAAAAAAAAAFIBAAAQAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2024-12-15T22:25:12.271Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Products.cs",
+              "DocumentMoniker": "C:\\Users\\nisa_\\source\\repos\\SiparisSistemi\\SiparisSistemi\\Models\\Products.cs",
+              "RelativeDocumentMoniker": "SiparisSistemi\\Models\\Products.cs",
+              "ToolTip": "C:\\Users\\nisa_\\source\\repos\\SiparisSistemi\\SiparisSistemi\\Models\\Products.cs",
+              "RelativeToolTip": "SiparisSistemi\\Models\\Products.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-15T21:36:49.134Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
               "Title": "CustomerHome.cshtml",
               "DocumentMoniker": "C:\\Users\\nisa_\\source\\repos\\SiparisSistemi\\SiparisSistemi\\Views\\Customer\\CustomerHome.cshtml",
               "RelativeDocumentMoniker": "SiparisSistemi\\Views\\Customer\\CustomerHome.cshtml",
               "ToolTip": "C:\\Users\\nisa_\\source\\repos\\SiparisSistemi\\SiparisSistemi\\Views\\Customer\\CustomerHome.cshtml",
               "RelativeToolTip": "SiparisSistemi\\Views\\Customer\\CustomerHome.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAXAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAJAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2024-12-14T22:01:54.6Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
               "Title": "CustomerController.cs",
               "DocumentMoniker": "C:\\Users\\nisa_\\source\\repos\\SiparisSistemi\\SiparisSistemi\\Controllers\\CustomerController.cs",
               "RelativeDocumentMoniker": "SiparisSistemi\\Controllers\\CustomerController.cs",
               "ToolTip": "C:\\Users\\nisa_\\source\\repos\\SiparisSistemi\\SiparisSistemi\\Controllers\\CustomerController.cs",
               "RelativeToolTip": "SiparisSistemi\\Controllers\\CustomerController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAtAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-12-14T22:00:49.551Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "CustomerLogin.cshtml",
-              "DocumentMoniker": "C:\\Users\\nisa_\\source\\repos\\SiparisSistemi\\SiparisSistemi\\Views\\Login\\CustomerLogin.cshtml",
-              "RelativeDocumentMoniker": "SiparisSistemi\\Views\\Login\\CustomerLogin.cshtml",
-              "ToolTip": "C:\\Users\\nisa_\\source\\repos\\SiparisSistemi\\SiparisSistemi\\Views\\Login\\CustomerLogin.cshtml",
-              "RelativeToolTip": "SiparisSistemi\\Views\\Login\\CustomerLogin.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-12-14T22:00:43.836Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 4,
               "Title": "Register.cshtml",
               "DocumentMoniker": "C:\\Users\\nisa_\\source\\repos\\SiparisSistemi\\SiparisSistemi\\Views\\Login\\Register.cshtml",
               "RelativeDocumentMoniker": "SiparisSistemi\\Views\\Login\\Register.cshtml",
               "ToolTip": "C:\\Users\\nisa_\\source\\repos\\SiparisSistemi\\SiparisSistemi\\Views\\Login\\Register.cshtml",
               "RelativeToolTip": "SiparisSistemi\\Views\\Login\\Register.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABoAAAA1AAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABoAAAAtAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-12-14T21:31:13.179Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "CustomerLogin.cshtml",
-              "DocumentMoniker": "C:\\Users\\nisa_\\source\\repos\\SiparisSistemi\\SiparisSistemi\\Views\\CustomerLogin.cshtml",
-              "RelativeDocumentMoniker": "SiparisSistemi\\Views\\CustomerLogin.cshtml",
-              "ToolTip": "C:\\Users\\nisa_\\source\\repos\\SiparisSistemi\\SiparisSistemi\\Views\\CustomerLogin.cshtml",
-              "RelativeToolTip": "SiparisSistemi\\Views\\CustomerLogin.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-12-14T21:18:05.773Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Users\\nisa_\\source\\repos\\SiparisSistemi\\SiparisSistemi\\Program.cs",
-              "RelativeDocumentMoniker": "SiparisSistemi\\Program.cs",
-              "ToolTip": "C:\\Users\\nisa_\\source\\repos\\SiparisSistemi\\SiparisSistemi\\Program.cs",
-              "RelativeToolTip": "SiparisSistemi\\Program.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAASAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-14T21:17:54.819Z",
+              "WhenOpened": "2024-12-14T21:31:13.179Z",
               "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "LoginController.cs",
-              "DocumentMoniker": "C:\\Users\\nisa_\\source\\repos\\SiparisSistemi\\SiparisSistemi\\Controllers\\LoginController.cs",
-              "RelativeDocumentMoniker": "SiparisSistemi\\Controllers\\LoginController.cs",
-              "ToolTip": "C:\\Users\\nisa_\\source\\repos\\SiparisSistemi\\SiparisSistemi\\Controllers\\LoginController.cs",
-              "RelativeToolTip": "SiparisSistemi\\Controllers\\LoginController.cs",
-              "ViewState": "AgIAADYAAAAAAAAAAAAswE0AAAAYAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-14T21:05:30.691Z"
             },
             {
               "$type": "Bookmark",

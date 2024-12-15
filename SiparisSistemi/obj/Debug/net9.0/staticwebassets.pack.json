@@ -13,6 +13,14 @@
       "PackagePath": "staticwebassets\\favicon.ico"
     },
     {
+      "Id": "C:\\Users\\nisa_\\source\\repos\\SiparisSistemi\\SiparisSistemi\\wwwroot\\images\\products\\9b5e5749-a245-4b49-b9a2-4bc84c2d1bac_RGBLedSerit.jpg",
+      "PackagePath": "staticwebassets\\images\\products\\9b5e5749-a245-4b49-b9a2-4bc84c2d1bac_RGBLedSerit.jpg"
+    },
+    {
+      "Id": "C:\\Users\\nisa_\\source\\repos\\SiparisSistemi\\SiparisSistemi\\wwwroot\\images\\products\\f02b8db3-71ad-4e97-bfa6-3aa62aca37c9_msi.jpeg",
+      "PackagePath": "staticwebassets\\images\\products\\f02b8db3-71ad-4e97-bfa6-3aa62aca37c9_msi.jpeg"
+    },
+    {
       "Id": "C:\\Users\\nisa_\\source\\repos\\SiparisSistemi\\SiparisSistemi\\wwwroot\\images\\products\\iphone.jpeg",
       "PackagePath": "staticwebassets\\images\\products\\iphone.jpeg"
     },

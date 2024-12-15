@@ -1,16 +1,16 @@
 ﻿<Project>
   <ItemGroup>
+    <StaticWebAssetEndpoint Include="_content/SiparisSistemi/css/site.9nts8zidb4.css">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\site.css'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"9nts8zidb4"},{"Name":"integrity","Value":"sha256-FVmpQfsffkop9zXvpHuGE37q\u002B92QQiX/IZ/4fPDXicU="},{"Name":"label","Value":"_content/SiparisSistemi/css/site.css"}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"14883"},{"Name":"Content-Type","Value":"text/css"},{"Name":"ETag","Value":"\u0022FVmpQfsffkop9zXvpHuGE37q\u002B92QQiX/IZ/4fPDXicU=\u0022"},{"Name":"Last-Modified","Value":"Sun, 15 Dec 2024 23:25:48 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
     <StaticWebAssetEndpoint Include="_content/SiparisSistemi/css/site.css">
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\site.css'))</AssetFile>
       <Selectors><![CDATA[[]]]></Selectors>
-      <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-G\u002Blqt7WeTqrsDXAKlhqxw8AwHOoFyNEvo6ZS8GnOAjk="}]]]></EndpointProperties>
-      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"11726"},{"Name":"Content-Type","Value":"text/css"},{"Name":"ETag","Value":"\u0022G\u002Blqt7WeTqrsDXAKlhqxw8AwHOoFyNEvo6ZS8GnOAjk=\u0022"},{"Name":"Last-Modified","Value":"Sun, 15 Dec 2024 23:02:39 GMT"}]]]></ResponseHeaders>
-    </StaticWebAssetEndpoint>
-    <StaticWebAssetEndpoint Include="_content/SiparisSistemi/css/site.x5l7stktba.css">
-      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\site.css'))</AssetFile>
-      <Selectors><![CDATA[[]]]></Selectors>
-      <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"x5l7stktba"},{"Name":"integrity","Value":"sha256-G\u002Blqt7WeTqrsDXAKlhqxw8AwHOoFyNEvo6ZS8GnOAjk="},{"Name":"label","Value":"_content/SiparisSistemi/css/site.css"}]]]></EndpointProperties>
-      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"11726"},{"Name":"Content-Type","Value":"text/css"},{"Name":"ETag","Value":"\u0022G\u002Blqt7WeTqrsDXAKlhqxw8AwHOoFyNEvo6ZS8GnOAjk=\u0022"},{"Name":"Last-Modified","Value":"Sun, 15 Dec 2024 23:02:39 GMT"}]]]></ResponseHeaders>
+      <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-FVmpQfsffkop9zXvpHuGE37q\u002B92QQiX/IZ/4fPDXicU="}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"14883"},{"Name":"Content-Type","Value":"text/css"},{"Name":"ETag","Value":"\u0022FVmpQfsffkop9zXvpHuGE37q\u002B92QQiX/IZ/4fPDXicU=\u0022"},{"Name":"Last-Modified","Value":"Sun, 15 Dec 2024 23:25:48 GMT"}]]]></ResponseHeaders>
     </StaticWebAssetEndpoint>
     <StaticWebAssetEndpoint Include="_content/SiparisSistemi/favicon.61n19gt1b8.ico">
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\favicon.ico'))</AssetFile>
@@ -23,6 +23,30 @@
       <Selectors><![CDATA[[]]]></Selectors>
       <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-Jtxf9L\u002B5ITKRc1gIRl4VbUpGkRNfOBXjYTdhJD4facM="}]]]></EndpointProperties>
       <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=3600, must-revalidate"},{"Name":"Content-Length","Value":"5430"},{"Name":"Content-Type","Value":"image/x-icon"},{"Name":"ETag","Value":"\u0022Jtxf9L\u002B5ITKRc1gIRl4VbUpGkRNfOBXjYTdhJD4facM=\u0022"},{"Name":"Last-Modified","Value":"Sat, 14 Dec 2024 20:51:44 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
+    <StaticWebAssetEndpoint Include="_content/SiparisSistemi/images/products/9b5e5749-a245-4b49-b9a2-4bc84c2d1bac_RGBLedSerit.jpg">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\products\9b5e5749-a245-4b49-b9a2-4bc84c2d1bac_RGBLedSerit.jpg'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-Z95wfwLnkLIOSR0EbiGhAaGIuzXlcYFoRpeiwYobAJc="}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=3600, must-revalidate"},{"Name":"Content-Length","Value":"354746"},{"Name":"Content-Type","Value":"image/jpeg"},{"Name":"ETag","Value":"\u0022Z95wfwLnkLIOSR0EbiGhAaGIuzXlcYFoRpeiwYobAJc=\u0022"},{"Name":"Last-Modified","Value":"Sun, 15 Dec 2024 23:45:20 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
+    <StaticWebAssetEndpoint Include="_content/SiparisSistemi/images/products/9b5e5749-a245-4b49-b9a2-4bc84c2d1bac_RGBLedSerit.z5d3l1ereq.jpg">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\products\9b5e5749-a245-4b49-b9a2-4bc84c2d1bac_RGBLedSerit.jpg'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"z5d3l1ereq"},{"Name":"integrity","Value":"sha256-Z95wfwLnkLIOSR0EbiGhAaGIuzXlcYFoRpeiwYobAJc="},{"Name":"label","Value":"_content/SiparisSistemi/images/products/9b5e5749-a245-4b49-b9a2-4bc84c2d1bac_RGBLedSerit.jpg"}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"354746"},{"Name":"Content-Type","Value":"image/jpeg"},{"Name":"ETag","Value":"\u0022Z95wfwLnkLIOSR0EbiGhAaGIuzXlcYFoRpeiwYobAJc=\u0022"},{"Name":"Last-Modified","Value":"Sun, 15 Dec 2024 23:45:20 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
+    <StaticWebAssetEndpoint Include="_content/SiparisSistemi/images/products/f02b8db3-71ad-4e97-bfa6-3aa62aca37c9_msi.ix1yi46fhg.jpeg">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\products\f02b8db3-71ad-4e97-bfa6-3aa62aca37c9_msi.jpeg'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"ix1yi46fhg"},{"Name":"integrity","Value":"sha256-ur9OxGqO08jyePsZXrZqlSsF\u002Bjv8osqqbDlNcNNYc2k="},{"Name":"label","Value":"_content/SiparisSistemi/images/products/f02b8db3-71ad-4e97-bfa6-3aa62aca37c9_msi.jpeg"}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"99403"},{"Name":"Content-Type","Value":"image/jpeg"},{"Name":"ETag","Value":"\u0022ur9OxGqO08jyePsZXrZqlSsF\u002Bjv8osqqbDlNcNNYc2k=\u0022"},{"Name":"Last-Modified","Value":"Sun, 15 Dec 2024 23:47:27 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
+    <StaticWebAssetEndpoint Include="_content/SiparisSistemi/images/products/f02b8db3-71ad-4e97-bfa6-3aa62aca37c9_msi.jpeg">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\products\f02b8db3-71ad-4e97-bfa6-3aa62aca37c9_msi.jpeg'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-ur9OxGqO08jyePsZXrZqlSsF\u002Bjv8osqqbDlNcNNYc2k="}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=3600, must-revalidate"},{"Name":"Content-Length","Value":"99403"},{"Name":"Content-Type","Value":"image/jpeg"},{"Name":"ETag","Value":"\u0022ur9OxGqO08jyePsZXrZqlSsF\u002Bjv8osqqbDlNcNNYc2k=\u0022"},{"Name":"Last-Modified","Value":"Sun, 15 Dec 2024 23:47:27 GMT"}]]]></ResponseHeaders>
     </StaticWebAssetEndpoint>
     <StaticWebAssetEndpoint Include="_content/SiparisSistemi/images/products/iphone.bckehky23n.jpeg">
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\products\iphone.jpeg'))</AssetFile>

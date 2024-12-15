@@ -612,3 +612,181 @@ header .search-bar input:focus {
 .login-header .logo:hover .store-highlight {
     color: #7FD1E4;  /* Aynı renk kalsın */
 }
+
+/* Admin Panel Stilleri */
+.admin-container {
+    display: flex;
+    min-height: 100vh;
+}
+
+.admin-sidebar {
+    width: 250px;
+    background: var(--primary-pink);
+    color: white;
+    padding: 20px;
+}
+
+.admin-header {
+    text-align: center;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    margin-bottom: 20px;
+}
+
+.admin-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.admin-nav-item {
+    color: white;
+    text-decoration: none;
+    padding: 10px;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.admin-nav-item:hover {
+    background: rgba(255,255,255,0.1);
+    color: var(--primary-blue);
+}
+
+.admin-nav-item i {
+    margin-right: 10px;
+}
+
+.admin-content {
+    flex: 1;
+    padding: 30px;
+    background: #f5f5f5;
+}
+
+.admin-content form {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.admin-content .form-group {
+    margin-bottom: 20px;
+}
+
+/* Admin panel tablo stilleri */
+.admin-content-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.product-table {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table th {
+    background: var(--primary-pink);
+    color: white;
+    padding: 12px;
+    text-align: left;
+}
+
+.table td {
+    padding: 12px;
+    border-bottom: 1px solid #eee;
+}
+
+.table tr:hover {
+    background: #f9f9f9;
+}
+
+.btn-sm {
+    padding: 5px 10px;
+    font-size: 14px;
+    margin: 0 2px;
+}
+
+.alert {
+    margin-bottom: 20px;
+    padding: 15px;
+    border-radius: 5px;
+}
+
+.alert-success {
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+/* Kompakt tablo stilleri */
+.compact-table {
+    font-size: 14px;
+}
+
+.compact-table td, .compact-table th {
+    padding: 8px 12px;
+}
+
+.id-column {
+    width: 60px;
+    text-align: center;
+}
+
+.price-column {
+    width: 120px;
+    text-align: right;
+}
+
+.stock-column {
+    width: 80px;
+    text-align: center;
+}
+
+.type-column {
+    width: 100px;
+    text-align: center;
+}
+
+.action-column {
+    width: 100px;
+    text-align: center;
+}
+
+.product-name {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.product-name img {
+    width: 32px;
+    height: 32px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.stock-badge {
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.type-badge {
+    padding: 3px 8px;
+    font-size: 12px;
+}
+
+.product-table {
+    max-width: 1000px;
+    margin: 0 auto;
+}
