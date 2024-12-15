@@ -34,6 +34,9 @@ namespace SiparisSistemi.Controllers
 
             if (customers != null)
             {
+                // Oturuma CustomerID'yi ekle
+                HttpContext.Session.SetInt32("CustomerID", customers.CustomerID);
+
                 // Müşteri Dashboard'a yönlendirme
                 return RedirectToAction("Dashboard", "Customer");
             }
@@ -42,14 +45,23 @@ namespace SiparisSistemi.Controllers
             return View();
         }
 
-        // Müşteri Kayıt GET Metodu
-        [HttpGet]
+[HttpGet]
+    public IActionResult Logout()
+    {
+        // Session'ı temizle
+        HttpContext.Session.Clear();
+
+        // Giriş sayfasına yönlendir
+        return RedirectToAction("CustomerLogin", "Login");
+    }
+
+    // Müşteri Kayıt GET Metodu
+    [HttpGet]
         public IActionResult Register()
         {
             return View();
         }
 
-        // Müşteri Kayıt POST Metodu
         [HttpPost]
         public IActionResult Register(Customers customer)
         {
@@ -67,17 +79,17 @@ namespace SiparisSistemi.Controllers
                     try
                     {
                         // Varsayılan değerleri ayarla
-                        customer.Budget = 0;
                         customer.CustomerType = "Standard";
                         customer.TotalSpent = 0;
                         customer.Orders = new List<Orders>();
                         customer.Logs = new List<Logs>();
 
+                        // customer.Budget değeri doğrudan formdan alınacak
                         _context.Customers.Add(customer);
                         var result = _context.SaveChanges();
-                        
+
                         System.Diagnostics.Debug.WriteLine($"Kayıt sonucu: {result} satır etkilendi");
-                        
+
                         TempData["SuccessMessage"] = "Kayıt başarıyla oluşturuldu!";
                         return RedirectToAction("CustomerLogin");
                     }
@@ -87,7 +99,7 @@ namespace SiparisSistemi.Controllers
                         System.Diagnostics.Debug.WriteLine($"Veritabanı hatası: {dbEx.Message}");
                         System.Diagnostics.Debug.WriteLine($"İç hata: {dbEx.InnerException?.Message}");
                         System.Diagnostics.Debug.WriteLine($"Stack trace: {dbEx.StackTrace}");
-                        
+
                         ModelState.AddModelError("", "Veritabanına kayıt sırasında bir hata oluştu.");
                         return View(customer);
                     }
@@ -107,10 +119,11 @@ namespace SiparisSistemi.Controllers
                 System.Diagnostics.Debug.WriteLine($"Genel hata: {ex.Message}");
                 System.Diagnostics.Debug.WriteLine($"İç hata: {ex.InnerException?.Message}");
                 System.Diagnostics.Debug.WriteLine($"Stack trace: {ex.StackTrace}");
-                
+
                 ModelState.AddModelError("", "Kayıt sırasında beklenmeyen bir hata oluştu.");
                 return View(customer);
             }
         }
+
     }
 }

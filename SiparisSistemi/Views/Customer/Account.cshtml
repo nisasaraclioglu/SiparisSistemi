@@ -1,0 +1,101 @@
+﻿@model SiparisSistemi.Models.Customers
+
+@{
+    ViewData["Title"] = "Hesabım";
+}
+<!-- CSS -->
+<style>
+    /* Sayfa Arka Planı ve Ana Container */
+    body {
+        background-color: #f8f9fa; /* Açık gri arka plan */
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+
+    .account-container {
+        max-width: 600px;
+        margin: 50px auto;
+        background-color: #ffffff; /* Beyaz kutu */
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 30px;
+    }
+
+    /* Başlık */
+    .account-header {
+        text-align: center;
+        color: #343a40;
+        margin-bottom: 20px;
+    }
+
+    /* Kullanıcı Bilgileri */
+    .account-info p {
+        font-size: 16px;
+        margin: 10px 0;
+        color: #495057;
+    }
+
+    /* Buton Stilleri */
+    .account-buttons {
+        display: flex;
+        justify-content: space-around;
+        margin-top: 20px;
+    }
+
+    .btn-custom {
+        display: inline-block;
+        padding: 10px 20px;
+        font-size: 14px;
+        text-decoration: none;
+        color: #fff;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn-home {
+        background-color: #28a745; /* Yeşil */
+    }
+
+        .btn-home:hover {
+            background-color: #218838;
+        }
+
+    .btn-orders {
+        background-color: #007bff; /* Mavi */
+    }
+
+        .btn-orders:hover {
+            background-color: #0056b3;
+        }
+
+    .btn-logout {
+        background-color: #dc3545; /* Kırmızı */
+    }
+
+        .btn-logout:hover {
+            background-color: #c82333;
+        }
+</style>
+
+<!-- Ana Container -->
+<div class="account-container">
+    <h2 class="account-header">Hesabım</h2>
+
+    <!-- Kullanıcı Bilgileri -->
+    <div class="account-info">
+        <p><strong>Ad:</strong> @Model.CustomerName</p>
+        <p><strong>Bütçe:</strong> ₺@Model.Budget.ToString("N2")</p>
+        <p><strong>Harcama Toplamı:</strong> ₺@Model.TotalSpent.ToString("N2")</p>
+        <p><strong>Müşteri Türü:</strong> @Model.CustomerType</p>
+    </div>
+
+    <!-- Butonlar -->
+    <div class="account-buttons">
+        <a href="/Customer/CustomerHome" class="btn-custom btn-home">Anasayfa</a>
+        <a href="/Customer/Orders" class="btn-custom btn-orders">Siparişlerim</a>
+        <a href="/Login/Logout" class="btn-custom btn-logout">Çıkış Yap</a>
+
+    </div>
+</div>
+

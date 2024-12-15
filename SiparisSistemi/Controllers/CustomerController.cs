@@ -13,17 +13,17 @@ namespace SiparisSistemi.Controllers
             _context = context;
         }
 
+        [HttpGet]
         public IActionResult Dashboard()
         {
-            // Müşteri anasayfasına yönlendir
             return RedirectToAction("CustomerHome");
         }
 
+        [HttpGet]
         public async Task<IActionResult> CustomerHome()
         {
             try
             {
-                // Tüm ürünleri getir
                 var products = await _context.Products
                     .Select(p => new ProductViewModel
                     {
@@ -39,10 +39,28 @@ namespace SiparisSistemi.Controllers
             }
             catch (Exception ex)
             {
-                // Hata durumunda loglama yap
-                System.Diagnostics.Debug.WriteLine($"Ürünler getirilirken hata: {ex.Message}");
+                System.Diagnostics.Debug.WriteLine($"Ürünler yüklenirken hata: {ex.Message}");
                 return View(new List<ProductViewModel>());
             }
+        }
+        [HttpGet]
+        public IActionResult Account()
+        {
+            var customerId = HttpContext.Session.GetInt32("CustomerID");
+
+            if (customerId == null)
+            {
+                return RedirectToAction("CustomerLogin", "Login");
+            }
+
+            var customer = _context.Customers.FirstOrDefault(c => c.CustomerID == customerId);
+
+            if (customer == null)
+            {
+                return NotFound("Kullanıcı bulunamadı.");
+            }
+
+            return View(customer);
         }
 
         [HttpPost]
@@ -62,7 +80,25 @@ namespace SiparisSistemi.Controllers
 
             return PartialView("_ProductGrid", products);
         }
+        [HttpGet]
+        public IActionResult Orders()
+        {
+            // Session'dan CustomerID'yi al
+            var customerId = HttpContext.Session.GetInt32("CustomerID");
 
+            if (customerId == null)
+            {
+                return RedirectToAction("CustomerLogin", "Login");
+            }
+
+            // Siparişleri veritabanından çek
+            var orders = _context.Orders
+                .Where(o => o.CustomerID == customerId)
+                .Include(o => o.Product) // Ürün bilgilerini dahil et
+                .ToList();
+
+            return View(orders);
+        }
         [HttpPost]
         public async Task<IActionResult> AddToCart(int productId, int quantity)
         {
@@ -74,14 +110,12 @@ namespace SiparisSistemi.Controllers
                     return Json(new { success = false, message = "Ürün bulunamadı." });
                 }
 
-                // Stok kontrolü
                 if (product.Stock < quantity)
                 {
                     return Json(new { success = false, message = "Yetersiz stok." });
                 }
 
-                // TODO: Sepete ekleme işlemi
-                // Şimdilik başarılı döndürelim
+                // Sepete ekleme mantığı buraya yazılacak.
                 return Json(new { success = true, message = "Ürün sepete eklendi." });
             }
             catch (Exception ex)

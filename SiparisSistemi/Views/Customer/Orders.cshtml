@@ -1,0 +1,55 @@
+﻿@model List<SiparisSistemi.Models.Orders>
+
+@{
+    ViewData["Title"] = "Siparişlerim";
+}
+
+<div class="container mt-4">
+    <h2 class="text-center mb-4">Siparişlerim</h2>
+
+    @if (Model == null || !Model.Any())
+    {
+        <p class="text-center text-muted">Henüz siparişiniz bulunmamaktadır.</p>
+    }
+    else
+    {
+        <table class="table table-bordered table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th>Sipariş No</th>
+                    <th>Ürün Adı</th>
+                    <th>Adet</th>
+                    <th>Toplam Fiyat</th>
+                    <th>Sipariş Tarihi</th>
+                    <th>Durum</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var order in Model)
+                {
+                    <tr>
+                        <td>@order.OrderID</td>
+                        <td>@order.Product.ProductName</td>
+                        <td>@order.Quantity</td>
+                        <td>₺@order.TotalPrice.ToString("N2")</td>
+                        <td>@order.OrderDate.ToString("dd-MM-yyyy")</td>
+                        <td>
+                            @if (order.Status == "Pending")
+                            {
+                                <span class="badge bg-warning">Beklemede</span>
+                            }
+                            else if (order.Status == "Completed")
+                            {
+                                <span class="badge bg-success">Tamamlandı</span>
+                            }
+                            else if (order.Status == "Cancelled")
+                            {
+                                <span class="badge bg-danger">İptal Edildi</span>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
