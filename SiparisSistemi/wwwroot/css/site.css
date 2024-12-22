@@ -195,30 +195,6 @@ main {
     transform: scale(1.02);
 }
 
-footer {
-    text-align: center;
-    padding: 30px;
-    background: var(--primary-pink);
-    color: white;
-    margin-top: 50px;
-}
-
-footer .social-media {
-    margin-top: 15px;
-}
-
-footer .social-media a {
-    color: white;
-    margin: 0 15px;
-    text-decoration: none;
-    font-size: 14px;
-    transition: color 0.3s ease;
-}
-
-footer .social-media a:hover {
-    color: var(--primary-blue);
-}
-
 /* Ek stiller */
 .store-highlight {
     color: var(--white);
@@ -266,44 +242,8 @@ footer .social-media a:hover {
     border-radius: 5px;
 }
 
-.footer-content {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 30px;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-}
-
-.footer-section h5 {
-    color: white;
-    margin-bottom: 15px;
-}
-
-.footer-section p {
-    color: white;
-}
-
-.footer-bottom {
-    margin-top: 30px;
-    padding-top: 20px;
-    border-top: 1px solid rgba(255, 255, 255, 0.2);
-    color: white;
-}
-
-.footer-section a {
-    color: white;
-}
-
-.footer-section a:hover {
-    color: var(--primary-blue);
-}
-
 /* Responsive tasarım */
 @media (max-width: 768px) {
-    .footer-content {
-        grid-template-columns: 1fr;
-    }
     
     main {
         flex-direction: column;

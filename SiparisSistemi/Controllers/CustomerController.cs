@@ -48,6 +48,7 @@ namespace SiparisSistemi.Controllers
                 return View(new List<ProductViewModel>());
             }
         }
+
         [HttpGet]
         public IActionResult Account()
         {
@@ -88,6 +89,7 @@ namespace SiparisSistemi.Controllers
 
             return PartialView("_ProductGrid", products);
         }
+
         [HttpGet]
         public IActionResult Orders()
         {
@@ -105,8 +107,14 @@ namespace SiparisSistemi.Controllers
                 .Include(o => o.Product) // Ürün bilgilerini dahil et
                 .ToList();
 
+            if (orders == null || !orders.Any())
+            {
+                return View(new List<Orders>()); // Boş liste döndür
+            }
+
             return View(orders);
         }
+
         [HttpPost]
         public async Task<IActionResult> AddToCart(int productId, int quantity)
         {
