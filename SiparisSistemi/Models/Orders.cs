@@ -7,14 +7,25 @@ namespace SiparisSistemi.Models
     {
         [Key]
         public int OrderID { get; set; }
-        public int CustomerID { get; set; }
-        public int ProductID { get; set; }
-        public int Quantity { get; set; }
-        public decimal TotalPrice { get; set; }
-        public DateTime OrderDate { get; set; }
-        public string Status { get; set; } // "Pending", "Completed", "Cancelled"
 
-        // İlişkiler
+        [Required]
+        public int CustomerID { get; set; }
+
+        [Required]
+        public int ProductID { get; set; }
+
+        [Required]
+        public int Quantity { get; set; }
+
+        [Required]
+        public decimal TotalPrice { get; set; }
+
+        [Required]
+        public DateTime OrderDate { get; set; }
+
+        [Required]
+        public string OrderStatus { get; set; } // Yeni eklenen özellik
+
         public virtual Customers Customer { get; set; }
         public virtual Products Product { get; set; }
     }

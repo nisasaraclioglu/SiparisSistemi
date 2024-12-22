@@ -6,10 +6,10 @@ namespace SiparisSistemi.Models
     {
         [Key]
         public int AdminID { get; set; }
-        
+
         [Required]
         public string Username { get; set; }
-        
+
         [Required]
         public string PasswordHash { get; set; }
     }

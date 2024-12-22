@@ -34,15 +34,15 @@
                         <td>₺@order.TotalPrice.ToString("N2")</td>
                         <td>@order.OrderDate.ToString("dd-MM-yyyy")</td>
                         <td>
-                            @if (order.Status == "Pending")
+                            @if (order.OrderStatus == "Pending")
                             {
                                 <span class="badge bg-warning">Beklemede</span>
                             }
-                            else if (order.Status == "Completed")
+                            else if (order.OrderStatus == "Completed")
                             {
                                 <span class="badge bg-success">Tamamlandı</span>
                             }
-                            else if (order.Status == "Cancelled")
+                            else if (order.OrderStatus == "Cancelled")
                             {
                                 <span class="badge bg-danger">İptal Edildi</span>
                             }

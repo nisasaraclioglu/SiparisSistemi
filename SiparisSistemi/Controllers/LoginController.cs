@@ -18,7 +18,7 @@ namespace SiparisSistemi.Controllers
         public IActionResult AdminLogin(string username, string password)
         {
             var hashedPassword = HashHelper.HashPassword(password);
-            var admin = _context.Admins.FirstOrDefault(a => 
+            var admin = _context.Admin.FirstOrDefault(a => 
                 a.Username == username && 
                 a.PasswordHash == hashedPassword);
 
@@ -126,7 +126,7 @@ namespace SiparisSistemi.Controllers
 
                 return View(customer);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 ModelState.AddModelError("", "Kayıt sırasında bir hata oluştu.");
                 return View(customer);

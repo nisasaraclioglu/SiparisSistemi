@@ -62,8 +62,9 @@ C:\Users\nisa_\source\repos\SiparisSistemi\SiparisSistemi\wwwroot\lib\jquery\dis
 C:\Users\nisa_\source\repos\SiparisSistemi\SiparisSistemi\wwwroot\lib\jquery-validation-unobtrusive\dist\jquery.validate.unobtrusive.js
 wwwroot\css\site.css
 wwwroot\favicon.ico
+wwwroot\images\products\016f30c8-b5a9-44f1-b288-30b63b24fad6_msi.jpeg
 wwwroot\images\products\9b5e5749-a245-4b49-b9a2-4bc84c2d1bac_RGBLedSerit.jpg
-wwwroot\images\products\f02b8db3-71ad-4e97-bfa6-3aa62aca37c9_msi.jpeg
+wwwroot\images\products\default.jpg
 wwwroot\images\products\iphone.jpeg
 wwwroot\js\site.js
 wwwroot\lib\bootstrap\dist\css\bootstrap.css
