@@ -90,6 +90,121 @@ namespace SiparisSistemi.Controllers
             return PartialView("_ProductGrid", products);
         }
 
+        [HttpPost]
+        public async Task<JsonResult> AddToCart(int productId, int quantity)
+        {
+            try
+            {
+                var customerId = HttpContext.Session.GetInt32("CustomerID");
+                if (customerId == null)
+                {
+                    return Json(new { success = false, message = "Lütfen önce giriş yapın." });
+                }
+
+                var product = await _context.Products.FindAsync(productId);
+                if (product == null)
+                {
+                    return Json(new { success = false, message = "Ürün bulunamadı." });
+                }
+
+                if (product.Stock < quantity)
+                {
+                    return Json(new { success = false, message = "Yetersiz stok." });
+                }
+
+                var order = new Orders
+                {
+                    CustomerID = customerId.Value,
+                    ProductID = productId,
+                    Quantity = quantity,
+                    OrderDate = DateTime.Now,
+                    OrderStatus = "Pending",
+                    TotalPrice = quantity * product.Price
+                };
+
+                _context.Orders.Add(order);
+                await _context.SaveChangesAsync();
+
+                return Json(new { success = true, message = "Ürün sepete eklendi!" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Bir hata oluştu: " + ex.Message });
+            }
+        }
+        [HttpPost]
+        public async Task<IActionResult> ApproveAllCart()
+        {
+            try
+            {
+                var customerId = HttpContext.Session.GetInt32("CustomerID");
+                if (customerId == null)
+                {
+                    return Json(new { success = false, message = "Lütfen giriş yapın." });
+                }
+
+                // Bekleyen siparişleri al
+                var pendingOrders = await _context.Orders
+                    .Where(o => o.CustomerID == customerId && o.OrderStatus == "Pending")
+                    .ToListAsync();
+
+                if (!pendingOrders.Any())
+                {
+                    return Json(new { success = false, message = "Onaylanacak sipariş bulunamadı." });
+                }
+
+                // Tüm bekleyen siparişleri güncelle
+                foreach (var order in pendingOrders)
+                {
+                    order.OrderStatus = "AwaitingApproval";
+                    _context.Orders.Update(order);
+                }
+
+                await _context.SaveChangesAsync();
+
+                return Json(new { success = true, message = "Sepetiniz admin onayına gönderildi." });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Bir hata oluştu: " + ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public IActionResult ApproveOrder(int orderId)
+        {
+            try
+            {
+                var order = _context.Orders
+                    .Include(o => o.Product)
+                    .FirstOrDefault(o => o.OrderID == orderId && o.OrderStatus == "AwaitingApproval");
+
+                if (order == null)
+                {
+                    return Json(new { success = false, message = "Sipariş bulunamadı veya zaten tamamlanmış." });
+                }
+
+                if (order.Product.Stock < order.Quantity)
+                {
+                    return Json(new { success = false, message = "Yetersiz stok." });
+                }
+
+                // Stok azaltma
+                order.Product.Stock -= order.Quantity;
+
+                // Sipariş durumunu güncelle
+                order.OrderStatus = "Completed";
+
+                _context.SaveChanges(); // Değişiklikleri kaydet
+                return Json(new { success = true, message = "Sipariş onaylandı ve tamamlandı." });
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"ApproveOrder Error: {ex.Message}");
+                return Json(new { success = false, message = "Bir hata oluştu: " + ex.Message });
+            }
+        }
+
         [HttpGet]
         public IActionResult Orders()
         {
@@ -113,31 +228,6 @@ namespace SiparisSistemi.Controllers
             }
 
             return View(orders);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> AddToCart(int productId, int quantity)
-        {
-            try
-            {
-                var product = await _context.Products.FindAsync(productId);
-                if (product == null)
-                {
-                    return Json(new { success = false, message = "Ürün bulunamadı." });
-                }
-
-                if (product.Stock < quantity)
-                {
-                    return Json(new { success = false, message = "Yetersiz stok." });
-                }
-
-                // Sepete ekleme mantığı buraya yazılacak.
-                return Json(new { success = true, message = "Ürün sepete eklendi." });
-            }
-            catch (Exception ex)
-            {
-                return Json(new { success = false, message = "Bir hata oluştu." });
-            }
         }
     }
 }

@@ -161,6 +161,41 @@ namespace SiparisSistemi.Controllers
                 return View(product);
             }
         }
+        [HttpPost]
+        public IActionResult ApproveOrder(int orderId)
+        {
+            try
+            {
+                var order = _context.Orders
+                    .Include(o => o.Product)
+                    .FirstOrDefault(o => o.OrderID == orderId && o.OrderStatus == "AwaitingApproval");
+
+                if (order == null)
+                {
+                    return Json(new { success = false, message = "Sipariş bulunamadı veya zaten tamamlanmış." });
+                }
+
+                // Stok kontrolü
+                if (order.Product.Stock < order.Quantity)
+                {
+                    return Json(new { success = false, message = "Yetersiz stok." });
+                }
+
+                // Stok azaltma
+                order.Product.Stock -= order.Quantity;
+
+                // Sipariş durumunu tamamlandı olarak güncelle
+                order.OrderStatus = "Completed";
+
+                _context.SaveChanges();
+                return Json(new { success = true, message = "Sipariş onaylandı ve tamamlandı." });
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"ApproveOrder Error: {ex.Message}");
+                return Json(new { success = false, message = "Bir hata oluştu." });
+            }
+        }
 
         [HttpPost]
         public IActionResult DeleteProduct(int id)

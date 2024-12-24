@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\nisa_\\source\\repos\\SiparisSistemi\\SiparisSistemi\\SiparisSistemi.csproj": {}
+    "C:\\Users\\asliy\\Source\\Repos\\SiparisSistemi\\SiparisSistemi\\SiparisSistemi.csproj": {}
   },
   "projects": {
-    "C:\\Users\\nisa_\\source\\repos\\SiparisSistemi\\SiparisSistemi\\SiparisSistemi.csproj": {
+    "C:\\Users\\asliy\\Source\\Repos\\SiparisSistemi\\SiparisSistemi\\SiparisSistemi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\nisa_\\source\\repos\\SiparisSistemi\\SiparisSistemi\\SiparisSistemi.csproj",
+        "projectUniqueName": "C:\\Users\\asliy\\Source\\Repos\\SiparisSistemi\\SiparisSistemi\\SiparisSistemi.csproj",
         "projectName": "SiparisSistemi",
-        "projectPath": "C:\\Users\\nisa_\\source\\repos\\SiparisSistemi\\SiparisSistemi\\SiparisSistemi.csproj",
-        "packagesPath": "C:\\Users\\nisa_\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\nisa_\\source\\repos\\SiparisSistemi\\SiparisSistemi\\obj\\",
+        "projectPath": "C:\\Users\\asliy\\Source\\Repos\\SiparisSistemi\\SiparisSistemi\\SiparisSistemi.csproj",
+        "packagesPath": "C:\\Users\\asliy\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\asliy\\Source\\Repos\\SiparisSistemi\\SiparisSistemi\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\nisa_\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\asliy\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -94,7 +94,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.101/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.100/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

@@ -13,6 +13,11 @@
     }
     else
     {
+        <!-- Sepeti Onayla Butonu -->
+        <button id="approve-all-cart-btn" class="btn btn-success mb-3">Sepeti Onayla</button>
+
+        <!-- Bekleyen Siparişler -->
+        <h3>Bekleyen Siparişler</h3>
         <table class="table table-bordered table-striped">
             <thead class="table-dark">
                 <tr>
@@ -25,7 +30,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var order in Model)
+                @foreach (var order in Model.Where(o => o.OrderStatus == "Pending"))
                 {
                     <tr>
                         <td>@order.OrderID</td>
@@ -34,18 +39,97 @@
                         <td>₺@order.TotalPrice.ToString("N2")</td>
                         <td>@order.OrderDate.ToString("dd-MM-yyyy")</td>
                         <td>
-                            @if (order.OrderStatus == "Pending")
-                            {
-                                <span class="badge bg-warning">Beklemede</span>
-                            }
-                            else if (order.OrderStatus == "Completed")
-                            {
-                                <span class="badge bg-success">Tamamlandı</span>
-                            }
-                            else if (order.OrderStatus == "Cancelled")
-                            {
-                                <span class="badge bg-danger">İptal Edildi</span>
-                            }
+                            <span class="badge bg-primary">Beklemede</span>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <!-- Admin Onayı Bekleyen Siparişler -->
+        <h3>Admin Onayı Bekleyen Siparişler</h3>
+        <table class="table table-bordered table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th>Sipariş No</th>
+                    <th>Ürün Adı</th>
+                    <th>Adet</th>
+                    <th>Toplam Fiyat</th>
+                    <th>Sipariş Tarihi</th>
+                    <th>Durum</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var order in Model.Where(o => o.OrderStatus == "AwaitingApproval"))
+                {
+                    <tr>
+                        <td>@order.OrderID</td>
+                        <td>@order.Product.ProductName</td>
+                        <td>@order.Quantity</td>
+                        <td>₺@order.TotalPrice.ToString("N2")</td>
+                        <td>@order.OrderDate.ToString("dd-MM-yyyy")</td>
+                        <td>
+                            <span class="badge bg-warning">Admin Onayı Bekleniyor</span>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <!-- Tamamlanmış Siparişler -->
+        <h3>Tamamlanmış Siparişler</h3>
+        <table class="table table-bordered table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th>Sipariş No</th>
+                    <th>Ürün Adı</th>
+                    <th>Adet</th>
+                    <th>Toplam Fiyat</th>
+                    <th>Sipariş Tarihi</th>
+                    <th>Durum</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var order in Model.Where(o => o.OrderStatus == "Completed"))
+                {
+                    <tr>
+                        <td>@order.OrderID</td>
+                        <td>@order.Product.ProductName</td>
+                        <td>@order.Quantity</td>
+                        <td>₺@order.TotalPrice.ToString("N2")</td>
+                        <td>@order.OrderDate.ToString("dd-MM-yyyy")</td>
+                        <td>
+                            <span class="badge bg-success">Tamamlandı</span>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <!-- İptal Edilmiş Siparişler -->
+        <h3>İptal Edilmiş Siparişler</h3>
+        <table class="table table-bordered table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th>Sipariş No</th>
+                    <th>Ürün Adı</th>
+                    <th>Adet</th>
+                    <th>Toplam Fiyat</th>
+                    <th>Sipariş Tarihi</th>
+                    <th>Durum</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var order in Model.Where(o => o.OrderStatus == "Cancelled"))
+                {
+                    <tr>
+                        <td>@order.OrderID</td>
+                        <td>@order.Product.ProductName</td>
+                        <td>@order.Quantity</td>
+                        <td>₺@order.TotalPrice.ToString("N2")</td>
+                        <td>@order.OrderDate.ToString("dd-MM-yyyy")</td>
+                        <td>
+                            <span class="badge bg-danger">İptal Edildi</span>
                         </td>
                     </tr>
                 }
@@ -53,3 +137,18 @@
         </table>
     }
 </div>
+
+<script>
+    $(document).on('click', '#approve-all-cart-btn', function () {
+        $.post('/Customer/ApproveAllCart', function (response) {
+            if (response.success) {
+                alert(response.message); // Başarılı mesajı göster
+                location.reload(); // Sayfayı yenile
+            } else {
+                alert(response.message); // Hata mesajını göster
+            }
+        }).fail(function () {
+            alert("Bir hata oluştu. Lütfen tekrar deneyin.");
+        });
+    });
+</script>
