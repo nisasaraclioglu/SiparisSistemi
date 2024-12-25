@@ -36,7 +36,17 @@ namespace SiparisSistemi.Controllers
         {
             return View();
         }
+        [HttpGet]
+        public IActionResult OrdersApproval()
+        {
+            // Admin onayı bekleyen siparişleri getir
+            var awaitingApprovalOrders = _context.Orders
+                .Include(o => o.Product)
+                .Where(o => o.OrderStatus == "AwaitingApproval")
+                .ToList();
 
+            return View(awaitingApprovalOrders);
+        }
         [HttpPost]
         public async Task<IActionResult> AddProduct(Products product, IFormFile? imageFile)
         {
@@ -194,6 +204,42 @@ namespace SiparisSistemi.Controllers
             {
                 System.Diagnostics.Debug.WriteLine($"ApproveOrder Error: {ex.Message}");
                 return Json(new { success = false, message = "Bir hata oluştu." });
+            }
+        }
+        [HttpPost]
+        public IActionResult ApproveAllOrders()
+        {
+            try
+            {
+                var awaitingApprovalOrders = _context.Orders
+                    .Include(o => o.Product)
+                    .Where(o => o.OrderStatus == "AwaitingApproval")
+                    .ToList();
+
+                if (!awaitingApprovalOrders.Any())
+                {
+                    return Json(new { success = false, message = "Onaylanacak sipariş bulunamadı." });
+                }
+
+                foreach (var order in awaitingApprovalOrders)
+                {
+                    if (order.Product.Stock >= order.Quantity)
+                    {
+                        order.Product.Stock -= order.Quantity; // Stok azaltma
+                        order.OrderStatus = "Completed"; // Durum güncellemesi
+                    }
+                    else
+                    {
+                        return Json(new { success = false, message = $"Sipariş {order.OrderID} için yetersiz stok." });
+                    }
+                }
+
+                _context.SaveChanges();
+                return Json(new { success = true, message = "Tüm siparişler başarıyla onaylandı!" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = $"Bir hata oluştu: {ex.Message}" });
             }
         }
 

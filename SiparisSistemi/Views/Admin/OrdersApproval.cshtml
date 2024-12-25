@@ -1,0 +1,131 @@
+﻿@model List<SiparisSistemi.Models.Orders>
+@{
+    ViewData["Title"] = "Sipariş Onaylama";
+}
+
+<div class="admin-container">
+    <div class="admin-sidebar">
+        <div class="admin-header">
+            <h2>Tech<span class="store-highlight">Store</span></h2>
+            <p>Admin Panel</p>
+        </div>
+        <nav class="admin-nav">
+            <a href="@Url.Action("Dashboard", "Admin")" class="admin-nav-item">
+                <i class="fas fa-home"></i> Ana Sayfa
+            </a>
+            <a href="@Url.Action("AddProduct", "Admin")" class="admin-nav-item">
+                <i class="fas fa-plus"></i> Ürün Ekle
+            </a>
+            <a href="@Url.Action("OrdersApproval", "Admin")" class="admin-nav-item active">
+                <i class="fas fa-list"></i> Sipariş Onaylama
+            </a>
+            <a href="@Url.Action("Logout", "Login")" class="admin-nav-item">
+                <i class="fas fa-sign-out-alt"></i> Çıkış Yap
+            </a>
+        </nav>
+    </div>
+    <div class="admin-content">
+        <div class="admin-content-header">
+            <div class="header-left">
+                <h3><i class="fas fa-list"></i> Sipariş Onaylama</h3>
+                <p>Bekleyen siparişlerin onaylama işlemini gerçekleştirin</p>
+            </div>
+        </div>
+
+        @if (Model == null || !Model.Any())
+        {
+            <div class="alert alert-info text-center">
+                Henüz onay bekleyen bir sipariş bulunmamaktadır.
+            </div>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped compact-table">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Sipariş No</th>
+                            <th>Ürün Adı</th>
+                            <th>Müşteri ID</th>
+                            <th>Adet</th>
+                            <th>Toplam Fiyat</th>
+                            <th>Sipariş Tarihi</th>
+                            <th>Durum</th>
+                            <th>İşlem</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var order in Model)
+                        {
+                            <tr>
+                                <td>@order.OrderID</td>
+                                <td>@order.Product?.ProductName ?? "Bilinmiyor"</td>
+                                <td>@order.CustomerID</td>
+                                <td>@order.Quantity</td>
+                                <td>₺@order.TotalPrice.ToString("N2")</td>
+                                <td>@order.OrderDate.ToString("dd-MM-yyyy HH:mm:ss")</td>
+                                <td>
+                                    <span class="badge bg-warning">Admin Onayı Bekliyor</span>
+                                </td>
+                                <td>
+                                    <button onclick="approveOrder(@order.OrderID)" class="btn btn-sm btn-success" title="Onayla">
+                                        <i class="fas fa-check"></i> Onayla
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function approveOrder(orderId) {
+            Swal.fire({
+                title: 'Siparişi Onaylamak İstiyor Musunuz?',
+                text: "Bu siparişi onaylamaya devam etmek istiyor musunuz?",
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#28a745',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Evet, Onayla',
+                cancelButtonText: 'İptal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '@Url.Action("ApproveOrder", "Admin")',
+                        type: 'POST',
+                        data: { orderId: orderId },
+                        success: function(response) {
+                            if (response.success) {
+                                Swal.fire(
+                                    'Onaylandı!',
+                                    response.message,
+                                    'success'
+                                ).then(() => {
+                                    location.reload();
+                                });
+                            } else {
+                                Swal.fire(
+                                    'Hata!',
+                                    response.message,
+                                    'error'
+                                );
+                            }
+                        },
+                        error: function() {
+                            Swal.fire(
+                                'Hata!',
+                                'Sipariş onaylanırken bir hata oluştu.',
+                                'error'
+                            );
+                        }
+                    });
+                }
+            });
+        }
+    </script>
+}

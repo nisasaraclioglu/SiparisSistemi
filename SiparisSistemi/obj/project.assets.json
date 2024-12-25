@@ -2307,9 +2307,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\asliy\\Source\\Repos\\SiparisSistemi\\SiparisSistemi\\SiparisSistemi.csproj",
+      "projectUniqueName": "C:\\Users\\asliy\\source\\repos\\SiparisSistemi\\SiparisSistemi\\SiparisSistemi.csproj",
       "projectName": "SiparisSistemi",
-      "projectPath": "C:\\Users\\asliy\\Source\\Repos\\SiparisSistemi\\SiparisSistemi\\SiparisSistemi.csproj",
+      "projectPath": "C:\\Users\\asliy\\source\\repos\\SiparisSistemi\\SiparisSistemi\\SiparisSistemi.csproj",
       "packagesPath": "C:\\Users\\asliy\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\asliy\\Source\\Repos\\SiparisSistemi\\SiparisSistemi\\obj\\",
       "projectStyle": "PackageReference",

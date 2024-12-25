@@ -27,6 +27,8 @@
                     <th>Toplam Fiyat</th>
                     <th>Sipariş Tarihi</th>
                     <th>Durum</th>
+                    <th>Kalan Süre</th>
+                    <th>İşlem</th>
                 </tr>
             </thead>
             <tbody>
@@ -34,12 +36,20 @@
                 {
                     <tr>
                         <td>@order.OrderID</td>
-                        <td>@order.Product.ProductName</td>
+                        <td>@order.Product?.ProductName</td>
                         <td>@order.Quantity</td>
                         <td>₺@order.TotalPrice.ToString("N2")</td>
-                        <td>@order.OrderDate.ToString("dd-MM-yyyy")</td>
+                        <td>@order.OrderDate.ToString("dd-MM-yyyy HH:mm:ss")</td>
                         <td>
-                            <span class="badge bg-primary">Beklemede</span>
+                            <span class="badge bg-primary">Bekliyor</span>
+                        </td>
+                        <td>
+                            <span class="countdown-timer" data-expiry-time="@order.OrderDate.AddMinutes(1).ToString("O")">
+                                00:00
+                            </span>
+                        </td>
+                        <td>
+                            <button class="btn btn-danger btn-sm delete-order-btn" data-id="@order.OrderID">Sil</button>
                         </td>
                     </tr>
                 }
@@ -64,10 +74,10 @@
                 {
                     <tr>
                         <td>@order.OrderID</td>
-                        <td>@order.Product.ProductName</td>
+                        <td>@order.Product?.ProductName</td>
                         <td>@order.Quantity</td>
                         <td>₺@order.TotalPrice.ToString("N2")</td>
-                        <td>@order.OrderDate.ToString("dd-MM-yyyy")</td>
+                        <td>@order.OrderDate.ToString("dd-MM-yyyy HH:mm:ss")</td>
                         <td>
                             <span class="badge bg-warning">Admin Onayı Bekleniyor</span>
                         </td>
@@ -94,10 +104,10 @@
                 {
                     <tr>
                         <td>@order.OrderID</td>
-                        <td>@order.Product.ProductName</td>
+                        <td>@order.Product?.ProductName</td>
                         <td>@order.Quantity</td>
                         <td>₺@order.TotalPrice.ToString("N2")</td>
-                        <td>@order.OrderDate.ToString("dd-MM-yyyy")</td>
+                        <td>@order.OrderDate.ToString("dd-MM-yyyy HH:mm:ss")</td>
                         <td>
                             <span class="badge bg-success">Tamamlandı</span>
                         </td>
@@ -124,10 +134,10 @@
                 {
                     <tr>
                         <td>@order.OrderID</td>
-                        <td>@order.Product.ProductName</td>
+                        <td>@order.Product?.ProductName</td>
                         <td>@order.Quantity</td>
                         <td>₺@order.TotalPrice.ToString("N2")</td>
-                        <td>@order.OrderDate.ToString("dd-MM-yyyy")</td>
+                        <td>@order.OrderDate.ToString("dd-MM-yyyy HH:mm:ss")</td>
                         <td>
                             <span class="badge bg-danger">İptal Edildi</span>
                         </td>
@@ -137,18 +147,91 @@
         </table>
     }
 </div>
-
-<script>
-    $(document).on('click', '#approve-all-cart-btn', function () {
-        $.post('/Customer/ApproveAllCart', function (response) {
-            if (response.success) {
-                alert(response.message); // Başarılı mesajı göster
-                location.reload(); // Sayfayı yenile
-            } else {
-                alert(response.message); // Hata mesajını göster
-            }
-        }).fail(function () {
-            alert("Bir hata oluştu. Lütfen tekrar deneyin.");
+@section Scripts {
+    <script>
+                $(document).on('click', '#approve-all-cart-btn', function () {
+            $.post('/Customer/ApproveAllCart', function (response) {
+                if (response.success) {
+                    alert(response.message); // Başarı mesajını göster
+                    location.reload(); // Sayfayı yenile
+                } else {
+                    alert(response.message); // Hata mesajını göster
+                }
+            }).fail(function () {
+                alert("Sepeti onaylama işlemi sırasında bir hata oluştu.");
+            });
         });
-    });
-</script>
+
+        // Geri sayım fonksiyonu
+        function startCountdown() {
+            const timers = document.querySelectorAll('.countdown-timer');
+
+            timers.forEach(timer => {
+                const expiryTime = new Date(timer.getAttribute('data-expiry-time')).getTime();
+
+                function updateTimer() {
+                    const now = new Date().getTime();
+                    const remainingTime = expiryTime - now;
+
+                    if (remainingTime <= 0) {
+                        timer.textContent = "Süre Doldu";
+                        timer.classList.add('text-danger');
+
+                        // Süresi dolmuş siparişleri kontrol et ve DOM'u güncelle
+                        checkExpiredOrders();
+                    } else {
+                        const minutes = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60));
+                        const seconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
+                        timer.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                    }
+                }
+
+                updateTimer(); // Hemen başlat
+                setInterval(updateTimer, 1000); // Her saniye güncelle
+            });
+        }
+
+        // Süresi dolmuş siparişleri kontrol eden fonksiyon
+        function checkExpiredOrders() {
+            $.post('/Customer/CancelExpiredOrders', function (response) {
+                if (response.success) {
+                    console.log(response.message); // Konsola bilgi mesajı
+                    updateOrdersUI(); // DOM'u güncelle
+                } else {
+                    alert(response.message); // Hata mesajını göster
+                }
+            }).fail(function () {
+                alert("Süresi dolmuş siparişleri kontrol ederken bir hata oluştu.");
+            });
+        }
+
+        // DOM'u yenilemeden sipariş listesini güncelle
+        function updateOrdersUI() {
+            $.get('/Customer/Orders', function (html) {
+                const newContent = $(html).find('.container').html(); // Yeni içerik
+                $('.container').html(newContent); // Mevcut içeriği değiştir
+                startCountdown(); // Geri sayımı yeniden başlat
+            });
+        }
+
+        // Sayfa yüklendiğinde geri sayımı başlat
+        document.addEventListener('DOMContentLoaded', startCountdown);
+
+        // Sil Butonu
+        $(document).on('click', '.delete-order-btn', function () {
+            const orderId = $(this).data('id');
+            if (confirm("Bu siparişi iptal etmek istediğinize emin misiniz?")) {
+                $.post('/Customer/CancelOrder', { orderId: orderId }, function (response) {
+                    if (response.success) {
+                        alert(response.message);
+                        updateOrdersUI(); // Sadece DOM'u güncelle
+                    } else {
+                        alert(response.message);
+                    }
+                }).fail(function () {
+                    alert("Bir hata oluştu. Lütfen tekrar deneyin.");
+                });
+            }
+        });
+    </script>
+}

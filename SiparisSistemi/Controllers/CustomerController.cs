@@ -101,6 +101,26 @@ namespace SiparisSistemi.Controllers
                     return Json(new { success = false, message = "Lütfen önce giriş yapın." });
                 }
 
+                // Süresi dolmuş beklemedeki siparişleri iptal et
+                var now = DateTime.Now;
+                var pendingOrders = await _context.Orders
+                    .Where(o => o.CustomerID == customerId && o.OrderStatus == "Pending")
+                    .ToListAsync();
+
+                foreach (var order in pendingOrders)
+                {
+                    if (order.OrderDate.AddMinutes(1) <= now)
+                    {
+                        order.OrderStatus = "Cancelled";
+                    }
+                    else
+                    {
+                        // Süresini yenile (OrderDate güncelleniyor)
+                        order.OrderDate = now;
+                    }
+                }
+
+                // Yeni siparişi ekle
                 var product = await _context.Products.FindAsync(productId);
                 if (product == null)
                 {
@@ -112,57 +132,22 @@ namespace SiparisSistemi.Controllers
                     return Json(new { success = false, message = "Yetersiz stok." });
                 }
 
-                var order = new Orders
+                var newOrder = new Orders
                 {
                     CustomerID = customerId.Value,
                     ProductID = productId,
                     Quantity = quantity,
-                    OrderDate = DateTime.Now,
+                    OrderDate = now, // Siparişin oluşturulma zamanı
                     OrderStatus = "Pending",
                     TotalPrice = quantity * product.Price
                 };
 
-                _context.Orders.Add(order);
+                _context.Orders.Add(newOrder);
+
+                // Tüm değişiklikleri kaydet
                 await _context.SaveChangesAsync();
 
-                return Json(new { success = true, message = "Ürün sepete eklendi!" });
-            }
-            catch (Exception ex)
-            {
-                return Json(new { success = false, message = "Bir hata oluştu: " + ex.Message });
-            }
-        }
-        [HttpPost]
-        public async Task<IActionResult> ApproveAllCart()
-        {
-            try
-            {
-                var customerId = HttpContext.Session.GetInt32("CustomerID");
-                if (customerId == null)
-                {
-                    return Json(new { success = false, message = "Lütfen giriş yapın." });
-                }
-
-                // Bekleyen siparişleri al
-                var pendingOrders = await _context.Orders
-                    .Where(o => o.CustomerID == customerId && o.OrderStatus == "Pending")
-                    .ToListAsync();
-
-                if (!pendingOrders.Any())
-                {
-                    return Json(new { success = false, message = "Onaylanacak sipariş bulunamadı." });
-                }
-
-                // Tüm bekleyen siparişleri güncelle
-                foreach (var order in pendingOrders)
-                {
-                    order.OrderStatus = "AwaitingApproval";
-                    _context.Orders.Update(order);
-                }
-
-                await _context.SaveChangesAsync();
-
-                return Json(new { success = true, message = "Sepetiniz admin onayına gönderildi." });
+                return Json(new { success = true, message = "Ürün sepete eklendi ve bekleyen siparişlerin süresi yenilendi!" });
             }
             catch (Exception ex)
             {
@@ -170,40 +155,6 @@ namespace SiparisSistemi.Controllers
             }
         }
 
-        [HttpPost]
-        public IActionResult ApproveOrder(int orderId)
-        {
-            try
-            {
-                var order = _context.Orders
-                    .Include(o => o.Product)
-                    .FirstOrDefault(o => o.OrderID == orderId && o.OrderStatus == "AwaitingApproval");
-
-                if (order == null)
-                {
-                    return Json(new { success = false, message = "Sipariş bulunamadı veya zaten tamamlanmış." });
-                }
-
-                if (order.Product.Stock < order.Quantity)
-                {
-                    return Json(new { success = false, message = "Yetersiz stok." });
-                }
-
-                // Stok azaltma
-                order.Product.Stock -= order.Quantity;
-
-                // Sipariş durumunu güncelle
-                order.OrderStatus = "Completed";
-
-                _context.SaveChanges(); // Değişiklikleri kaydet
-                return Json(new { success = true, message = "Sipariş onaylandı ve tamamlandı." });
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"ApproveOrder Error: {ex.Message}");
-                return Json(new { success = false, message = "Bir hata oluştu: " + ex.Message });
-            }
-        }
 
         [HttpGet]
         public IActionResult Orders()
@@ -229,5 +180,113 @@ namespace SiparisSistemi.Controllers
 
             return View(orders);
         }
+        [HttpPost]
+        public async Task<IActionResult> ApproveAllCart()
+        {
+            try
+            {
+                var customerId = HttpContext.Session.GetInt32("CustomerID");
+                if (customerId == null)
+                {
+                    return Json(new { success = false, message = "Lütfen giriş yapın." });
+                }
+
+                // Bekleyen siparişleri al
+                var pendingOrders = await _context.Orders
+                    .Where(o => o.CustomerID == customerId && o.OrderStatus == "Pending")
+                    .ToListAsync();
+
+                if (!pendingOrders.Any())
+                {
+                    return Json(new { success = false, message = "Onaylanacak sipariş bulunamadı." });
+                }
+
+                // Siparişlerin durumunu "AwaitingApproval" olarak güncelle
+                foreach (var order in pendingOrders)
+                {
+                    order.OrderStatus = "AwaitingApproval";
+                    _context.Orders.Update(order);
+                }
+
+                await _context.SaveChangesAsync(); // Değişiklikleri veritabanına kaydet
+
+                return Json(new { success = true, message = "Sepetiniz admin onayına gönderildi." });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Bir hata oluştu: " + ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public IActionResult ApproveOrder(int orderId)
+        {
+            var order = _context.Orders.FirstOrDefault(o => o.OrderID == orderId);
+            if (order == null || order.OrderStatus != "Pending")
+            {
+                return Json(new { success = false, message = "Sipariş artık geçerli değil." });
+            }
+
+            order.OrderStatus = "AwaitingApproval"; // Durum güncelleniyor
+            _context.SaveChanges();
+
+            return Json(new { success = true, message = "Sipariş onaylandı!" });
+        }
+        [HttpPost]
+        public async Task<IActionResult> CancelExpiredOrders()
+        {
+            try
+            {
+                var now = DateTime.Now;
+
+                // Süresi dolmuş ve "Pending" durumundaki siparişleri al
+                var expiredOrders = await _context.Orders
+                    .Where(o => o.OrderStatus == "Pending" && o.OrderDate.AddMinutes(1) <= now)
+                    .ToListAsync();
+
+                if (!expiredOrders.Any())
+                {
+                    return Json(new { success = true, message = "Süresi dolmuş sipariş bulunamadı." });
+                }
+
+                // Süresi dolmuş siparişlerin durumunu "Cancelled" olarak güncelle
+                foreach (var order in expiredOrders)
+                {
+                    order.OrderStatus = "Cancelled";
+                }
+
+                await _context.SaveChangesAsync();
+
+                return Json(new { success = true, message = $"{expiredOrders.Count} adet süresi dolmuş sipariş iptal edildi." });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Bir hata oluştu: " + ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public IActionResult CancelOrder(int orderId)
+        {
+            try
+            {
+                var order = _context.Orders.FirstOrDefault(o => o.OrderID == orderId);
+                if (order == null)
+                {
+                    return Json(new { success = false, message = "Sipariş bulunamadı." });
+                }
+
+                order.OrderStatus = "Cancelled"; // OrderStatus değerini güncelle
+                _context.Orders.Update(order); // Güncelleme işlemi
+                _context.SaveChanges(); // Değişiklikleri veritabanına kaydet
+
+                return Json(new { success = true, message = "Sipariş başarıyla iptal edildi." });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Bir hata oluştu: " + ex.Message });
+            }
+        }
+
     }
 }
