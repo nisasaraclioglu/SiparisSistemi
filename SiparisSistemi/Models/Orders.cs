@@ -24,7 +24,7 @@ namespace SiparisSistemi.Models
         public DateTime OrderDate { get; set; }
 
         [Required]
-        public string OrderStatus { get; set; } // Yeni eklenen özellik
+        public string OrderStatus { get; set; } = "Pending";
 
         public virtual Customers Customer { get; set; }
         public virtual Products Product { get; set; }

@@ -19,6 +19,9 @@
             <a href="@Url.Action("OrdersApproval", "Admin")" class="admin-nav-item active">
                 <i class="fas fa-list"></i> Sipariş Onaylama
             </a>
+            <a href="@Url.Action("ApprovedOrders", "Admin")" class="admin-nav-item">
+                <i class="fas fa-list"></i> Onaylanan Siparişler
+            </a>
             <a href="@Url.Action("Logout", "Login")" class="admin-nav-item">
                 <i class="fas fa-sign-out-alt"></i> Çıkış Yap
             </a>
@@ -40,6 +43,11 @@
         }
         else
         {
+            <div class="mb-3">
+                <button onclick="approveAllOrders()" class="btn btn-success">
+                    <i class="fas fa-check-double"></i> Tüm Siparişleri Onayla
+                </button>
+            </div>
             <div class="table-responsive">
                 <table class="table table-bordered table-striped compact-table">
                     <thead class="table-dark">
@@ -120,6 +128,50 @@
                             Swal.fire(
                                 'Hata!',
                                 'Sipariş onaylanırken bir hata oluştu.',
+                                'error'
+                            );
+                        }
+                    });
+                }
+            });
+        }
+
+        function approveAllOrders() {
+            Swal.fire({
+                title: 'Tüm Siparişleri Onaylamak İstiyor Musunuz?',
+                text: "Bekleyen tüm siparişleri onaylamaya devam etmek istiyor musunuz?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#28a745',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Evet, Hepsini Onayla',
+                cancelButtonText: 'İptal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '@Url.Action("ApproveAllOrders", "Admin")',
+                        type: 'POST',
+                        success: function(response) {
+                            if (response.success) {
+                                Swal.fire(
+                                    'Onaylandı!',
+                                    response.message,
+                                    'success'
+                                ).then(() => {
+                                    location.reload();
+                                });
+                            } else {
+                                Swal.fire(
+                                    'Hata!',
+                                    response.message,
+                                    'error'
+                                );
+                            }
+                        },
+                        error: function() {
+                            Swal.fire(
+                                'Hata!',
+                                'Siparişler onaylanırken bir hata oluştu.',
                                 'error'
                             );
                         }

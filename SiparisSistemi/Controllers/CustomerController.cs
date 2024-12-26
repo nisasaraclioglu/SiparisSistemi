@@ -180,9 +180,12 @@ namespace SiparisSistemi.Controllers
 
             return View(orders);
         }
+
         [HttpPost]
         public async Task<IActionResult> ApproveAllCart()
         {
+            using var transaction = await _context.Database.BeginTransactionAsync();
+
             try
             {
                 var customerId = HttpContext.Session.GetInt32("CustomerID");
@@ -201,20 +204,48 @@ namespace SiparisSistemi.Controllers
                     return Json(new { success = false, message = "Onaylanacak sipariş bulunamadı." });
                 }
 
-                // Siparişlerin durumunu "AwaitingApproval" olarak güncelle
+                // Siparişlerin toplam tutarını hesapla
+                var totalAmount = pendingOrders.Sum(o => o.TotalPrice);
+
+                // Müşteri bilgilerini kontrol et
+                var customer = await _context.Customers.FindAsync(customerId);
+                if (customer == null)
+                {
+                    return Json(new { success = false, message = "Müşteri bilgisi bulunamadı." });
+                }
+
+                if (customer.Budget < totalAmount)
+                {
+                    return Json(new { success = false, message = "Yetersiz bakiye!" });
+                }
+
+                // Siparişleri güncelle
                 foreach (var order in pendingOrders)
                 {
                     order.OrderStatus = "AwaitingApproval";
-                    _context.Orders.Update(order);
+                    _context.Entry(order).State = EntityState.Modified;
                 }
 
-                await _context.SaveChangesAsync(); // Değişiklikleri veritabanına kaydet
+                // Log kayıtları oluştur
+                var logs = pendingOrders.Select(order => new Logs
+                {
+                    CustomerID = customerId.Value,
+                    OrderID = order.OrderID,
+                    LogDate = DateTime.Now,
+                    LogType = "StatusChange",
+                    LogDetails = "Sipariş admin onayına gönderildi"
+                }).ToList();
 
-                return Json(new { success = true, message = "Sepetiniz admin onayına gönderildi." });
+                await _context.Logs.AddRangeAsync(logs);
+                await _context.SaveChangesAsync();
+                await transaction.CommitAsync();
+
+                return Json(new { success = true, message = "Sepetiniz başarıyla admin onayına gönderildi." });
             }
             catch (Exception ex)
             {
-                return Json(new { success = false, message = "Bir hata oluştu: " + ex.Message });
+                await transaction.RollbackAsync();
+                return Json(new { success = false, message = $"Bir hata oluştu: {ex.Message}" });
             }
         }
 
@@ -232,6 +263,7 @@ namespace SiparisSistemi.Controllers
 
             return Json(new { success = true, message = "Sipariş onaylandı!" });
         }
+
         [HttpPost]
         public async Task<IActionResult> CancelExpiredOrders()
         {

@@ -1,0 +1,103 @@
+﻿@model IEnumerable<SiparisSistemi.Models.Orders>
+
+@{
+    ViewData["Title"] = "Onaylanmış Siparişler";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="admin-container">
+    <div class="admin-sidebar">
+        <div class="admin-header">
+            <h2>Tech<span class="store-highlight">Store</span></h2>
+            <p>Admin Panel</p>
+        </div>
+        <nav class="admin-nav">
+            <a href="@Url.Action("Dashboard", "Admin")" class="admin-nav-item active">
+                <i class="fas fa-home"></i> Ana Sayfa
+            </a>
+            <a href="@Url.Action("AddProduct", "Admin")" class="admin-nav-item">
+                <i class="fas fa-plus"></i> Ürün Ekle
+            </a>
+            <a href="@Url.Action("OrdersApproval", "Admin")" class="admin-nav-item">
+                <i class="fas fa-list"></i> Sipariş Onaylama
+            </a>
+            <a href="@Url.Action("ApprovedOrders", "Admin")" class="admin-nav-item">
+                <i class="fas fa-list"></i> Onaylanan Siparişler
+            </a>
+            <a href="@Url.Action("Logout", "Login")" class="admin-nav-item">
+                <i class="fas fa-sign-out-alt"></i> Çıkış Yap
+            </a>
+        </nav>
+    </div>
+    <div class="admin-content">
+        <div class="admin-content-header">
+            <div class="header-left">
+                <h3><i class="fas fa-box"></i> Ürün Listesi</h3>
+                <p>Toplam @Model.ToList().Count sipariş bulundu</p>
+            </div>
+            <div class="header-right">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="Ürün ara...">
+                </div>
+            </div>
+        </div>
+
+        <!-- Sipariş listesi -->
+        <div class="table-responsive shadow-sm">
+            <table class="table table-hover align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th scope="col">Sipariş No</th>
+                        <th scope="col">Müşteri</th>
+                        <th scope="col">Ürün</th>
+                        <th scope="col">Miktar</th>
+                        <th scope="col">Toplam Fiyat</th>
+                        <th scope="col">Sipariş Tarihi</th>
+                        <th scope="col">Durum</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var order in Model)
+                    {
+                        <tr>
+                            <th scope="row">@order.OrderID</th>
+                            <td>@order.Customer?.CustomerName</td>
+                            <td>@order.Product?.ProductName</td>
+                            <td>@order.Quantity</td>
+                            <td>@order.TotalPrice.ToString("C")</td>
+                            <td>@order.OrderDate.ToString("dd/MM/yyyy HH:mm")</td>
+                            <td>
+                                <span class="badge bg-success">
+                                    Onaylandı
+                                </span>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        @if (!Model.Any())
+        {
+            <div class="alert alert-info mt-4">
+                Henüz onaylanmış sipariş bulunmamaktadır.
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            $("#searchInput").on("keyup", function() {
+                var value = $(this).val().toLowerCase();
+                $(".table tbody tr").filter(function() {
+                    return $(this).text().toLowerCase().indexOf(value) > -1;
+                }).show().end().not(function() {
+                    return $(this).text().toLowerCase().indexOf(value) > -1;
+                }).hide();
+            });
+        });
+    </script>
+}

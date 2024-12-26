@@ -1,8 +1,8 @@
 /* Ana renkler için değişkenler */
 :root {
-    --primary-pink: #EB8184;    /* Somon pembe */
-    --primary-blue: #00AAD6;    /* Turkuaz mavi */
-    --white: #FFFFFF;           /* Beyaz */
+    --primary-pink: #EB8184; /* Somon pembe */
+    --primary-blue: #00AAD6; /* Turkuaz mavi */
+    --white: #FFFFFF; /* Beyaz */
 }
 
 body {
@@ -23,39 +23,39 @@ header {
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
-header .logo {
-    font-size: 28px;
-    font-weight: bold;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
+    header .logo {
+        font-size: 28px;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
 
-header .search-bar {
-    display: flex;
-    gap: 10px;
-    flex: 0 1 400px;
-}
+    header .search-bar {
+        display: flex;
+        gap: 10px;
+        flex: 0 1 400px;
+    }
 
-header .search-bar input {
-    padding: 10px 15px;
-    border-radius: 25px;
-    border: none;
-    width: 100%;
-    font-size: 14px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
+        header .search-bar input {
+            padding: 10px 15px;
+            border-radius: 25px;
+            border: none;
+            width: 100%;
+            font-size: 14px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
 
-header .header-icons a {
-    color: white;
-    margin-left: 25px;
-    text-decoration: none;
-    font-size: 16px;
-    transition: all 0.3s ease;
-}
+    header .header-icons a {
+        color: white;
+        margin-left: 25px;
+        text-decoration: none;
+        font-size: 16px;
+        transition: all 0.3s ease;
+    }
 
-header .header-icons a:hover {
-    color: #7FD1E4;  /* Daha açık mavi - store yazısıyla aynı renk */
-}
+        header .header-icons a:hover {
+            color: #7FD1E4; /* Daha açık mavi - store yazısıyla aynı renk */
+        }
 
 .nav-bar {
     display: flex;
@@ -65,29 +65,29 @@ header .header-icons a:hover {
     box-shadow: 0 2px 5px rgba(0,0,0,0.05);
 }
 
-.nav-bar a {
-    color: var(--primary-pink);
-    text-decoration: none;
-    font-weight: 500;
-    padding: 5px 0;
-    position: relative;
-    transition: all 0.3s ease;
-}
+    .nav-bar a {
+        color: var(--primary-pink);
+        text-decoration: none;
+        font-weight: 500;
+        padding: 5px 0;
+        position: relative;
+        transition: all 0.3s ease;
+    }
 
-.nav-bar a:after {
-    content: '';
-    position: absolute;
-    width: 0;
-    height: 2px;
-    bottom: 0;
-    left: 0;
-    background-color: var(--primary-blue);
-    transition: width 0.3s ease;
-}
+        .nav-bar a:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--primary-blue);
+            transition: width 0.3s ease;
+        }
 
-.nav-bar a:hover:after {
-    width: 100%;
-}
+        .nav-bar a:hover:after {
+            width: 100%;
+        }
 
 main {
     display: flex;
@@ -99,7 +99,7 @@ main {
 
 .filter-panel {
     width: 250px;
-    background-color: white;  /* Beyaz arka plan */
+    background-color: white; /* Beyaz arka plan */
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
@@ -107,30 +107,30 @@ main {
     border: 1px solid var(--primary-pink);
 }
 
-.filter-panel h3 {
-    margin-bottom: 20px;
-    color: var(--primary-pink);
-    font-size: 18px;
-}
+    .filter-panel h3 {
+        margin-bottom: 20px;
+        color: var(--primary-pink);
+        font-size: 18px;
+    }
 
 .filter {
     margin-bottom: 20px;
 }
 
-.filter label {
-    display: block;
-    margin-bottom: 8px;
-    color: var(--primary-pink);
-    font-size: 14px;
-}
+    .filter label {
+        display: block;
+        margin-bottom: 8px;
+        color: var(--primary-pink);
+        font-size: 14px;
+    }
 
-.filter select, .filter input {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 14px;
-}
+    .filter select, .filter input {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 14px;
+    }
 
 .product-grid {
     flex: 1;
@@ -152,48 +152,48 @@ main {
     border: 1px solid var(--primary-pink);
 }
 
-.product-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 5px 15px rgba(235, 129, 132, 0.2);
-}
+    .product-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 5px 15px rgba(235, 129, 132, 0.2);
+    }
 
-.product-card img {
-    max-width: 100%;
-    height: 200px;
-    object-fit: cover;
-    border-radius: 8px;
-    margin-bottom: 15px;
-}
+    .product-card img {
+        max-width: 100%;
+        height: 200px;
+        object-fit: cover;
+        border-radius: 8px;
+        margin-bottom: 15px;
+    }
 
-.product-card h4 {
-    margin: 10px 0;
-    color: #333;
-    font-size: 16px;
-}
+    .product-card h4 {
+        margin: 10px 0;
+        color: #333;
+        font-size: 16px;
+    }
 
-.product-card p {
-    font-size: 20px;
-    font-weight: bold;
-    color: #1e3c72;
-    margin: 10px 0;
-}
+    .product-card p {
+        font-size: 20px;
+        font-weight: bold;
+        color: #1e3c72;
+        margin: 10px 0;
+    }
 
-.product-card button {
-    width: 100%;
-    padding: 12px;
-    background: var(--primary-blue);
-    color: white;
-    border: none;
-    border-radius: 25px;
-    cursor: pointer;
-    font-weight: 500;
-    transition: all 0.3s ease;
-}
+    .product-card button {
+        width: 100%;
+        padding: 12px;
+        background: var(--primary-blue);
+        color: white;
+        border: none;
+        border-radius: 25px;
+        cursor: pointer;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
 
-.product-card button:hover {
-    background: var(--primary-pink);
-    transform: scale(1.02);
-}
+        .product-card button:hover {
+            background: var(--primary-pink);
+            transform: scale(1.02);
+        }
 
 /* Ek stiller */
 .store-highlight {
@@ -210,16 +210,16 @@ main {
     margin-bottom: 40px;
 }
 
-.hero-section h1 {
-    font-size: 48px;
-    margin-bottom: 20px;
-    font-weight: 700;
-}
+    .hero-section h1 {
+        font-size: 48px;
+        margin-bottom: 20px;
+        font-weight: 700;
+    }
 
-.hero-section p {
-    font-size: 20px;
-    opacity: 0.9;
-}
+    .hero-section p {
+        font-size: 20px;
+        opacity: 0.9;
+    }
 
 .price-range {
     position: relative;
@@ -244,11 +244,11 @@ main {
 
 /* Responsive tasarım */
 @media (max-width: 768px) {
-    
+
     main {
         flex-direction: column;
     }
-    
+
     .filter-panel {
         width: 100%;
         margin-bottom: 20px;
@@ -275,12 +275,12 @@ main {
     margin-bottom: 15px;
 }
 
-.product-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.3s ease;
-}
+    .product-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+    }
 
 .product-card:hover .product-image img {
     transform: scale(1.05);
@@ -309,19 +309,19 @@ input:focus, select:focus {
     border-color: var(--primary-blue);
 }
 
-.btn-primary:hover {
-    background: var(--primary-pink);
-    border-color: var(--primary-pink);
-}
+    .btn-primary:hover {
+        background: var(--primary-pink);
+        border-color: var(--primary-pink);
+    }
 
 /* Search bar için özel stil */
 header .search-bar input {
     border: 2px solid var(--white);
 }
 
-header .search-bar input:focus {
-    border-color: var(--primary-blue);
-}
+    header .search-bar input:focus {
+        border-color: var(--primary-blue);
+    }
 
 /* Filtre paneli için ek stiller */
 .filter label {
@@ -343,10 +343,10 @@ header .search-bar input:focus {
     font-size: 14px;
 }
 
-.filter select:focus {
-    border-color: var(--primary-blue);
-    box-shadow: 0 0 0 2px rgba(0, 170, 214, 0.2);
-}
+    .filter select:focus {
+        border-color: var(--primary-blue);
+        box-shadow: 0 0 0 2px rgba(0, 170, 214, 0.2);
+    }
 
 .filter input[type="range"] {
     width: 100%;
@@ -377,9 +377,9 @@ header .search-bar input:focus {
     transition: background-color 0.3s ease;
 }
 
-.quantity-btn:hover {
-    background: var(--primary-pink);
-}
+    .quantity-btn:hover {
+        background: var(--primary-pink);
+    }
 
 .quantity-input {
     width: 50px;
@@ -390,11 +390,11 @@ header .search-bar input:focus {
     font-size: 14px;
 }
 
-.quantity-input:focus {
-    outline: none;
-    border-color: var(--primary-blue);
-    box-shadow: 0 0 0 2px rgba(0, 170, 214, 0.2);
-}
+    .quantity-input:focus {
+        outline: none;
+        border-color: var(--primary-blue);
+        box-shadow: 0 0 0 2px rgba(0, 170, 214, 0.2);
+    }
 
 /* Sepete ekle butonu için margin ekle */
 .btn-add-to-cart {
@@ -413,7 +413,7 @@ header .search-bar input:focus {
 }
 
 .logo:hover .store-highlight {
-    color: #7FD1E4;  /* Daha açık mavi - ana mavi yerine özel renk */
+    color: #7FD1E4; /* Daha açık mavi - ana mavi yerine özel renk */
 }
 
 /* Login ve Register sayfaları için stiller */
@@ -440,43 +440,43 @@ header .search-bar input:focus {
     margin-bottom: 30px;
 }
 
-.login-header h2 {
-    color: var(--primary-pink);
-    font-size: 32px;
-    margin-bottom: 10px;
-}
+    .login-header h2 {
+        color: var(--primary-pink);
+        font-size: 32px;
+        margin-bottom: 10px;
+    }
 
-.login-header p {
-    color: #666;
-    font-size: 16px;
-}
+    .login-header p {
+        color: #666;
+        font-size: 16px;
+    }
 
 .input-with-icon {
     position: relative;
     margin-bottom: 20px;
 }
 
-.input-with-icon i {
-    position: absolute;
-    left: 15px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: var(--primary-pink);
-}
+    .input-with-icon i {
+        position: absolute;
+        left: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--primary-pink);
+    }
 
-.input-with-icon input {
-    padding: 12px 15px 12px 45px;
-    width: 100%;
-    border: 1px solid #ddd;
-    border-radius: 25px;
-    font-size: 14px;
-    transition: all 0.3s ease;
-}
+    .input-with-icon input {
+        padding: 12px 15px 12px 45px;
+        width: 100%;
+        border: 1px solid #ddd;
+        border-radius: 25px;
+        font-size: 14px;
+        transition: all 0.3s ease;
+    }
 
-.input-with-icon input:focus {
-    border-color: var(--primary-blue);
-    box-shadow: 0 0 0 2px rgba(0, 170, 214, 0.1);
-}
+        .input-with-icon input:focus {
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 2px rgba(0, 170, 214, 0.1);
+        }
 
 .login-btn {
     width: 100%;
@@ -490,10 +490,10 @@ header .search-bar input:focus {
     transition: all 0.3s ease;
 }
 
-.login-btn:hover {
-    background: var(--primary-blue);
-    transform: translateY(-2px);
-}
+    .login-btn:hover {
+        background: var(--primary-blue);
+        transform: translateY(-2px);
+    }
 
 .login-footer {
     text-align: center;
@@ -502,10 +502,10 @@ header .search-bar input:focus {
     border-top: 1px solid #eee;
 }
 
-.login-footer p {
-    color: #666;
-    margin-bottom: 10px;
-}
+    .login-footer p {
+        color: #666;
+        margin-bottom: 10px;
+    }
 
 .register-link {
     color: var(--primary-blue);
@@ -514,9 +514,9 @@ header .search-bar input:focus {
     transition: all 0.3s ease;
 }
 
-.register-link:hover {
-    color: var(--primary-pink);
-}
+    .register-link:hover {
+        color: var(--primary-pink);
+    }
 
 .alert {
     padding: 12px 15px;
@@ -544,13 +544,13 @@ header .search-bar input:focus {
 
 /* Login sayfası store yazısı için özel stil */
 .login-header .store-highlight {
-    color: #7FD1E4;  /* Açık mavi */
-    transition: none;  /* Hover animasyonunu kaldır */
+    color: #7FD1E4; /* Açık mavi */
+    transition: none; /* Hover animasyonunu kaldır */
 }
 
 /* Hover efektini kaldır */
 .login-header .logo:hover .store-highlight {
-    color: #7FD1E4;  /* Aynı renk kalsın */
+    color: #7FD1E4; /* Aynı renk kalsın */
 }
 
 /* Admin Panel Stilleri */
@@ -587,14 +587,14 @@ header .search-bar input:focus {
     transition: all 0.3s ease;
 }
 
-.admin-nav-item:hover {
-    background: rgba(255,255,255,0.1);
-    color: var(--primary-blue);
-}
+    .admin-nav-item:hover {
+        background: rgba(255,255,255,0.1);
+        color: var(--primary-blue);
+    }
 
-.admin-nav-item i {
-    margin-right: 10px;
-}
+    .admin-nav-item i {
+        margin-right: 10px;
+    }
 
 .admin-content {
     flex: 1;
@@ -602,16 +602,16 @@ header .search-bar input:focus {
     background: #f5f5f5;
 }
 
-.admin-content form {
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
+    .admin-content form {
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
 
-.admin-content .form-group {
-    margin-bottom: 20px;
-}
+    .admin-content .form-group {
+        margin-bottom: 20px;
+    }
 
 /* Admin panel tablo stilleri */
 .admin-content-header {
@@ -633,21 +633,21 @@ header .search-bar input:focus {
     border-collapse: collapse;
 }
 
-.table th {
-    background: var(--primary-pink);
-    color: white;
-    padding: 12px;
-    text-align: left;
-}
+    .table th {
+        background: var(--primary-pink);
+        color: white;
+        padding: 12px;
+        text-align: left;
+    }
 
-.table td {
-    padding: 12px;
-    border-bottom: 1px solid #eee;
-}
+    .table td {
+        padding: 12px;
+        border-bottom: 1px solid #eee;
+    }
 
-.table tr:hover {
-    background: #f9f9f9;
-}
+    .table tr:hover {
+        background: #f9f9f9;
+    }
 
 .btn-sm {
     padding: 5px 10px;
@@ -672,9 +672,9 @@ header .search-bar input:focus {
     font-size: 14px;
 }
 
-.compact-table td, .compact-table th {
-    padding: 8px 12px;
-}
+    .compact-table td, .compact-table th {
+        padding: 8px 12px;
+    }
 
 .id-column {
     width: 60px;
@@ -707,12 +707,12 @@ header .search-bar input:focus {
     gap: 8px;
 }
 
-.product-name img {
-    width: 32px;
-    height: 32px;
-    object-fit: cover;
-    border-radius: 4px;
-}
+    .product-name img {
+        width: 32px;
+        height: 32px;
+        object-fit: cover;
+        border-radius: 4px;
+    }
 
 .stock-badge {
     padding: 3px 8px;
