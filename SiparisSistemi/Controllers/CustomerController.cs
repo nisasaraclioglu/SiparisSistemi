@@ -56,6 +56,7 @@ namespace SiparisSistemi.Controllers
 
             if (customerId == null)
             {
+                AddLog(null, null, "Error", "Hesap bilgilerine erişim için oturum açılmadı.");
                 return RedirectToAction("CustomerLogin", "Login");
             }
 
@@ -63,6 +64,7 @@ namespace SiparisSistemi.Controllers
 
             if (customer == null)
             {
+                AddLog(customerId, null, "Error", "Hesap bilgileri bulunamadı.");
                 return NotFound("Kullanıcı bulunamadı.");
             }
 
@@ -89,6 +91,29 @@ namespace SiparisSistemi.Controllers
 
             return PartialView("_ProductGrid", products);
         }
+        private void AddLog(int? customerId, int? orderId, string logType, string logDetails)
+        {
+            var log = new Logs
+            {
+                CustomerID = customerId ?? 0, // Eğer null ise 0 atanabilir.
+                OrderID = orderId,
+                LogDate = DateTime.Now,
+                LogType = logType,
+                LogDetails = logDetails
+            };
+
+            try
+            {
+                _context.Logs.Add(log);
+                _context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                // Hata loglama
+                System.Diagnostics.Debug.WriteLine($"Log kaydedilemedi: {ex.Message}");
+            }
+        }
+
         [HttpPost]
         public async Task<JsonResult> AddToCart(int productId, int quantity)
         {
@@ -97,6 +122,7 @@ namespace SiparisSistemi.Controllers
                 var customerId = HttpContext.Session.GetInt32("CustomerID");
                 if (customerId == null)
                 {
+                    AddLog(null, null, "Error", "Sepete ürün eklemek için giriş yapılmadı.");
                     return Json(new { success = false, message = "Lütfen önce giriş yapın." });
                 }
 
@@ -114,8 +140,7 @@ namespace SiparisSistemi.Controllers
                     }
                     else
                     {
-                        // Süresini yenile (OrderDate güncelleniyor)
-                        order.OrderDate = now;
+                        order.OrderDate = now; // Süresini yenile
                     }
                 }
 
@@ -123,16 +148,18 @@ namespace SiparisSistemi.Controllers
                 var product = await _context.Products.FindAsync(productId);
                 if (product == null)
                 {
+                    AddLog(customerId, null, "Error", $"Ürün bulunamadı: {productId}");
                     return Json(new { success = false, message = "Ürün bulunamadı." });
                 }
 
                 // Stok kontrolü
                 if (product.Stock < quantity)
                 {
+                    AddLog(customerId, null, "Error", $"Yetersiz stok: {product.ProductName}");
                     return Json(new { success = false, message = "Yetersiz stok." });
                 }
 
-                // **Yeni Kontrol: Müşteri bir üründen en fazla 5 adet alabilir**
+                // Müşteri bir üründen en fazla 5 adet alabilir kontrolü
                 var existingOrders = await _context.Orders
                     .Where(o => o.CustomerID == customerId && o.ProductID == productId && o.OrderStatus == "Pending")
                     .ToListAsync();
@@ -140,33 +167,35 @@ namespace SiparisSistemi.Controllers
                 int totalQuantity = existingOrders.Sum(o => o.Quantity) + quantity;
                 if (totalQuantity > 5)
                 {
+                    AddLog(customerId, null, "Error", $"Maksimum sipariş limiti aşıldı: {product.ProductName}");
                     return Json(new { success = false, message = "Bir üründen en fazla 5 adet alabilirsiniz." });
                 }
 
-                // Yeni siparişi ekle
+                // Yeni sipariş oluştur
                 var newOrder = new Orders
                 {
                     CustomerID = customerId.Value,
                     ProductID = productId,
                     Quantity = quantity,
-                    OrderDate = now, // Siparişin oluşturulma zamanı
+                    OrderDate = now,
                     OrderStatus = "Pending",
                     TotalPrice = quantity * product.Price
                 };
 
                 _context.Orders.Add(newOrder);
 
-                // Tüm değişiklikleri kaydet
+                // Değişiklikleri kaydet
                 await _context.SaveChangesAsync();
+                AddLog(customerId, newOrder.OrderID, "AddToCart", $"Ürün sepete eklendi: {product.ProductName}, Miktar: {quantity}");
 
                 return Json(new { success = true, message = "Ürün sepete eklendi ve bekleyen siparişlerin süresi yenilendi!" });
             }
             catch (Exception ex)
             {
-                return Json(new { success = false, message = "Bir hata oluştu: " + ex.Message });
+                AddLog(null, null, "Error", $"Sepete ürün eklenirken hata: {ex.Message}");
+                return Json(new { success = false, message = $"Bir hata oluştu: {ex.Message}" });
             }
         }
-
         [HttpGet]
         public IActionResult Orders()
         {
@@ -175,6 +204,7 @@ namespace SiparisSistemi.Controllers
 
             if (customerId == null)
             {
+                AddLog(null, null, "Error", "Siparişlere erişim için giriş yapılmadı.");
                 return RedirectToAction("CustomerLogin", "Login");
             }
 
@@ -186,6 +216,7 @@ namespace SiparisSistemi.Controllers
 
             if (orders == null || !orders.Any())
             {
+                AddLog(customerId, null, "Info", "Müşteri için sipariş bulunamadı.");
                 return View(new List<Orders>()); // Boş liste döndür
             }
 
@@ -205,7 +236,6 @@ namespace SiparisSistemi.Controllers
                     return Json(new { success = false, message = "Lütfen giriş yapın." });
                 }
 
-                // Bekleyen siparişleri al
                 var pendingOrders = await _context.Orders
                     .Where(o => o.CustomerID == customerId && o.OrderStatus == "Pending")
                     .ToListAsync();
@@ -215,10 +245,8 @@ namespace SiparisSistemi.Controllers
                     return Json(new { success = false, message = "Onaylanacak sipariş bulunamadı." });
                 }
 
-                // Siparişlerin toplam tutarını hesapla
                 var totalAmount = pendingOrders.Sum(o => o.TotalPrice);
 
-                // Müşteri bilgilerini kontrol et
                 var customer = await _context.Customers.FindAsync(customerId);
                 if (customer == null)
                 {
@@ -230,24 +258,12 @@ namespace SiparisSistemi.Controllers
                     return Json(new { success = false, message = "Yetersiz bakiye!" });
                 }
 
-                // Siparişleri güncelle
                 foreach (var order in pendingOrders)
                 {
                     order.OrderStatus = "AwaitingApproval";
                     _context.Entry(order).State = EntityState.Modified;
                 }
 
-                // Log kayıtları oluştur
-                var logs = pendingOrders.Select(order => new Logs
-                {
-                    CustomerID = customerId.Value,
-                    OrderID = order.OrderID,
-                    LogDate = DateTime.Now,
-                    LogType = "StatusChange",
-                    LogDetails = "Sipariş admin onayına gönderildi"
-                }).ToList();
-
-                await _context.Logs.AddRangeAsync(logs);
                 await _context.SaveChangesAsync();
                 await transaction.CommitAsync();
 
@@ -316,6 +332,7 @@ namespace SiparisSistemi.Controllers
                 var order = _context.Orders.FirstOrDefault(o => o.OrderID == orderId);
                 if (order == null)
                 {
+                    AddLog(null, orderId, "Error", "İptal edilecek sipariş bulunamadı.");
                     return Json(new { success = false, message = "Sipariş bulunamadı." });
                 }
 
@@ -323,10 +340,12 @@ namespace SiparisSistemi.Controllers
                 _context.Orders.Update(order); // Güncelleme işlemi
                 _context.SaveChanges(); // Değişiklikleri veritabanına kaydet
 
+                AddLog(order.CustomerID, orderId, "CancelOrder", $"Sipariş iptal edildi: {orderId}");
                 return Json(new { success = true, message = "Sipariş başarıyla iptal edildi." });
             }
             catch (Exception ex)
             {
+                AddLog(null, orderId, "Error", $"Sipariş iptali sırasında hata: {ex.Message}");
                 return Json(new { success = false, message = "Bir hata oluştu: " + ex.Message });
             }
         }

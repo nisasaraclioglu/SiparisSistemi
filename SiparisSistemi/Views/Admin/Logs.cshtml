@@ -1,0 +1,48 @@
+﻿@{
+    ViewData["Title"] = "Log Paneli";
+}
+
+<div id="log-panel">
+    <h3>Log Paneli</h3>
+    <div id="log-list" style="max-height: 300px; overflow-y: auto; border: 1px solid #ccc; padding: 10px;">
+        <!-- Log öğeleri buraya yüklenecek -->
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Logları backend'den çek ve listeyi güncelle
+        function fetchLogs() {
+            $.ajax({
+                url: '/Admin/GetLogs', // API endpoint
+                type: 'GET',
+                success: function (logs) {
+                    var logList = $('#log-list');
+                    logList.empty(); // Mevcut logları temizle
+
+                    logs.forEach(function (log) {
+                        logList.append(`
+                            <div class="log-item">
+                                <span class="log-date">${new Date(log.LogDate).toLocaleString()}</span> -
+                                <span class="log-type">${log.LogType}</span>:
+                                <span class="log-details">${log.LogDetails}</span>
+                            </div>
+                        `);
+                    });
+
+                    // Log listesi en son loga kaydırılsın
+                    logList.scrollTop(logList[0].scrollHeight);
+                },
+                error: function () {
+                    console.error('Loglar alınırken bir hata oluştu.');
+                }
+            });
+        }
+
+        // Logları her 5 saniyede bir yenile
+        setInterval(fetchLogs, 5000);
+
+        // Sayfa yüklendiğinde logları çek
+        $(document).ready(fetchLogs);
+    </script>
+}
