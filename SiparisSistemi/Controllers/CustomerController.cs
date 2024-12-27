@@ -89,7 +89,6 @@ namespace SiparisSistemi.Controllers
 
             return PartialView("_ProductGrid", products);
         }
-
         [HttpPost]
         public async Task<JsonResult> AddToCart(int productId, int quantity)
         {
@@ -120,18 +119,31 @@ namespace SiparisSistemi.Controllers
                     }
                 }
 
-                // Yeni siparişi ekle
+                // Ürün kontrolü
                 var product = await _context.Products.FindAsync(productId);
                 if (product == null)
                 {
                     return Json(new { success = false, message = "Ürün bulunamadı." });
                 }
 
+                // Stok kontrolü
                 if (product.Stock < quantity)
                 {
                     return Json(new { success = false, message = "Yetersiz stok." });
                 }
 
+                // **Yeni Kontrol: Müşteri bir üründen en fazla 5 adet alabilir**
+                var existingOrders = await _context.Orders
+                    .Where(o => o.CustomerID == customerId && o.ProductID == productId && o.OrderStatus == "Pending")
+                    .ToListAsync();
+
+                int totalQuantity = existingOrders.Sum(o => o.Quantity) + quantity;
+                if (totalQuantity > 5)
+                {
+                    return Json(new { success = false, message = "Bir üründen en fazla 5 adet alabilirsiniz." });
+                }
+
+                // Yeni siparişi ekle
                 var newOrder = new Orders
                 {
                     CustomerID = customerId.Value,
@@ -154,7 +166,6 @@ namespace SiparisSistemi.Controllers
                 return Json(new { success = false, message = "Bir hata oluştu: " + ex.Message });
             }
         }
-
 
         [HttpGet]
         public IActionResult Orders()

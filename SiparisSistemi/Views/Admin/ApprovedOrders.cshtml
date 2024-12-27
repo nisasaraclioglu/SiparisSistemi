@@ -1,8 +1,8 @@
 ﻿@model IEnumerable<SiparisSistemi.Models.Orders>
 
 @{
-    ViewData["Title"] = "Onaylanmış Siparişler";
-    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Tüm Siparişler";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <div class="admin-container">
@@ -12,7 +12,7 @@
             <p>Admin Panel</p>
         </div>
         <nav class="admin-nav">
-            <a href="@Url.Action("Dashboard", "Admin")" class="admin-nav-item active">
+            <a href="@Url.Action("Dashboard", "Admin")" class="admin-nav-item">
                 <i class="fas fa-home"></i> Ana Sayfa
             </a>
             <a href="@Url.Action("AddProduct", "Admin")" class="admin-nav-item">
@@ -21,8 +21,8 @@
             <a href="@Url.Action("OrdersApproval", "Admin")" class="admin-nav-item">
                 <i class="fas fa-list"></i> Sipariş Onaylama
             </a>
-            <a href="@Url.Action("ApprovedOrders", "Admin")" class="admin-nav-item">
-                <i class="fas fa-list"></i> Onaylanan Siparişler
+            <a href="@Url.Action("ApprovedOrders", "Admin")" class="admin-nav-item active">
+                <i class="fas fa-list"></i> Tüm Siparişler
             </a>
             <a href="@Url.Action("Logout", "Login")" class="admin-nav-item">
                 <i class="fas fa-sign-out-alt"></i> Çıkış Yap
@@ -31,21 +31,12 @@
     </div>
     <div class="admin-content">
         <div class="admin-content-header">
-            <div class="header-left">
-                <h3><i class="fas fa-box"></i> Ürün Listesi</h3>
-                <p>Toplam @Model.ToList().Count sipariş bulundu</p>
-            </div>
-            <div class="header-right">
-                <div class="search-box">
-                    <i class="fas fa-search"></i>
-                    <input type="text" id="searchInput" placeholder="Ürün ara...">
-                </div>
-            </div>
+            <h3><i class="fas fa-box"></i> Sipariş Listesi</h3>
+            <p>Toplam <strong>@Model.Count()</strong> sipariş bulundu.</p>
         </div>
 
-        <!-- Sipariş listesi -->
         <div class="table-responsive shadow-sm">
-            <table class="table table-hover align-middle">
+            <table class="table table-hover table-bordered align-middle">
                 <thead class="table-dark">
                     <tr>
                         <th scope="col">Sipariş No</th>
@@ -58,34 +49,50 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var order in Model)
+                    @if (Model != null && Model.Any())
+                    {
+                        @foreach (var order in Model)
+                        {
+                            <tr>
+                                <td>@order.OrderID</td>
+                                <td>@order.Customer?.CustomerName ?? "Bilinmiyor"</td>
+                                <td>@order.Product?.ProductName ?? "Bilinmiyor"</td>
+                                <td>@order.Quantity</td>
+                                <td>@order.TotalPrice.ToString("C")</td>
+                                <td>@order.OrderDate.ToString("dd/MM/yyyy HH:mm")</td>
+                                <td>
+                                    @switch (order.OrderStatus)
+                                    {
+                                        case "Completed":
+                                            <span class="badge bg-success">Tamamlandı</span>
+                                            break;
+                                        case "Pending":
+                                            <span class="badge bg-warning text-dark">Bekliyor</span>
+                                            break;
+                                        case "Cancelled":
+                                            <span class="badge bg-danger">İptal Edildi</span>
+                                            break;
+                                        default:
+                                            <span class="badge bg-secondary">Admin Onayı Bekliyor</span>
+                                            break;
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
                     {
                         <tr>
-                            <th scope="row">@order.OrderID</th>
-                            <td>@order.Customer?.CustomerName</td>
-                            <td>@order.Product?.ProductName</td>
-                            <td>@order.Quantity</td>
-                            <td>@order.TotalPrice.ToString("C")</td>
-                            <td>@order.OrderDate.ToString("dd/MM/yyyy HH:mm")</td>
-                            <td>
-                                <span class="badge bg-success">
-                                    Onaylandı
-                                </span>
-                            </td>
+                            <td colspan="7" class="text-center">Henüz sipariş bulunmamaktadır.</td>
                         </tr>
                     }
                 </tbody>
+
             </table>
         </div>
-
-        @if (!Model.Any())
-        {
-            <div class="alert alert-info mt-4">
-                Henüz onaylanmış sipariş bulunmamaktadır.
-            </div>
-        }
     </div>
 </div>
+
 
 @section Scripts {
     <script>

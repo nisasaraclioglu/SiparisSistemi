@@ -73,6 +73,15 @@ namespace SiparisSistemi.Controllers
                 return Json(new { success = false, message = "Bir hata oluştu." });
             }
         }
+        public IActionResult AllOrders()
+        {
+            var orders = _context.Orders
+                .Include(o => o.Customer)
+                .Include(o => o.Product)
+                .ToList(); // Tüm siparişler
+
+            return View(orders);
+        }
 
         // Tüm siparişleri onaylama
         [HttpPost]
@@ -312,15 +321,15 @@ namespace SiparisSistemi.Controllers
         [HttpGet]
         public IActionResult ApprovedOrders()
         {
-            // "Completed" siparişleri veritabanından çek
-            var completedOrders = _context.Orders
-                .Include(o => o.Product)
-                .Include(o => o.Customer)
-                .Where(o => o.OrderStatus == "Completed")
-                .OrderByDescending(o => o.OrderDate)
+            // Tüm siparişleri getir
+            var allOrders = _context.Orders
+                .Include(o => o.Product) // Ürün bilgilerini dahil et
+                .Include(o => o.Customer) // Müşteri bilgilerini dahil et
+                .OrderByDescending(o => o.OrderDate) // Tarihe göre sırala
                 .ToList();
 
-            return View(completedOrders);
+            return View(allOrders);
         }
+
     }
 }
