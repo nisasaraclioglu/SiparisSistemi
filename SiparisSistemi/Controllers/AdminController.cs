@@ -240,51 +240,52 @@ public IActionResult ApproveOrder(int orderId)
         }
 
         [HttpPost]
-        public async Task<IActionResult> DeleteOrder(int orderId)
+        public IActionResult RejectAllOrders()
         {
             try
             {
-                var order = await _context.Orders.FindAsync(orderId);
-                if (order == null)
+                var awaitingApprovalOrders = _context.Orders
+                    .Include(o => o.Product)
+                    .Include(o => o.Customer)
+                    .Where(o => o.OrderStatus == "AwaitingApproval")
+                    .ToList();
+
+                if (!awaitingApprovalOrders.Any())
                 {
-                    AddLog(null, orderId, "Error", $"Sipariş {orderId} bulunamadı.");
-                    return Json(new { success = false, message = "Sipariş bulunamadı." });
+                    return Json(new { success = false, message = "Reddedilecek sipariş bulunamadı." });
                 }
 
-                _context.Orders.Remove(order);
-                await _context.SaveChangesAsync();
+                foreach (var order in awaitingApprovalOrders)
+                {
+                    order.OrderStatus = "Cancelled";
 
-                AddLog(order.CustomerID, orderId, "OrderDeleted", $"Sipariş {orderId} başarıyla silindi.");
-                return Json(new { success = true, message = "Sipariş başarıyla silindi." });
+                    // Log kaydı ekle
+                    _context.Logs.Add(new Logs
+                    {
+                        CustomerID = order.CustomerID,
+                        OrderID = order.OrderID,
+                        LogDate = DateTime.Now,
+                        LogType = "OrderRejected",
+                        LogDetails = $"Sipariş {order.OrderID} reddedildi. Ürün: {order.Product.ProductName}, Müşteri: {order.CustomerID}"
+                    });
+                }
+
+                _context.SaveChanges();
+                return Json(new { success = true, message = "Tüm siparişler başarıyla reddedildi." });
             }
             catch (Exception ex)
             {
-                AddLog(null, orderId, "Error", $"Sipariş {orderId} silinirken hata: {ex.Message}");
-                return Json(new { success = false, message = "Sipariş silinirken bir hata oluştu." });
-            }
-        }
-        [HttpPost]
-        public async Task<IActionResult> DeleteAllOrders()
-        {
-            try
-            {
-                var orders = await _context.Orders.ToListAsync();
-                if (!orders.Any())
+                // Hata logu
+                _context.Logs.Add(new Logs
                 {
-                    AddLog(null, null, "Error", "Silinecek sipariş bulunamadı.");
-                    return Json(new { success = false, message = "Silinecek sipariş bulunamadı." });
-                }
+                    CustomerID = 0,
+                    LogDate = DateTime.Now,
+                    LogType = "Error",
+                    LogDetails = $"Toplu sipariş reddetme işleminde hata: {ex.Message}"
+                });
+                _context.SaveChanges();
 
-                _context.Orders.RemoveRange(orders);
-                await _context.SaveChangesAsync();
-
-                AddLog(null, null, "AllOrdersDeleted", "Tüm siparişler başarıyla silindi.");
-                return Json(new { success = true, message = "Tüm siparişler başarıyla silindi." });
-            }
-            catch (Exception ex)
-            {
-                AddLog(null, null, "Error", $"Tüm siparişler silinirken hata: {ex.Message}");
-                return Json(new { success = false, message = "Siparişler silinirken bir hata oluştu." });
+                return Json(new { success = false, message = $"Bir hata oluştu: {ex.Message}" });
             }
         }
 
@@ -294,6 +295,19 @@ public IActionResult ApproveOrder(int orderId)
         {
             return View();
         }
+
+        // Ürün düzenleme sayfası
+        [HttpGet]
+        public IActionResult EditProduct(int id)
+        {
+            var product = _context.Products.Find(id);
+            if (product == null)
+            {
+                return NotFound();
+            }
+            return View(product);
+        }
+
         [HttpPost]
         public async Task<IActionResult> AddProduct(Products product, IFormFile? imageFile)
         {
@@ -327,31 +341,30 @@ public IActionResult ApproveOrder(int orderId)
                     _context.Products.Add(product);
                     await _context.SaveChangesAsync();
 
-                    // Admin işlemi olduğu için CustomerID null gönderiliyor
-                    AddLog(null, null, "ProductAdded", $"Ürün {product.ProductName} başarıyla eklendi.");
+                    // Log kaydı
+                    await AddLogAsync(
+                        customerId: 0,
+                        orderId: null,
+                        logType: "ProductAdded",
+                        logDetails: $"Yeni ürün eklendi - ID: {product.ProductID}, " +
+                                  $"Ürün: {product.ProductName}, " +
+                                  $"Tür: {product.ProductType}, " +
+                                  $"Fiyat: {product.Price:C2}, " +
+                                  $"Stok: {product.Stock}"
+                    );
+
                     TempData["SuccessMessage"] = "Ürün başarıyla eklendi.";
                     return RedirectToAction("Dashboard");
                 }
                 catch (Exception ex)
                 {
-                    AddLog(null, null, "Error", $"Ürün {product.ProductName} eklenirken hata: {ex.Message}");
+                    await AddLogAsync(0, null, "Error", $"Ürün ekleme hatası: {ex.Message}");
                     ModelState.AddModelError("", "Ürün eklenirken bir hata oluştu: " + ex.Message);
                 }
             }
             return View(product);
         }
 
-        // Ürün düzenleme sayfası
-        [HttpGet]
-        public IActionResult EditProduct(int id)
-        {
-            var product = _context.Products.Find(id);
-            if (product == null)
-            {
-                return NotFound();
-            }
-            return View(product);
-        }
         [HttpPost]
         public async Task<IActionResult> EditProduct(Products product, IFormFile? imageFile)
         {
@@ -359,13 +372,18 @@ public IActionResult ApproveOrder(int orderId)
             {
                 try
                 {
-                    var existingProduct = _context.Products.Find(product.ProductID);
+                    var existingProduct = await _context.Products.FindAsync(product.ProductID);
                     if (existingProduct == null)
                     {
-                        AddLog(null, null, "Error", $"Ürün {product.ProductID} bulunamadı.");
+                        await AddLogAsync(0, null, "Error", $"Düzenlenecek ürün bulunamadı - ID: {product.ProductID}");
                         TempData["ErrorMessage"] = "Ürün bulunamadı.";
                         return View(product);
                     }
+
+                    string oldValues = $"Eski Değerler - Ürün: {existingProduct.ProductName}, " +
+                                     $"Tür: {existingProduct.ProductType}, " +
+                                     $"Fiyat: {existingProduct.Price}, " +
+                                     $"Stok: {existingProduct.Stock}";
 
                     if (imageFile != null && imageFile.Length > 0)
                     {
@@ -400,55 +418,75 @@ public IActionResult ApproveOrder(int orderId)
 
                     await _context.SaveChangesAsync();
 
-                    // Admin işlemi olduğu için CustomerID null gönderiliyor
-                    AddLog(null, null, "ProductEdited", $"Ürün {product.ProductName} başarıyla güncellendi.");
+                    // Log kaydı
+                    await AddLogAsync(
+                        customerId: 0,
+                        orderId: null,
+                        logType: "ProductEdited",
+                        logDetails: $"Ürün güncellendi - ID: {product.ProductID}\n" +
+                                  $"{oldValues}\n" +
+                                  $"Yeni Değerler - Ürün: {product.ProductName}, " +
+                                  $"Tür: {product.ProductType}, " +
+                                  $"Fiyat: {product.Price:C2}, " +
+                                  $"Stok: {product.Stock}"
+                    );
+
                     TempData["SuccessMessage"] = "Ürün başarıyla güncellendi.";
                     return RedirectToAction("Dashboard");
                 }
                 catch (Exception ex)
                 {
-                    AddLog(null, null, "Error", $"Ürün {product.ProductName} güncellenirken hata: {ex.Message}");
+                    await AddLogAsync(0, null, "Error", $"Ürün güncelleme hatası: {ex.Message}");
                     ModelState.AddModelError("", "Güncelleme sırasında bir hata oluştu: " + ex.Message);
                 }
             }
             return View(product);
         }
 
-
-        // Ürün silme işlemi
         [HttpPost]
-        public IActionResult DeleteProduct(int id)
+        public async Task<IActionResult> DeleteProduct(int id)
         {
             try
             {
-                var product = _context.Products.Find(id);
+                var product = await _context.Products.FindAsync(id);
                 if (product != null)
                 {
-                    var webRootPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
-                    var imagePath = product.ImagePath?.TrimStart('/');
-                    var fullPath = Path.Combine(webRootPath, imagePath ?? "");
+                    var productInfo = $"Ürün Adı: {product.ProductName}, Tür: {product.ProductType}, Fiyat: {product.Price}, Stok: {product.Stock}";
 
                     if (!string.IsNullOrEmpty(product.ImagePath) &&
                         !product.ImagePath.EndsWith("default.jpg") &&
-                        System.IO.File.Exists(fullPath))
+                        System.IO.File.Exists(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", product.ImagePath.TrimStart('/'))))
                     {
-                        System.IO.File.Delete(fullPath);
+                        System.IO.File.Delete(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", product.ImagePath.TrimStart('/')));
                     }
 
                     _context.Products.Remove(product);
-                    _context.SaveChanges();
+                    await _context.SaveChangesAsync();
 
-                    TempData["SuccessMessage"] = "Ürün başarıyla silindi.";
-                    return Json(new { success = true });
+                    // Log kaydı
+                    await AddLogAsync(
+                        customerId: 0,
+                        orderId: null,
+                        logType: "ProductDeleted",
+                        logDetails: $"Ürün silindi - ID: {id}, " +
+                                  $"Ürün: {product.ProductName}, " +
+                                  $"Tür: {product.ProductType}, " +
+                                  $"Fiyat: {product.Price:C2}, " +
+                                  $"Stok: {product.Stock}"
+                    );
+
+                    return Json(new { success = true, message = "Ürün başarıyla silindi." });
                 }
+
+                await AddLogAsync(0, null, "Error", $"Silinecek ürün bulunamadı - ID: {id}");
                 return Json(new { success = false, message = "Ürün bulunamadı." });
             }
             catch (Exception ex)
             {
+                await AddLogAsync(0, null, "Error", $"Ürün silme hatası: {ex.Message}");
                 return Json(new { success = false, message = "Silme işlemi sırasında bir hata oluştu: " + ex.Message });
             }
         }
-
 
         [HttpGet]
         public IActionResult ApprovedOrders()
@@ -468,7 +506,7 @@ public IActionResult ApproveOrder(int orderId)
         {
             var logs = _context.Logs
                 .OrderByDescending(l => l.LogDate)
-                .Take(10) // Son 10 log
+                .Take(20) // Son 20 log
                 .Select(l => new
                 {
                     l.LogType,
@@ -480,26 +518,83 @@ public IActionResult ApproveOrder(int orderId)
             return Json(logs);
         }
 
-        private void AddLog(int? customerId, int? orderId, string logType, string logDetails)
+        private async Task AddLogAsync(int? customerId, int? orderId, string logType, string logDetails)
         {
-            var log = new Logs
-            {
-                CustomerID = customerId ?? 0,
-                OrderID = orderId,
-                LogDate = DateTime.Now,
-                LogType = logType,
-                LogDetails = logDetails
-            };
-
             try
             {
+                var log = new Logs
+                {
+                    CustomerID = customerId ?? 0,
+                    OrderID = orderId ?? 0,
+                    LogDate = DateTime.Now,
+                    LogType = logType,
+                    LogDetails = logDetails
+                };
+
+                _context.Logs.Add(log);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                // Debug için hata mesajını yazdır
+                System.Diagnostics.Debug.WriteLine($"Log kayıt hatası: {ex.Message}");
+
+                // Hata durumunda ikinci deneme
+                try
+                {
+                    await _context.Logs.AddAsync(new Logs
+                    {
+                        CustomerID = 0,
+                        OrderID = 0,
+                        LogDate = DateTime.Now,
+                        LogType = "Error",
+                        LogDetails = $"Log kayıt hatası: {ex.Message}"
+                    });
+                    await _context.SaveChangesAsync();
+                }
+                catch (Exception innerEx)
+                {
+                    System.Diagnostics.Debug.WriteLine($"İkinci log kayıt denemesi hatası: {innerEx.Message}");
+                }
+            }
+        }
+
+        private void AddLog(int? customerId, int? orderId, string logType, string logDetails)
+        {
+            try
+            {
+                var log = new Logs
+                {
+                    CustomerID = customerId ?? 0,
+                    OrderID = orderId ?? 0,
+                    LogDate = DateTime.Now,
+                    LogType = logType,
+                    LogDetails = logDetails
+                };
+
                 _context.Logs.Add(log);
                 _context.SaveChanges();
-                System.Diagnostics.Debug.WriteLine("Log başarıyla kaydedildi.");
+
+                System.Diagnostics.Debug.WriteLine($"Log kaydedildi - Tür: {logType}, Detay: {logDetails}");
             }
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine($"Log kaydedilemedi: {ex.Message}");
+
+                // Hata durumunda ikinci bir deneme
+                try
+                {
+                    _context.Logs.Add(new Logs
+                    {
+                        CustomerID = 0,
+                        OrderID = 0,
+                        LogDate = DateTime.Now,
+                        LogType = "Error",
+                        LogDetails = $"Log kayıt hatası: {ex.Message}"
+                    });
+                    _context.SaveChanges();
+                }
+                catch { /* En kötü durumda sessizce devam et */ }
             }
         }
 
@@ -518,6 +613,7 @@ public IActionResult ApproveOrder(int orderId)
                         orderID = o.OrderID,
                         productName = o.Product != null ? o.Product.ProductName : "Bilinmiyor",
                         customerID = o.CustomerID,
+                        customerType = o.Customer.CustomerType,
                         quantity = o.Quantity,
                         totalPrice = o.TotalPrice,
                         orderDate = o.OrderDate,
@@ -549,6 +645,7 @@ public IActionResult ApproveOrder(int orderId)
                         orderID = o.OrderID,
                         productName = o.Product != null ? o.Product.ProductName : "Bilinmiyor",
                         customerID = o.CustomerID,
+                        customerType = o.Customer.CustomerType,
                         quantity = o.Quantity,
                         totalPrice = o.TotalPrice,
                         orderDate = o.OrderDate,

@@ -62,8 +62,8 @@
                         {
                             <tr>
                                 <td>@order.OrderID</td>
-                                <td>@order.Customer?.CustomerName ?? "Bilinmiyor"</td>
-                                <td>@order.Product?.ProductName ?? "Bilinmiyor"</td>
+                                <td>@order.Customer?.CustomerName</td>
+                                <td>@order.Product?.ProductName</td>
                                 <td>@order.Quantity</td>
                                 <td>@order.TotalPrice.ToString("C")</td>
                                 <td>@order.OrderDate.ToString("dd/MM/yyyy HH:mm")</td>

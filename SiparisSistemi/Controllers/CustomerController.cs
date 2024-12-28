@@ -55,7 +55,7 @@ namespace SiparisSistemi.Controllers
 
             if (customerId == null)
             {
-                AddLog(null, null, "Error", "Hesap bilgilerine erişim için oturum açılmadı.");
+                AddLog(null, null, "Hata", "Hesap bilgilerine erişim için oturum açılmadı.");
                 return RedirectToAction("CustomerLogin", "Login");
             }
 
@@ -63,7 +63,7 @@ namespace SiparisSistemi.Controllers
 
             if (customer == null)
             {
-                AddLog(customerId, null, "Error", "Hesap bilgileri bulunamadı.");
+                AddLog(customerId, null, "Hata", "Hesap bilgileri bulunamadı.");
                 return NotFound("Kullanıcı bulunamadı.");
             }
 
@@ -94,7 +94,7 @@ namespace SiparisSistemi.Controllers
         {
             var log = new Logs
             {
-                CustomerID = customerId ?? 0, // Eğer null ise 0 atanabilir.
+                CustomerID = customerId ?? 0,
                 OrderID = orderId,
                 LogDate = DateTime.Now,
                 LogType = logType,
@@ -121,7 +121,7 @@ namespace SiparisSistemi.Controllers
                 var customerId = HttpContext.Session.GetInt32("CustomerID");
                 if (customerId == null)
                 {
-                    AddLog(null, null, "Error", "Sepete ürün eklemek için giriş yapılmadı.");
+                    AddLog(null, null, "Uyarı", "Sepete ürün eklemek için giriş yapılmadı.");
                     return Json(new { success = false, message = "Lütfen önce giriş yapın." });
                 }
 
@@ -147,14 +147,14 @@ namespace SiparisSistemi.Controllers
                 var product = await _context.Products.FindAsync(productId);
                 if (product == null)
                 {
-                    AddLog(customerId, null, "Error", $"Ürün bulunamadı: {productId}");
+                    AddLog(customerId, null, "Hata", $"Ürün bulunamadı: {productId}");
                     return Json(new { success = false, message = "Ürün bulunamadı." });
                 }
 
                 // Stok kontrolü
                 if (product.Stock < quantity)
                 {
-                    AddLog(customerId, null, "Error", $"Yetersiz stok: {product.ProductName}");
+                    AddLog(customerId, null, "Uyarı", $"Yetersiz stok: {product.ProductName}");
                     return Json(new { success = false, message = "Yetersiz stok." });
                 }
 
@@ -166,7 +166,7 @@ namespace SiparisSistemi.Controllers
                 int totalQuantity = existingOrders.Sum(o => o.Quantity) + quantity;
                 if (totalQuantity > 5)
                 {
-                    AddLog(customerId, null, "Error", $"Maksimum sipariş limiti aşıldı: {product.ProductName}");
+                    AddLog(customerId, null, "Uyarı", $"Maksimum sipariş limiti aşıldı: {product.ProductName}");
                     return Json(new { success = false, message = "Bir üründen en fazla 5 adet alabilirsiniz." });
                 }
 
@@ -185,16 +185,17 @@ namespace SiparisSistemi.Controllers
 
                 // Değişiklikleri kaydet
                 await _context.SaveChangesAsync();
-                AddLog(customerId, newOrder.OrderID, "AddToCart", $"Ürün sepete eklendi: {product.ProductName}, Miktar: {quantity}");
+                AddLog(customerId, newOrder.OrderID, "Bilgilendirme", $"Ürün sepete eklendi: {product.ProductName}, Miktar: {quantity}");
 
                 return Json(new { success = true, message = "Ürün sepete eklendi ve bekleyen siparişlerin süresi yenilendi!" });
             }
             catch (Exception ex)
             {
-                AddLog(null, null, "Error", $"Sepete ürün eklenirken hata: {ex.Message}");
+                AddLog(null, null, "Hata", $"Sepete ürün eklenirken hata: {ex.Message}");
                 return Json(new { success = false, message = $"Bir hata oluştu: {ex.Message}" });
             }
         }
+
         [HttpGet]
         public IActionResult Orders()
         {
@@ -203,7 +204,7 @@ namespace SiparisSistemi.Controllers
 
             if (customerId == null)
             {
-                AddLog(null, null, "Error", "Siparişlere erişim için giriş yapılmadı.");
+                AddLog(null, null, "Uyarı", $"Siparişlere erişim için giriş yapılmadı.");
                 return RedirectToAction("CustomerLogin", "Login");
             }
 
@@ -215,7 +216,7 @@ namespace SiparisSistemi.Controllers
 
             if (orders == null || !orders.Any())
             {
-                AddLog(customerId, null, "Info", "Müşteri için sipariş bulunamadı.");
+                AddLog(customerId, null, "Uyarı", $"Müşteri için sipariş bulunamadı.");
                 return View(new List<Orders>()); // Boş liste döndür
             }
 
@@ -225,53 +226,51 @@ namespace SiparisSistemi.Controllers
         [HttpPost]
         public async Task<IActionResult> ApproveAllCart()
         {
-            using var transaction = await _context.Database.BeginTransactionAsync();
+            var customerId = HttpContext.Session.GetInt32("CustomerID");
+            if (customerId == null)
+            {
+                return Json(new { success = false, message = "Lütfen giriş yapın." });
+            }
 
+            var pendingOrders = await _context.Orders
+                .Where(o => o.CustomerID == customerId && o.OrderStatus == "Pending")
+                .Include(o => o.Product)
+                .ToListAsync();
+
+            if (!pendingOrders.Any())
+            {
+                return Json(new { success = false, message = "Onaylanacak sipariş bulunamadı." });
+            }
+
+            var totalAmount = pendingOrders.Sum(o => o.TotalPrice);
+
+            var customer = await _context.Customers.FindAsync(customerId);
+            if (customer == null)
+            {
+                return Json(new { success = false, message = "Müşteri bilgisi bulunamadı." });
+            }
+
+            // Yetersiz bütçe kontrolü - Transaction dışında log kaydı
+            if (customer.Budget < totalAmount)
+            {
+                AddLog(customerId, null, "Uyarı",
+                    $"Sepet onaylanamadı - Yetersiz bakiye.");
+                return Json(new { success = false, message = "Yetersiz bakiye!" });
+            }
+
+            // Siparişleri güncelleme işlemi için transaction başlat
+            using var transaction = await _context.Database.BeginTransactionAsync();
             try
             {
-                var customerId = HttpContext.Session.GetInt32("CustomerID");
-                if (customerId == null)
-                {
-                    AddLog(null, null, "Error", "Sepet onaylanırken kullanıcı giriş yapmamış.");
-                    return Json(new { success = false, message = "Lütfen giriş yapın." });
-                }
-
-                var pendingOrders = await _context.Orders
-                    .Where(o => o.CustomerID == customerId && o.OrderStatus == "Pending")
-                    .Include(o => o.Product) // Ürün bilgilerini dahil et
-                    .ToListAsync();
-
-                if (!pendingOrders.Any())
-                {
-                    AddLog(customerId, null, "Info", "Onaylanacak sipariş bulunamadı.");
-                    return Json(new { success = false, message = "Onaylanacak sipariş bulunamadı." });
-                }
-
-                var totalAmount = pendingOrders.Sum(o => o.TotalPrice);
-
-                var customer = await _context.Customers.FindAsync(customerId);
-                if (customer == null)
-                {
-                    AddLog(customerId, null, "Error", "Müşteri bilgisi bulunamadı.");
-                    return Json(new { success = false, message = "Müşteri bilgisi bulunamadı." });
-                }
-
-                // Yetersiz bütçe kontrolü
-                if (customer.Budget < totalAmount)
-                {
-                    AddLog(customerId, null, "Error", "Sipariş onayı başarısız: Yetersiz bakiye.");
-                    return Json(new { success = false, message = "Yetersiz bakiye!" });
-                }
-
                 // Siparişleri admin onayına göndermek için durumlarını güncelle
                 foreach (var order in pendingOrders)
                 {
                     order.OrderStatus = "AwaitingApproval";
                     _context.Entry(order).State = EntityState.Modified;
 
-                    // Log kaydı (null kontrolleriyle birlikte)
                     var productName = order.Product?.ProductName ?? "Bilinmeyen Ürün";
-                    AddLog(customerId, order.OrderID, "OrderAwaitingApproval", $"Sipariş admin onayına gönderildi: {productName}, Miktar: {order.Quantity}");
+                    AddLog(customerId, order.OrderID, "Bilgilendirme",
+                        $"Sipariş admin onayına gönderildi: {productName}, Miktar: {order.Quantity}");
                 }
 
                 // Değişiklikleri kaydet
@@ -283,10 +282,11 @@ namespace SiparisSistemi.Controllers
             catch (Exception ex)
             {
                 await transaction.RollbackAsync();
-                AddLog(null, null, "Error", $"Sepet onaylanırken hata: {ex.Message}");
+                AddLog(customerId, null, "Hata", $"Sepet onaylanırken hata: {ex.Message}");
                 return Json(new { success = false, message = $"Bir hata oluştu: {ex.Message}" });
             }
         }
+
         [HttpPost]
         public IActionResult UpdateBudget(int customerId, decimal budget)
         {
@@ -295,7 +295,6 @@ namespace SiparisSistemi.Controllers
                 var customer = _context.Customers.FirstOrDefault(c => c.CustomerID == customerId);
                 if (customer == null)
                 {
-                    AddLog(customerId, null, "Error", "Bütçe güncelleme sırasında müşteri bulunamadı.");
                     return RedirectToAction("Account", new { message = "Müşteri bulunamadı." });
                 }
 
@@ -303,12 +302,12 @@ namespace SiparisSistemi.Controllers
                 customer.Budget = budget;
                 _context.SaveChanges();
 
-                AddLog(customerId, null, "BudgetUpdated", $"Müşteri bütçesi güncellendi: Yeni Bütçe = ₺{budget:N2}");
+                AddLog(customerId, null, "Bilgilendirme", $"Müşteri bütçesi güncellendi: Yeni Bütçe = ₺{budget:N2}");
                 return RedirectToAction("Account", new { message = "Bütçe başarıyla güncellendi!" });
             }
             catch (Exception ex)
             {
-                AddLog(customerId, null, "Error", $"Bütçe güncellenirken hata: {ex.Message}");
+                AddLog(customerId, null, "Hata", $"Bütçe güncellenirken hata: {ex.Message}");
                 return RedirectToAction("Account", new { message = "Bütçe güncellenirken bir hata oluştu." });
             }
         }
@@ -369,7 +368,7 @@ namespace SiparisSistemi.Controllers
                 var order = _context.Orders.FirstOrDefault(o => o.OrderID == orderId);
                 if (order == null)
                 {
-                    AddLog(null, orderId, "Error", "İptal edilecek sipariş bulunamadı.");
+                    AddLog(null, orderId, "Hata", $"İptal edilecek sipariş bulunamadı.");
                     return Json(new { success = false, message = "Sipariş bulunamadı." });
                 }
 
@@ -377,12 +376,12 @@ namespace SiparisSistemi.Controllers
                 _context.Orders.Update(order); // Güncelleme işlemi
                 _context.SaveChanges(); // Değişiklikleri veritabanına kaydet
 
-                AddLog(order.CustomerID, orderId, "CancelOrder", $"Sipariş iptal edildi: {orderId}");
+                AddLog(order.CustomerID, orderId, "Bilgilendirme", $"Sipariş iptal edildi: {orderId}");
                 return Json(new { success = true, message = "Sipariş başarıyla iptal edildi." });
             }
             catch (Exception ex)
             {
-                AddLog(null, orderId, "Error", $"Sipariş iptali sırasında hata: {ex.Message}");
+                AddLog(null, orderId, "Hata", $"Sipariş iptali sırasında hata: {ex.Message}");
                 return Json(new { success = false, message = "Bir hata oluştu: " + ex.Message });
             }
         }

@@ -35,41 +35,40 @@
         </nav>
     </div>
     <div class="admin-content">
-        <div class="admin-content-header">
+        <div class="admin-content-header"> 
             <div class="header-left">
                 <h3><i class="fas fa-list"></i> Sipariş Onaylama</h3>
-                <p>Bekleyen siparişlerin onaylama işlemini gerçekleştirin</p>
             </div>
         </div>
-
-        @if (Model == null || !Model.Any())
-        {
-            <div class="alert alert-info text-center">
-                Henüz onay bekleyen bir sipariş bulunmamaktadır.
+        <div class="table-responsive">
+            <div class="mb-3 d-flex justify-content-between">
+                <div>
+                    <!-- Tüm Siparişleri Onayla Butonu -->
+                    <button onclick="approveAllOrders()" class="btn btn-success me-2">
+                        <i class="fas fa-check-double"></i> Tüm Siparişleri Onayla
+                    </button>
+                    <!-- Tüm Siparişleri Reddet Butonu -->
+                    <button onclick="rejectAllOrders()" class="btn btn-danger">
+                        <i class="fas fa-times-circle"></i> Tüm Siparişleri Reddet
+                    </button>
+                </div>
             </div>
-        }
-        else
-        {
-            <div class="mb-3">
-                <button onclick="approveAllOrders()" class="btn btn-success">
-                    <i class="fas fa-check-double"></i> Tüm Siparişleri Onayla
-                </button>
-            </div>
-            <div class="table-responsive">
-                <table class="table table-bordered table-striped compact-table">
-                    <thead class="table-dark">
-                        <tr>
-                            <th>Sipariş No</th>
-                            <th>Ürün Adı</th>
-                            <th>Müşteri ID</th>
-                            <th>Adet</th>
-                            <th>Toplam Fiyat</th>
-                            <th>Sipariş Tarihi</th>
-                            <th>Durum</th>
-                            <th>İşlem</th>
-                        </tr>
-                    </thead>
-                    <tbody>
+            <table class="table table-bordered table-striped compact-table">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Sipariş No</th>
+                        <th>Ürün Adı</th>
+                        <th>Müşteri ID</th>
+                        <th>Adet</th>
+                        <th>Toplam Fiyat</th>
+                        <th>Sipariş Tarihi</th>
+                        <th>Durum</th>
+                        <th>İşlem</th>
+                    </tr>
+                </thead>
+                <tbody id="ordersTableBody">
+                    @if (Model != null && Model.Any())
+                    {
                         @foreach (var order in Model)
                         {
                             <tr id="order-@order.OrderID">
@@ -83,16 +82,27 @@
                                     <span class="badge bg-warning">Admin Onayı Bekliyor</span>
                                 </td>
                                 <td>
-                                    <button onclick="approveOrder(@order.OrderID)" class="btn btn-sm btn-success" title="Onayla">
+                                    <!-- Tek Tek Onaylama Butonu -->
+                                    <button onclick="approveOrder(@order.OrderID)" class="btn btn-sm btn-success" title="Onayla" style="display: inline-block; margin-right: 5px;">
                                         <i class="fas fa-check"></i> Onayla
+                                    </button>
+                                    <!-- Sipariş Silme Butonu -->
+                                    <button onclick="deleteOrder(@order.OrderID)" class="btn btn-sm btn-danger" title="Sil" style="display: inline-block;">
+                                        <i class="fas fa-trash-alt"></i> Sil
                                     </button>
                                 </td>
                             </tr>
                         }
-                    </tbody>
-                </table>
-            </div>
-        }
+                    }
+                    else
+                    {
+                        <tr id="noOrdersRow">
+                            <td colspan="8" class="text-center">Henüz sipariş yok.</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 
@@ -100,57 +110,16 @@
     <script>
         let lastOrderId = 0;
 
-        // Yeni siparişleri kontrol eden fonksiyon
-        function checkNewOrders() {
-            $.ajax({
-                url: '/Admin/GetNewOrders',
-                type: 'GET',
-                data: { lastOrderId: lastOrderId },
-                success: function(response) {
-                    console.log("Yeni Siparişler:", response); // Debug için
-                    if (response && response.success && response.orders && response.orders.length > 0) {
-                        lastOrderId = Math.max(...response.orders.map(order => order.orderID));
-                        response.orders.forEach(order => {
-                            if (!$(`#order-${order.orderID}`).length) {
-                                addNewOrderToTable(order);
-                            }
-                        });
-                    }
-                }
-            });
-        }
+        // Tarih formatı düzenleme fonksiyonu - Geliştirilmiş
+                function formatDate(dateString) {
+            if (!dateString) return 'Belirtilmemiş';
 
-        // Yeni siparişi tabloya ekleyen fonksiyon
-        function addNewOrderToTable(order) {
-            const tbody = $('.table tbody');
-            const row = `
-                <tr id="order-${order.orderID}">
-                    <td>${order.orderID}</td>
-                    <td>${order.customerID || 'Belirtilmemiş'}</td>
-                    <td>${order.productName || 'Belirtilmemiş'}</td>
-                    <td>${order.quantity || 0}</td>
-                    <td>${order.totalPrice ? order.totalPrice.toFixed(2) : '0.00'} ₺</td>
-                    <td>${formatDate(order.orderDate)}</td>
-                    <td>${getStatusBadge(order.status)}</td>
-                    <td>
-                        <button class="btn btn-success btn-sm" onclick="approveOrder(${order.orderID})">
-                            Onayla
-                        </button>
-                    </td>
-                </tr>
-            `;
-            $(row).prependTo(tbody).hide().fadeIn(1000).css('background-color', '#e6ffe6')
-                .delay(1000).queue(function(next){
-                    $(this).css('background-color', '');
-                    next();
-                });
-        }
+            let date = new Date(dateString);
+            if (isNaN(date.getTime())) {
+                console.error('Geçersiz tarih:', dateString);
+                return 'Geçersiz Tarih';
+            }
 
-        // Tarih formatı düzenleme fonksiyonu
-        function formatDate(dateString) {
-            if (!dateString) return 'Tarih Belirtilmemiş';
-            const date = new Date(dateString);
-            if (isNaN(date.getTime())) return dateString; // Eğer geçerli bir tarih değilse
             return date.toLocaleString('tr-TR', {
                 year: 'numeric',
                 month: '2-digit',
@@ -159,29 +128,153 @@
                 minute: '2-digit',
                 second: '2-digit'
             });
+        }   
+
+        // Öncelik skoru hesaplama fonksiyonu - Geliştirilmiş
+                function calculatePriorityScore(order) {
+            try {
+                const BeklemeSureAgi = 0.5;
+
+                // Tarihi kontrol et ve ISO formatını kullan
+                let orderDate = new Date(order.orderDate);
+                if (isNaN(orderDate.getTime())) {
+                    console.error('Geçersiz tarih:', order.orderDate);
+                    return 0; // Hatalı tarih varsa 0 döndür
+                }
+
+                const now = new Date();
+                const waitingTime = Math.max(0, (now - orderDate) / 1000); // Saniye cinsinden bekleme süresi
+
+                const customerTypeScore = order.customerType === "Premium" ? 15 : 10;
+
+                const score = customerTypeScore + (waitingTime * BeklemeSureAgi);
+                return isNaN(score) ? 0 : score;
+            } catch (error) {
+                console.error('Öncelik skoru hesaplama hatası:', error);
+                return 0;
+            }
         }
 
-        // İlk yükleme ve periyodik kontrol
-        $(document).ready(function() {
+        // Siparişleri öncelik skoruna göre sırala ve tabloyu güncelle
+                function sortAndUpdateTable(orders) {
+            try {
+                const ordersWithScore = orders
+                    .filter(order => order && order.orderID) // Geçersiz siparişleri filtrele
+                    .map(order => ({
+                        ...order,
+                        priorityScore: calculatePriorityScore(order),
+                        orderDate: order.orderDate || 'Belirtilmemiş',
+                        status: order.status || 'AwaitingApproval',
+                    }))
+                    .sort((a, b) => b.priorityScore - a.priorityScore);
+
+                const tbody = $('.table tbody');
+                tbody.html('');
+
+                ordersWithScore.forEach(order => {
+                    const formattedDate = formatDate(order.orderDate);
+                            const row = `
+            <tr id="order-${order.orderID}" data-order-date="${order.orderDate}">
+                <td>${order.orderID}</td>
+                <td>${order.customerID || 'Belirtilmemiş'}</td>
+                <td>${order.productName || 'Belirtilmemiş'}</td>
+                <td>${order.quantity || 0}</td>
+                <td>${order.totalPrice ? order.totalPrice.toFixed(2) : '0.00'} ₺</td>
+                <td>${formatDate(order.orderDate)}</td>
+                <td>${getStatusBadge(order.status)}</td>
+                <td>Öncelik: ${order.priorityScore.toFixed(2)}</td>
+            </tr>
+        `;
+                    tbody.append(row);
+                });
+            } catch (error) {
+                console.error('Tablo güncelleme hatası:', error);
+            }
+        }
+
+        // Yeni siparişleri kontrol eden fonksiyon - Geliştirilmiş
+        function checkNewOrders() {
             $.ajax({
-                url: '/Admin/GetAwaitingApprovalOrders',
-                method: 'GET',
+                url: '/Admin/GetNewOrders',
+                type: 'GET',
+                data: { lastOrderId: lastOrderId },
                 success: function(response) {
-                    console.log("İlk Yükleme Response:", response); // Debug için
-                    if (response.success && response.orders && response.orders.length > 0) {
-                        const tbody = $('.table tbody');
-                        tbody.html('');
-                        lastOrderId = Math.max(...response.orders.map(order => order.orderID));
-                        response.orders.forEach(order => addNewOrderToTable(order));
+                    if (response && response.success && response.orders && response.orders.length > 0) {
+                        // Mevcut siparişleri al
+                        const existingOrders = [];
+                        $('.table tbody tr').each(function() {
+                            const $row = $(this);
+                            try {
+                                const orderData = {
+                                    orderID: parseInt($row.attr('id').replace('order-', '')),
+                                    customerID: $row.find('td:eq(1)').text(),
+                                    productName: $row.find('td:eq(2)').text(),
+                                    quantity: parseInt($row.find('td:eq(3)').text()) || 0,
+                                    totalPrice: parseFloat($row.find('td:eq(4)').text().replace(' ₺', '')) || 0,
+                                    orderDate: new Date($row.data('order-date')),
+                                    status: $row.find('td:eq(6)').find('span').text(),
+                                    customerType: $row.data('customer-type') || 'Normal'
+                                };
+                                if (!isNaN(orderData.orderID)) {
+                                    existingOrders.push(orderData);
+                                }
+                            } catch (error) {
+                                console.error('Sipariş verisi okuma hatası:', error);
+                            }
+                        });
+
+                        // Yeni siparişlerin ID'lerini güncelle
+                        const newOrderIds = response.orders.map(order => order.orderID);
+                        if (newOrderIds.length > 0) {
+                            lastOrderId = Math.max(...newOrderIds);
+                        }
+
+                        // Tüm siparişleri birleştir ve sırala
+                        const allOrders = [...existingOrders, ...response.orders];
+                        sortAndUpdateTable(allOrders);
                     }
-                },
-                error: function(error) {
-                    console.error("Siparişler yüklenirken hata:", error);
                 }
             });
+        }
 
-            setInterval(checkNewOrders, 1000);
-        });
+        // Mevcut siparişlerin öncelik skorlarını güncelle
+                function updateExistingOrdersPriority() {
+            const existingOrders = [];
+            $('.table tbody tr').each(function () {
+                const $row = $(this);
+
+                // Sipariş verilerini tablodan al
+                const orderData = {
+                    orderID: parseInt($row.attr('id').replace('order-', '')),
+                    customerID: $row.find('td:eq(1)').text(),
+                    productName: $row.find('td:eq(2)').text(),
+                    quantity: parseInt($row.find('td:eq(3)').text()),
+                    totalPrice: parseFloat($row.find('td:eq(4)').text().replace(' ₺', '')),
+                    orderDate: new Date($row.find('td:eq(5)').text()), // Tarihi doğrudan tablodan oku
+                    status: $row.find('td:eq(6)').find('span').text(),
+                    customerType: $row.data('customer-type') || 'Normal',
+                };
+
+                // Tarih formatını kontrol et ve geçerli olduğundan emin ol
+                if (isNaN(orderData.orderDate.getTime())) {
+                    console.error(`Geçersiz tarih: ${orderData.orderDate}`);
+                    return; // Hatalı tarih varsa bu satırı atla
+                }
+
+                // Yeni öncelik skorunu hesapla
+                const newPriorityScore = calculatePriorityScore(orderData);
+
+                // Tablodaki mevcut satırı güncelle
+                $row.find('td:eq(7)').text(`Öncelik: ${newPriorityScore.toFixed(2)}`);
+
+                // Güncellenen sipariş verisini ekle
+                existingOrders.push({ ...orderData, priorityScore: newPriorityScore });
+            });
+
+            if (existingOrders.length > 0) {
+                sortAndUpdateTable(existingOrders); // Güncellenmiş verileri tekrar sırala ve tabloyu yenile
+            }
+        }
 
         // Status badge fonksiyonu güncellendi
         function getStatusBadge(status) {
@@ -197,42 +290,6 @@
                 default:
                     return '<span class="badge bg-secondary">Durum Belirtilmemiş</span>';
             }
-        }
-
-        // Sipariş onaylama fonksiyonu
-        function approveOrder(orderId) {
-            Swal.fire({
-                title: 'Siparişi Onaylamak İstiyor Musunuz?',
-                text: "Bu siparişi onaylamaya devam etmek istiyor musunuz?",
-                icon: 'question',
-                showCancelButton: true,
-                confirmButtonColor: '#28a745',
-                cancelButtonColor: '#6c757d',
-                confirmButtonText: 'Evet, Onayla',
-                cancelButtonText: 'İptal'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $.ajax({
-                        url: '/Admin/ApproveOrder',
-                        type: 'POST',
-                        data: { orderId: orderId },
-                        success: function (response) {
-                            if (response.success) {
-                                // Animasyonlu silme efekti
-                                $(`#order-${orderId}`).fadeOut(400, function() {
-                                    $(this).remove();
-                                });
-                                Swal.fire('Onaylandı!', response.message, 'success');
-                            } else {
-                                Swal.fire('Hata!', response.message, 'error');
-                            }
-                        },
-                        error: function () {
-                            Swal.fire('Hata!', 'Sipariş onaylanırken bir hata oluştu.', 'error');
-                        }
-                    });
-                }
-            });
         }
 
         // Tüm siparişleri onaylama fonksiyonu
@@ -270,10 +327,70 @@
             });
         }
 
+                function rejectAllOrders() {
+            Swal.fire({
+                title: 'Tüm Siparişleri Reddetmek İstiyor Musunuz?',
+                text: "Bekleyen tüm siparişleri reddetmek istediğinize emin misiniz?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#ffc107',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Evet, Hepsini Reddet',
+                cancelButtonText: 'İptal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '/Admin/RejectAllOrders',
+                        type: 'POST',
+                        success: function(response) {
+                            if (response.success) {
+                                // Animasyonlu kaldırma efekti
+                                $('.table tbody tr').fadeOut(400, function() {
+                                    $(this).remove();
+                                });
+                                // Başarı mesajı
+                                Swal.fire('Reddedildi!', response.message, 'success');
+                                // Logları güncelle
+                                fetchLogs();
+                            } else {
+                                Swal.fire('Hata!', response.message, 'error');
+                            }
+                        },
+                        error: function() {
+                            Swal.fire('Hata!', 'Siparişler reddedilirken bir hata oluştu.', 'error');
+                        }
+                    });
+                }
+            });
+        }
+
+        // Sayfa yüklendiğinde ve belirli aralıklarla çalışacak işlemler
+        $(document).ready(function() {
+            // İlk yükleme
+            $.ajax({
+                url: '/Admin/GetAwaitingApprovalOrders',
+                method: 'GET',
+                success: function(response) {
+                    if (response.success && response.orders && response.orders.length > 0) {
+                        lastOrderId = Math.max(...response.orders.map(order => order.orderID));
+                        sortAndUpdateTable(response.orders);
+                    }
+                },
+                error: function(error) {
+                    console.error("Siparişler yüklenirken hata:", error);
+                }
+            });
+
+            // Yeni siparişleri kontrol et
+            setInterval(checkNewOrders, 500);
+
+            // Her 5 saniyede bir mevcut siparişlerin önceliklerini güncelle
+            setInterval(updateExistingOrdersPriority, 5000);
+        });
     </script>
 }
-<script>
 
+<script>
     function fetchLogs() {
         $.ajax({
             url: '@Url.Action("FetchLogs", "Admin")', // FetchLogs action'ı

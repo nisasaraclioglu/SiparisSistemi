@@ -3,65 +3,21 @@
     ViewData["Title"] = "TechStore - Teknoloji Mağazanız";
 }
 
-<header>
-    <div class="logo">Tech<span class="store-highlight">Store</span></div>
-    <div class="search-bar">
-        <input type="text" id="searchInput" placeholder="Ürün aramak için yazın..." />
-        <button><i class="fas fa-search"></i></button>
-    </div>
-    <div class="header-icons">
-        <a href="/Customer/Account"><i class="fas fa-user"></i> Hesabım</a>
-        <a href="/Customer/Orders"><i class="fas fa-shopping-cart"></i> Sepetim</a>
+<header class="header">
+    <div class="header-container">
+        <div class="logo">Tech<span class="store-highlight">Store</span></div>
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Ürün aramak için yazın..." />
+            <button><i class="fas fa-search"></i></button>
+        </div>
+        <div class="header-icons">
+            <a href="/Customer/Account"><i class="fas fa-user"></i> Hesabım</a>
+            <a href="/Customer/Orders" class="cart-link"><i class="fas fa-shopping-cart"></i> Sepetim</a>
+        </div>
     </div>
 </header>
 
-<nav class="nav-bar">
-    <a href="#"><i class="fas fa-laptop"></i> Laptoplar</a>
-    <a href="#"><i class="fas fa-mobile-alt"></i> Telefonlar</a>
-    <a href="#"><i class="fas fa-headphones"></i> Aksesuarlar</a>
-    <a href="#"><i class="fas fa-gamepad"></i> Oyun Ürünleri</a>
-    <a href="#"><i class="fas fa-home"></i> Akıllı Ev</a>
-</nav>
-
-<div class="hero-section">
-    <h1>Teknolojinin Adresi</h1>
-    <p>En yeni ürünler, en uygun fiyatlarla!</p>
-</div>
-
 <main>
-    <aside class="filter-panel">
-        <h3><i class="fas fa-filter"></i> Filtreler</h3>
-        <div class="filter">
-            <label>Fiyat Aralığı</label>
-            <div class="price-range">
-                <input type="range" min="0" max="50000" class="range-input" />
-                <div class="price-labels">
-                    <span>0₺</span>
-                    <span>50.000₺</span>
-                </div>
-            </div>
-        </div>
-        <div class="filter">
-            <label><i class="fas fa-tag"></i> Marka</label>
-            <select class="custom-select">
-                <option>Tüm Markalar</option>
-                <option>Apple</option>
-                <option>Samsung</option>
-                <option>Lenovo</option>
-                <option>HP</option>
-            </select>
-        </div>
-        <div class="filter">
-            <label><i class="fas fa-list"></i> Kategori</label>
-            <select class="custom-select">
-                <option>Tüm Kategoriler</option>
-                <option>Laptoplar</option>
-                <option>Telefonlar</option>
-                <option>Oyun Ekipmanları</option>
-            </select>
-        </div>
-    </aside>
-
     <section class="product-grid">
         @foreach (var product in Model)
         {
@@ -76,6 +32,7 @@
                         Stok: @product.Stock
                     </div>
                     <div class="quantity-selector">
+                        <label for="quantity-@product.ProductID">Adet:</label>
                         <input type="number"
                                id="quantity-@product.ProductID"
                                min="1"
