@@ -67,20 +67,23 @@
         {
             <div class="product-card">
                 <div class="product-image">
-                    <img src="@product.ImageUrl" alt="@product.ProductName">
+                    <img src="@product.ImageUrl" alt="@product.ProductName" />
                 </div>
                 <div class="product-info">
                     <h4>@product.ProductName</h4>
                     <div class="product-price">₺@product.Price.ToString("N2")</div>
+                    <div class="stock-info @(product.Stock <= 5 ? "critical-stock" : "")">
+                        Stok: @product.Stock
+                    </div>
                     <div class="quantity-selector">
-                        <input type="number" 
-                               id="quantity-@product.ProductID" 
-                               min="1" 
-                               max="@product.Stock" 
-                               value="1" 
+                        <input type="number"
+                               id="quantity-@product.ProductID"
+                               min="1"
+                               max="@product.Stock"
+                               value="1"
                                class="form-control quantity-input" />
                     </div>
-                    <button onclick="addToCart(@product.ProductID, document.getElementById('quantity-@product.ProductID').value)" 
+                    <button onclick="addToCart(@product.ProductID, document.getElementById('quantity-@product.ProductID').value)"
                             class="btn-add-to-cart">
                         <i class="fas fa-shopping-cart"></i> Sepete Ekle
                     </button>
@@ -121,9 +124,19 @@
                     data: { searchTerm: searchTerm },
                     success: function(response) {
                         $('.product-grid').html(response);
+                    },
+                    error: function() {
+                        alert('Arama sırasında bir hata oluştu.');
                     }
                 });
             }
         });
     </script>
 }
+
+<style>
+    .critical-stock {
+        color: red;
+        font-weight: bold;
+    }
+</style>

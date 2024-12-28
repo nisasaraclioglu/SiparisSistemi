@@ -3,6 +3,7 @@
 @{
     ViewData["Title"] = "Hesabım";
 }
+
 <!-- CSS -->
 <style>
     /* Sayfa Arka Planı ve Ana Container */
@@ -14,88 +15,158 @@
     }
 
     .account-container {
-        max-width: 600px;
+        max-width: 800px; /* Genişletilmiş container */
         margin: 50px auto;
-        background-color: #ffffff; /* Beyaz kutu */
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        padding: 30px;
+        background-color: #ffffff;
+        border-radius: 15px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        padding: 40px;
+        transition: transform 0.3s ease;
     }
 
-    /* Başlık */
+        .account-container:hover {
+            transform: translateY(-5px);
+        }
+
     .account-header {
         text-align: center;
-        color: #343a40;
-        margin-bottom: 20px;
+        color: #2c3e50;
+        margin-bottom: 30px;
+        font-size: 2.2em;
+        font-weight: 600;
     }
 
-    /* Kullanıcı Bilgileri */
-    .account-info p {
-        font-size: 16px;
-        margin: 10px 0;
-        color: #495057;
+    .account-info {
+        background-color: #f8f9fa;
+        padding: 25px;
+        border-radius: 10px;
+        margin-bottom: 30px;
     }
 
-    /* Buton Stilleri */
+        .account-info p {
+            font-size: 17px;
+            margin: 15px 0;
+            color: #2c3e50;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+            .account-info p:last-child {
+                border-bottom: none;
+            }
+
     .account-buttons {
         display: flex;
-        justify-content: space-around;
-        margin-top: 20px;
+        justify-content: center;
+        gap: 20px;
+        margin-top: 30px;
     }
 
     .btn-custom {
-        display: inline-block;
-        padding: 10px 20px;
-        font-size: 14px;
+        padding: 15px 30px;
+        font-size: 16px;
+        font-weight: 600;
+        border-radius: 50px;
+        border: none;
+        color: white;
         text-decoration: none;
-        color: #fff;
-        border-radius: 5px;
-        transition: background-color 0.3s ease;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        z-index: 1;
+        letter-spacing: 1px;
+        text-transform: uppercase;
     }
 
-    .btn-home {
-        background-color: #28a745; /* Yeşil */
-    }
-
-        .btn-home:hover {
-            background-color: #218838;
+        .btn-custom::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            z-index: -1;
         }
+
+        .btn-custom:hover::before {
+            width: 100%;
+        }
+
+        .btn-custom:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 14px rgba(0, 0, 0, 0.2);
+            color: white;
+            text-decoration: none;
+        }
+
+        .btn-custom:active {
+            transform: translateY(-1px);
+        }
+
+    /* Buton renkleri ve özel efektler */
+    .btn-home {
+        background: linear-gradient(45deg, #2ecc71, #27ae60);
+        box-shadow: 0 4px 15px rgba(46, 204, 113, 0.3);
+    }
 
     .btn-orders {
-        background-color: #007bff; /* Mavi */
+        background: linear-gradient(45deg, #3498db, #2980b9);
+        box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
     }
-
-        .btn-orders:hover {
-            background-color: #0056b3;
-        }
 
     .btn-logout {
-        background-color: #dc3545; /* Kırmızı */
+        background: linear-gradient(45deg, #e74c3c, #c0392b);
+        box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
     }
-
-        .btn-logout:hover {
-            background-color: #c82333;
-        }
 </style>
 
-<!-- Ana Container -->
+<!-- HTML Yapısı -->
 <div class="account-container">
-    <h2 class="account-header">Hesabım</h2>
+    <h2 class="account-header">Hoş Geldiniz, @Model.CustomerName</h2>
 
-    <!-- Kullanıcı Bilgileri -->
     <div class="account-info">
-        <p><strong>Ad:</strong> @Model.CustomerName</p>
-        <p><strong>Bütçe:</strong> ₺@Model.Budget.ToString("N2")</p>
-        <p><strong>Harcama Toplamı:</strong> ₺@Model.TotalSpent.ToString("N2")</p>
-        <p><strong>Müşteri Türü:</strong> @Model.CustomerType</p>
+        <p>
+            <span>Müşteri ID</span>
+            <strong>@Model.CustomerID</strong>
+        </p>
+        <p>
+            <span>Ad</span>
+            <strong>@Model.CustomerName</strong>
+        </p>
+        <p>
+            <span>Bütçe</span>
+            <!-- Bütçe güncelleme formu -->
+            <form asp-action="UpdateBudget" method="post" style="display: flex; gap: 10px; align-items: center;">
+                <input type="hidden" name="customerId" value="@Model.CustomerID" />
+                <input type="number"
+                       name="budget"
+                       value="@Model.Budget.ToString("N2")"
+                       step="0.01"
+                       class="form-control"
+                       style="width: 150px;" />
+                <span style="font-size: 16px; color: #6c757d;">(Mevcut: ₺@Model.Budget.ToString("N2"))</span>
+                <button type="submit" class="btn btn-primary btn-sm">Güncelle</button>
+            </form>
+        </p>
+
+        <p>
+            <span>Harcama Toplamı</span>
+            <strong>₺@Model.TotalSpent.ToString("N2")</strong>
+        </p>
+        <p>
+            <span>Müşteri Türü</span>
+            <strong>@Model.CustomerType</strong>
+        </p>
     </div>
 
-    <!-- Butonlar -->
     <div class="account-buttons">
         <a href="/Customer/CustomerHome" class="btn-custom btn-home">Anasayfa</a>
         <a href="/Customer/Orders" class="btn-custom btn-orders">Siparişlerim</a>
         <a href="/Login/Logout" class="btn-custom btn-logout">Çıkış Yap</a>
-
     </div>
 </div>
-

@@ -52,42 +52,56 @@ namespace SiparisSistemi.Controllers
 
         // Tek sipariş onaylama
         [HttpPost]
-        public IActionResult ApproveOrder(int orderId)
+public IActionResult ApproveOrder(int orderId)
+{
+    try
+    {
+        // Siparişi veritabanından çek
+        var order = _context.Orders
+            .Include(o => o.Product)
+            .Include(o => o.Customer)
+            .FirstOrDefault(o => o.OrderID == orderId && o.OrderStatus == "AwaitingApproval");
+
+        if (order == null)
         {
-            try
-            {
-                var order = _context.Orders
-                    .Include(o => o.Product)
-                    .Include(o => o.Customer)
-                    .FirstOrDefault(o => o.OrderID == orderId && o.OrderStatus == "AwaitingApproval");
-
-                if (order == null)
-                {
-                    AddLog(null, orderId, "Error", $"Sipariş {orderId} bulunamadı veya zaten tamamlanmış.");
-                    return Json(new { success = false, message = "Sipariş bulunamadı veya zaten tamamlanmış." });
-                }
-
-                if (order.Product.Stock < order.Quantity)
-                {
-                    AddLog(order.CustomerID, orderId, "Error", $"Sipariş {orderId}: Yetersiz stok.");
-                    return Json(new { success = false, message = "Yetersiz stok." });
-                }
-
-                // Siparişi onayla
-                order.Product.Stock -= order.Quantity;
-                order.OrderStatus = "Completed";
-                _context.SaveChanges();
-
-                AddLog(order.CustomerID, orderId, "OrderApproved", $"Sipariş {order.OrderID} onaylandı. Ürün: {order.Product.ProductName}, Miktar: {order.Quantity}");
-
-                return Json(new { success = true, message = "Sipariş onaylandı." });
-            }
-            catch (Exception ex)
-            {
-                AddLog(null, orderId, "Error", $"Sipariş {orderId} onaylanırken hata: {ex.Message}");
-                return Json(new { success = false, message = $"Bir hata oluştu: {ex.Message}" });
-            }
+            return Json(new { success = false, message = "Sipariş bulunamadı veya zaten tamamlanmış." });
         }
+
+        // Yetersiz stok kontrolü
+        if (order.Product.Stock < order.Quantity)
+        {
+            AddLog(order.CustomerID, orderId, "Error", "Yetersiz stok.");
+            return Json(new { success = false, message = "Yetersiz stok." });
+        }
+
+        // Yetersiz bütçe kontrolü
+        if (order.Customer.Budget < order.TotalPrice)
+        {
+            AddLog(order.CustomerID, orderId, "Error", "Yetersiz bütçe.");
+            return Json(new { success = false, message = "Yetersiz bütçe." });
+        }
+
+        // Stok ve bütçe güncellemeleri
+        _context.Attach(order.Customer); // EF Core'a müşteri takibini belirt
+        order.Product.Stock -= order.Quantity;
+        order.Customer.Budget -= order.TotalPrice;
+        order.Customer.TotalSpent += order.TotalPrice;
+
+        // Sipariş durumunu güncelle
+        order.OrderStatus = "Completed";
+
+        // Değişiklikleri kaydet
+        _context.SaveChanges();
+
+        AddLog(order.CustomerID, orderId, "OrderApproved", $"Sipariş {order.OrderID} başarıyla onaylandı.");
+        return Json(new { success = true, message = "Sipariş başarıyla onaylandı." });
+    }
+    catch (Exception ex)
+    {
+        AddLog(null, orderId, "Error", $"Sipariş onaylanırken hata: {ex.Message}");
+        return Json(new { success = false, message = $"Bir hata oluştu: {ex.Message}" });
+    }
+}
 
         // Logları frontend'e gönderen endpoint
         [HttpGet]
@@ -138,7 +152,6 @@ namespace SiparisSistemi.Controllers
 
                 const double BeklemeSureAgi = 0.5;
 
-                // Öncelik Skorlarını Hesapla ve Siparişleri Sırala
                 var sortedOrders = awaitingApprovalOrders
                     .Select(order =>
                     {
@@ -160,7 +173,6 @@ namespace SiparisSistemi.Controllers
                     .OrderByDescending(x => x.PriorityScore)
                     .ToList();
 
-                // Thread-safe stok erişimi için lock objesi
                 object stockLock = new object();
 
                 foreach (var item in sortedOrders)
@@ -169,9 +181,12 @@ namespace SiparisSistemi.Controllers
 
                     lock (stockLock)
                     {
-                        if (order.Product.Stock >= order.Quantity)
+                        if (order.Product.Stock >= order.Quantity && order.Customer.Budget >= order.TotalPrice)
                         {
+                            // Stok ve müşteri bütçesini güncelle
                             order.Product.Stock -= order.Quantity;
+                            order.Customer.Budget -= order.TotalPrice;
+                            order.Customer.TotalSpent += order.TotalPrice;
                             order.OrderStatus = "Completed";
 
                             // Başarılı sipariş log kaydı
@@ -188,6 +203,9 @@ namespace SiparisSistemi.Controllers
                         {
                             order.OrderStatus = "Cancelled";
 
+                            // Hata nedeni belirleme
+                            var errorReason = order.Product.Stock < order.Quantity ? "Yetersiz stok" : "Yetersiz bütçe";
+
                             // İptal edilen sipariş log kaydı
                             _context.Logs.Add(new Logs
                             {
@@ -195,7 +213,7 @@ namespace SiparisSistemi.Controllers
                                 OrderID = order.OrderID,
                                 LogDate = DateTime.Now,
                                 LogType = "Hata",
-                                LogDetails = $"Sipariş {order.OrderID} iptal edildi. Yetersiz stok."
+                                LogDetails = $"Sipariş {order.OrderID} iptal edildi. {errorReason}."
                             });
                         }
                     }
@@ -208,10 +226,9 @@ namespace SiparisSistemi.Controllers
             }
             catch (Exception ex)
             {
-                // Hata log kaydı
                 _context.Logs.Add(new Logs
                 {
-                    CustomerID = 0, // Admin işlemi olduğu için CustomerID 0 olarak kaydediliyor
+                    CustomerID = 0,
                     LogDate = DateTime.Now,
                     LogType = "Hata",
                     LogDetails = $"ApproveAllOrders işleminde hata: {ex.Message}"

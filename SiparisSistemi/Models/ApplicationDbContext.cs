@@ -1,6 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SiparisSistemi.Helpers;
 using SiparisSistemi.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SiparisSistemi.Models
 {
@@ -110,21 +113,18 @@ namespace SiparisSistemi.Models
                 }
             );
         }
+
+        // Müşteri ID'lerini sıfırlayan ve rastgele müşteri ekleyen metot
         public static void SeedRandomCustomers(ApplicationDbContext context)
         {
-            // Önce siparişleri sil
-            var customersToDelete = context.Customers.Select(c => c.CustomerID).ToList();
-            var relatedOrders = context.Orders.Where(o => customersToDelete.Contains(o.CustomerID));
-            context.Orders.RemoveRange(relatedOrders);
-
-            // Logları sil
-            var logsToDelete = context.Logs.Select(c => c.LogID).ToList();
-            var relatedLogs = context.Logs.Where(o => logsToDelete.Contains(o.LogID));
-            context.Logs.RemoveRange(relatedLogs);
-
-            // Sonra müşterileri sil
+            // Mevcut müşterileri, siparişleri ve logları temizle
+            context.Orders.RemoveRange(context.Orders);
+            context.Logs.RemoveRange(context.Logs);
             context.Customers.RemoveRange(context.Customers);
             context.SaveChanges();
+
+            // CustomerID'leri sıfırla (MySQL için)
+            context.Database.ExecuteSqlRaw("ALTER TABLE Customers AUTO_INCREMENT = 1");
 
             // Rastgele müşteri oluştur
             Random random = new Random();
@@ -147,5 +147,6 @@ namespace SiparisSistemi.Models
             context.Customers.AddRange(customers);
             context.SaveChanges();
         }
+
     }
 }

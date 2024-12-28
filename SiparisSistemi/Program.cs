@@ -31,7 +31,15 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-    ApplicationDbContext.SeedRandomCustomers(context);
+    try
+    {
+        // Müşteri ID sıfırlama ve veri tohumlama
+        ApplicationDbContext.SeedRandomCustomers(context);
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Error during database seeding: {ex.Message}");
+    }
 }
 
 // Configure the HTTP request pipeline.

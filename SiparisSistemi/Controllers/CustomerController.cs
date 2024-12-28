@@ -32,9 +32,9 @@ namespace SiparisSistemi.Controllers
                         Price = p.Price,
                         Stock = p.Stock,
                         ProductType = p.ProductType,
-                        ImageUrl = !string.IsNullOrEmpty(p.ImagePath) 
-                            ? p.ImagePath.StartsWith("/") 
-                                ? p.ImagePath 
+                        ImageUrl = !string.IsNullOrEmpty(p.ImagePath)
+                            ? p.ImagePath.StartsWith("/")
+                                ? p.ImagePath
                                 : $"/images/products/{p.ImagePath}"
                             : "/images/products/default.jpg"
                     })
@@ -48,7 +48,6 @@ namespace SiparisSistemi.Controllers
                 return View(new List<ProductViewModel>());
             }
         }
-
         [HttpGet]
         public IActionResult Account()
         {
@@ -70,7 +69,6 @@ namespace SiparisSistemi.Controllers
 
             return View(customer);
         }
-
         [HttpPost]
         public async Task<IActionResult> Search(string searchTerm)
         {
@@ -83,8 +81,8 @@ namespace SiparisSistemi.Controllers
                     Price = p.Price,
                     Stock = p.Stock,
                     ProductType = p.ProductType,
-                    ImageUrl = string.IsNullOrEmpty(p.ImagePath) 
-                        ? "/images/products/default.jpg" 
+                    ImageUrl = string.IsNullOrEmpty(p.ImagePath)
+                        ? "/images/products/default.jpg"
                         : p.ImagePath
                 })
                 .ToListAsync();
@@ -258,13 +256,14 @@ namespace SiparisSistemi.Controllers
                     return Json(new { success = false, message = "Müşteri bilgisi bulunamadı." });
                 }
 
+                // Yetersiz bütçe kontrolü
                 if (customer.Budget < totalAmount)
                 {
                     AddLog(customerId, null, "Error", "Sipariş onayı başarısız: Yetersiz bakiye.");
                     return Json(new { success = false, message = "Yetersiz bakiye!" });
                 }
 
-                // Siparişleri onayla
+                // Siparişleri admin onayına göndermek için durumlarını güncelle
                 foreach (var order in pendingOrders)
                 {
                     order.OrderStatus = "AwaitingApproval";
@@ -272,13 +271,10 @@ namespace SiparisSistemi.Controllers
 
                     // Log kaydı (null kontrolleriyle birlikte)
                     var productName = order.Product?.ProductName ?? "Bilinmeyen Ürün";
-                    AddLog(customerId, order.OrderID, "OrderApproved", $"Sipariş onaylandı: {productName}, Miktar: {order.Quantity}");
+                    AddLog(customerId, order.OrderID, "OrderAwaitingApproval", $"Sipariş admin onayına gönderildi: {productName}, Miktar: {order.Quantity}");
                 }
 
-                // Müşteri bütçesini güncelle
-                customer.Budget -= totalAmount;
-                _context.Entry(customer).State = EntityState.Modified;
-
+                // Değişiklikleri kaydet
                 await _context.SaveChangesAsync();
                 await transaction.CommitAsync();
 
@@ -289,6 +285,31 @@ namespace SiparisSistemi.Controllers
                 await transaction.RollbackAsync();
                 AddLog(null, null, "Error", $"Sepet onaylanırken hata: {ex.Message}");
                 return Json(new { success = false, message = $"Bir hata oluştu: {ex.Message}" });
+            }
+        }
+        [HttpPost]
+        public IActionResult UpdateBudget(int customerId, decimal budget)
+        {
+            try
+            {
+                var customer = _context.Customers.FirstOrDefault(c => c.CustomerID == customerId);
+                if (customer == null)
+                {
+                    AddLog(customerId, null, "Error", "Bütçe güncelleme sırasında müşteri bulunamadı.");
+                    return RedirectToAction("Account", new { message = "Müşteri bulunamadı." });
+                }
+
+                // Yeni bütçeyi güncelle
+                customer.Budget = budget;
+                _context.SaveChanges();
+
+                AddLog(customerId, null, "BudgetUpdated", $"Müşteri bütçesi güncellendi: Yeni Bütçe = ₺{budget:N2}");
+                return RedirectToAction("Account", new { message = "Bütçe başarıyla güncellendi!" });
+            }
+            catch (Exception ex)
+            {
+                AddLog(customerId, null, "Error", $"Bütçe güncellenirken hata: {ex.Message}");
+                return RedirectToAction("Account", new { message = "Bütçe güncellenirken bir hata oluştu." });
             }
         }
 
