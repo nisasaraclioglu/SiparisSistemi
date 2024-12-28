@@ -186,22 +186,34 @@
                     }
                 }
 
-                updateTimer(); // Hemen başlat
-                setInterval(updateTimer, 1000); // Her saniye güncelle
+                updateTimer(); // İlk güncelleme
+                const interval = setInterval(updateTimer, 1000); // Her saniye çalıştır
+                timer.dataset.intervalId = interval; // Geri sayım kontrolü için ID sakla
+            });
+        }
+
+        // Geri sayımları temizle
+        function clearCountdowns() {
+            const timers = document.querySelectorAll('.countdown-timer');
+            timers.forEach(timer => {
+                const intervalId = timer.dataset.intervalId;
+                if (intervalId) {
+                    clearInterval(intervalId);
+                }
             });
         }
 
         // Süresi dolmuş siparişleri kontrol eden fonksiyon
-        function checkExpiredOrders() {
+                function checkExpiredOrders() {
             $.post('/Customer/CancelExpiredOrders', function (response) {
                 if (response.success) {
-                    console.log(response.message); // Konsola bilgi mesajı
+                    showAlert(response.message, 'success'); // Başarı mesajı
                     updateOrdersUI(); // DOM'u güncelle
                 } else {
-                    alert(response.message); // Hata mesajını göster
+                    showAlert(response.message, 'error'); // Hata mesajı
                 }
             }).fail(function () {
-                alert("Süresi dolmuş siparişleri kontrol ederken bir hata oluştu.");
+                showAlert("Süresi dolmuş siparişleri kontrol ederken bir hata oluştu.", 'error');
             });
         }
 

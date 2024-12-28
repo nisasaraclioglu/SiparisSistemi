@@ -730,3 +730,51 @@ header .search-bar input {
     max-width: 1000px;
     margin: 0 auto;
 }
+
+/* Log panelinin kodları */
+.sidebar-log-panel {
+    position: relative;
+    padding: 10px;
+    color: black;
+    border: 1px solid black;
+    background-color: white;
+    border-radius: 8px;
+    max-height: 300px;
+    overflow-y: auto;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+    .sidebar-log-panel h6 {
+        font-size: 14px;
+        margin: 0 0 10px;
+        text-align: center;
+    }
+
+.log-list {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+    .log-list li {
+        font-size: 12px;
+        padding: 5px;
+        color: black !important;
+        border-bottom: 1px solid black;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+        .log-list li:last-child {
+            border-bottom: none;
+        }
+
+.sidebar-log-panel::-webkit-scrollbar {
+    width: 8px;
+}
+
+.sidebar-log-panel::-webkit-scrollbar-thumb {
+    background-color: #eee;
+    border-radius: 4px;
+}

@@ -91,6 +91,7 @@ namespace SiparisSistemi.Controllers
 
             return PartialView("_ProductGrid", products);
         }
+
         private void AddLog(int? customerId, int? orderId, string logType, string logDetails)
         {
             var log = new Logs
@@ -105,7 +106,7 @@ namespace SiparisSistemi.Controllers
             try
             {
                 _context.Logs.Add(log);
-                _context.SaveChanges();
+                _context.SaveChanges(); // Logu kaydet
             }
             catch (Exception ex)
             {
@@ -233,15 +234,18 @@ namespace SiparisSistemi.Controllers
                 var customerId = HttpContext.Session.GetInt32("CustomerID");
                 if (customerId == null)
                 {
+                    AddLog(null, null, "Error", "Sepet onaylanırken kullanıcı giriş yapmamış.");
                     return Json(new { success = false, message = "Lütfen giriş yapın." });
                 }
 
                 var pendingOrders = await _context.Orders
                     .Where(o => o.CustomerID == customerId && o.OrderStatus == "Pending")
+                    .Include(o => o.Product) // Ürün bilgilerini dahil et
                     .ToListAsync();
 
                 if (!pendingOrders.Any())
                 {
+                    AddLog(customerId, null, "Info", "Onaylanacak sipariş bulunamadı.");
                     return Json(new { success = false, message = "Onaylanacak sipariş bulunamadı." });
                 }
 
@@ -250,19 +254,30 @@ namespace SiparisSistemi.Controllers
                 var customer = await _context.Customers.FindAsync(customerId);
                 if (customer == null)
                 {
+                    AddLog(customerId, null, "Error", "Müşteri bilgisi bulunamadı.");
                     return Json(new { success = false, message = "Müşteri bilgisi bulunamadı." });
                 }
 
                 if (customer.Budget < totalAmount)
                 {
+                    AddLog(customerId, null, "Error", "Sipariş onayı başarısız: Yetersiz bakiye.");
                     return Json(new { success = false, message = "Yetersiz bakiye!" });
                 }
 
+                // Siparişleri onayla
                 foreach (var order in pendingOrders)
                 {
                     order.OrderStatus = "AwaitingApproval";
                     _context.Entry(order).State = EntityState.Modified;
+
+                    // Log kaydı (null kontrolleriyle birlikte)
+                    var productName = order.Product?.ProductName ?? "Bilinmeyen Ürün";
+                    AddLog(customerId, order.OrderID, "OrderApproved", $"Sipariş onaylandı: {productName}, Miktar: {order.Quantity}");
                 }
+
+                // Müşteri bütçesini güncelle
+                customer.Budget -= totalAmount;
+                _context.Entry(customer).State = EntityState.Modified;
 
                 await _context.SaveChangesAsync();
                 await transaction.CommitAsync();
@@ -272,6 +287,7 @@ namespace SiparisSistemi.Controllers
             catch (Exception ex)
             {
                 await transaction.RollbackAsync();
+                AddLog(null, null, "Error", $"Sepet onaylanırken hata: {ex.Message}");
                 return Json(new { success = false, message = $"Bir hata oluştu: {ex.Message}" });
             }
         }

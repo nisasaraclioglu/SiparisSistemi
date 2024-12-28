@@ -109,7 +109,6 @@ namespace SiparisSistemi.Controllers
             }
         }
 
-
         public IActionResult AllOrders()
         {
             var orders = _context.Orders
@@ -119,6 +118,7 @@ namespace SiparisSistemi.Controllers
 
             return View(orders);
         }
+
         // Tüm siparişleri onaylama
         [HttpPost]
         public IActionResult ApproveAllOrders()
@@ -444,8 +444,25 @@ namespace SiparisSistemi.Controllers
                 .ToList();
 
             return View(allOrders);
-        } // Log kaydetme helper metodu
-        // Log kaydetme helper metodu
+        }
+
+        [HttpGet]
+        public JsonResult FetchLogs()
+        {
+            var logs = _context.Logs
+                .OrderByDescending(l => l.LogDate)
+                .Take(10) // Son 10 log
+                .Select(l => new
+                {
+                    l.LogType,
+                    l.LogDetails,
+                    LogDate = l.LogDate.ToString("yyyy-MM-dd HH:mm:ss")
+                })
+                .ToList();
+
+            return Json(logs);
+        }
+
         private void AddLog(int? customerId, int? orderId, string logType, string logDetails)
         {
             var log = new Logs
@@ -466,6 +483,68 @@ namespace SiparisSistemi.Controllers
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine($"Log kaydedilemedi: {ex.Message}");
+            }
+        }
+
+        [HttpGet]
+        public JsonResult GetAwaitingApprovalOrders()
+        {
+            try
+            {
+                var orders = _context.Orders
+                    .Include(o => o.Product)
+                    .Include(o => o.Customer)
+                    .Where(o => o.OrderStatus == "AwaitingApproval")
+                    .OrderByDescending(o => o.OrderDate)
+                    .Select(o => new
+                    {
+                        orderID = o.OrderID,
+                        productName = o.Product != null ? o.Product.ProductName : "Bilinmiyor",
+                        customerID = o.CustomerID,
+                        quantity = o.Quantity,
+                        totalPrice = o.TotalPrice,
+                        orderDate = o.OrderDate,
+                        status = o.OrderStatus
+                    })
+                    .ToList();
+
+                return Json(new { success = true, orders });
+            }
+            catch (Exception ex)
+            {
+                AddLog(null, null, "Error", $"Bekleyen siparişler alınırken hata: {ex.Message}");
+                return Json(new { success = false, message = "Siparişler alınırken bir hata oluştu." });
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetNewOrders(int lastOrderId)
+        {
+            try
+            {
+                var newOrders = await _context.Orders
+                    .Include(o => o.Product)
+                    .Include(o => o.Customer)
+                    .Where(o => o.OrderID > lastOrderId && o.OrderStatus == "AwaitingApproval")
+                    .OrderByDescending(o => o.OrderID)
+                    .Select(o => new
+                    {
+                        orderID = o.OrderID,
+                        productName = o.Product != null ? o.Product.ProductName : "Bilinmiyor",
+                        customerID = o.CustomerID,
+                        quantity = o.Quantity,
+                        totalPrice = o.TotalPrice,
+                        orderDate = o.OrderDate,
+                        status = o.OrderStatus
+                    })
+                    .ToListAsync();
+
+                return Json(new { success = true, orders = newOrders });
+            }
+            catch (Exception ex)
+            {
+                AddLog(null, null, "Error", $"Yeni siparişler alınırken hata: {ex.Message}");
+                return Json(new { success = false, message = "Siparişler alınırken bir hata oluştu." });
             }
         }
     }

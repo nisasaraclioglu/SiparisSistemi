@@ -344,5 +344,5 @@ C:\Users\nisa_\Source\Repos\SiparisSistemi\SiparisSistemi\obj\Debug\net9.0\compr
 C:\Users\nisa_\Source\Repos\SiparisSistemi\SiparisSistemi\obj\Debug\net9.0\compressed\bx7xwuoqsu-jjsuc0puko.gz
 C:\Users\nisa_\Source\Repos\SiparisSistemi\SiparisSistemi\obj\Debug\net9.0\compressed\mstlp6yoor-9vr69e8ynj.gz
 C:\Users\nisa_\Source\Repos\SiparisSistemi\SiparisSistemi\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt
-C:\Users\nisa_\Source\Repos\SiparisSistemi\SiparisSistemi\obj\Debug\net9.0\compressed\rr0dbmp4x1-k04mpstcm5.gz
 C:\Users\asliy\Source\Repos\SiparisSistemi\SiparisSistemi\obj\Debug\net9.0\compressed\rr0dbmp4x1-k04mpstcm5.gz
+C:\Users\nisa_\Source\Repos\SiparisSistemi\SiparisSistemi\obj\Debug\net9.0\compressed\rr0dbmp4x1-ufkurhofsp.gz

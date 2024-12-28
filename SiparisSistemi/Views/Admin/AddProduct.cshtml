@@ -17,11 +17,18 @@
                 <i class="fas fa-list"></i> Sipariş Onaylama
             </a>
             <a href="@Url.Action("ApprovedOrders", "Admin")" class="admin-nav-item">
-                <i class="fas fa-list"></i> Onaylanan Siparişler
+                <i class="fas fa-list"></i> Tüm Siparişler
             </a>
             <a href="@Url.Action("Logout", "Login")" class="admin-nav-item">
                 <i class="fas fa-sign-out-alt"></i> Çıkış Yap
             </a>
+
+            <!-- Log Paneli -->
+            <div class="sidebar-log-panel">
+                <h6>Loglar</h6>
+                <ul id="logList" class="log-list">
+                </ul>
+            </div>
         </nav>
     </div>
     <div class="admin-content">
@@ -122,3 +129,32 @@
         });
     </script>
 } 
+<script>
+        function fetchLogs() {
+        $.ajax({
+            url: '@Url.Action("FetchLogs", "Admin")', // FetchLogs action'ı
+            method: 'GET',
+            success: function (data) {
+                $('#logList').html(''); // Mevcut logları temizle
+                data.forEach(function (log) {
+                    const logItem = `
+                        <li>
+                            <span><strong>${log.logType}:</strong> ${log.logDetails}</span>
+                            <div style="font-size: 10px; color: #888; margin-top: 5px;">${log.logDate}</div>
+                        </li>
+                    `;
+                    $('#logList').append(logItem);
+                });
+            },
+            error: function () {
+                console.error("Loglar yüklenemedi.");
+            }
+        });
+    }
+
+    // Logları her saniyede bir güncelle
+    setInterval(fetchLogs, 500);
+
+    // Sayfa yüklendiğinde logları getir
+    $(document).ready(fetchLogs);
+</script>

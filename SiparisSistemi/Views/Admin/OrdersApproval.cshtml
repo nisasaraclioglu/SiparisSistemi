@@ -20,11 +20,18 @@
                 <i class="fas fa-list"></i> Sipariş Onaylama
             </a>
             <a href="@Url.Action("ApprovedOrders", "Admin")" class="admin-nav-item">
-                <i class="fas fa-list"></i> Onaylanan Siparişler
+                <i class="fas fa-list"></i> Tüm Siparişler
             </a>
             <a href="@Url.Action("Logout", "Login")" class="admin-nav-item">
                 <i class="fas fa-sign-out-alt"></i> Çıkış Yap
             </a>
+
+            <!-- Log Paneli -->
+            <div class="sidebar-log-panel">
+                <h6>Loglar</h6>
+                <ul id="logList" class="log-list">
+                </ul>
+            </div>
         </nav>
     </div>
     <div class="admin-content">
@@ -65,7 +72,7 @@
                     <tbody>
                         @foreach (var order in Model)
                         {
-                            <tr>
+                            <tr id="order-@order.OrderID">
                                 <td>@order.OrderID</td>
                                 <td>@order.Product?.ProductName ?? "Bilinmiyor"</td>
                                 <td>@order.CustomerID</td>
@@ -91,6 +98,108 @@
 
 @section Scripts {
     <script>
+        let lastOrderId = 0;
+
+        // Yeni siparişleri kontrol eden fonksiyon
+        function checkNewOrders() {
+            $.ajax({
+                url: '/Admin/GetNewOrders',
+                type: 'GET',
+                data: { lastOrderId: lastOrderId },
+                success: function(response) {
+                    console.log("Yeni Siparişler:", response); // Debug için
+                    if (response && response.success && response.orders && response.orders.length > 0) {
+                        lastOrderId = Math.max(...response.orders.map(order => order.orderID));
+                        response.orders.forEach(order => {
+                            if (!$(`#order-${order.orderID}`).length) {
+                                addNewOrderToTable(order);
+                            }
+                        });
+                    }
+                }
+            });
+        }
+
+        // Yeni siparişi tabloya ekleyen fonksiyon
+        function addNewOrderToTable(order) {
+            const tbody = $('.table tbody');
+            const row = `
+                <tr id="order-${order.orderID}">
+                    <td>${order.orderID}</td>
+                    <td>${order.customerID || 'Belirtilmemiş'}</td>
+                    <td>${order.productName || 'Belirtilmemiş'}</td>
+                    <td>${order.quantity || 0}</td>
+                    <td>${order.totalPrice ? order.totalPrice.toFixed(2) : '0.00'} ₺</td>
+                    <td>${formatDate(order.orderDate)}</td>
+                    <td>${getStatusBadge(order.status)}</td>
+                    <td>
+                        <button class="btn btn-success btn-sm" onclick="approveOrder(${order.orderID})">
+                            Onayla
+                        </button>
+                    </td>
+                </tr>
+            `;
+            $(row).prependTo(tbody).hide().fadeIn(1000).css('background-color', '#e6ffe6')
+                .delay(1000).queue(function(next){
+                    $(this).css('background-color', '');
+                    next();
+                });
+        }
+
+        // Tarih formatı düzenleme fonksiyonu
+        function formatDate(dateString) {
+            if (!dateString) return 'Tarih Belirtilmemiş';
+            const date = new Date(dateString);
+            if (isNaN(date.getTime())) return dateString; // Eğer geçerli bir tarih değilse
+            return date.toLocaleString('tr-TR', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            });
+        }
+
+        // İlk yükleme ve periyodik kontrol
+        $(document).ready(function() {
+            $.ajax({
+                url: '/Admin/GetAwaitingApprovalOrders',
+                method: 'GET',
+                success: function(response) {
+                    console.log("İlk Yükleme Response:", response); // Debug için
+                    if (response.success && response.orders && response.orders.length > 0) {
+                        const tbody = $('.table tbody');
+                        tbody.html('');
+                        lastOrderId = Math.max(...response.orders.map(order => order.orderID));
+                        response.orders.forEach(order => addNewOrderToTable(order));
+                    }
+                },
+                error: function(error) {
+                    console.error("Siparişler yüklenirken hata:", error);
+                }
+            });
+
+            setInterval(checkNewOrders, 1000);
+        });
+
+        // Status badge fonksiyonu güncellendi
+        function getStatusBadge(status) {
+            switch (status ? status.toLowerCase() : '') {
+                case "completed":
+                    return '<span class="badge bg-success">Tamamlandı</span>';
+                case "pending":
+                    return '<span class="badge bg-warning text-dark">Bekliyor</span>';
+                case "cancelled":
+                    return '<span class="badge bg-danger">İptal Edildi</span>';
+                case "awaitingapproval":
+                    return '<span class="badge bg-secondary">Admin Onayı Bekliyor</span>';
+                default:
+                    return '<span class="badge bg-secondary">Durum Belirtilmemiş</span>';
+            }
+        }
+
+        // Sipariş onaylama fonksiyonu
         function approveOrder(orderId) {
             Swal.fire({
                 title: 'Siparişi Onaylamak İstiyor Musunuz?',
@@ -104,38 +213,29 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
-                        url: '@Url.Action("ApproveOrder", "Admin")',
+                        url: '/Admin/ApproveOrder',
                         type: 'POST',
                         data: { orderId: orderId },
-                        success: function(response) {
+                        success: function (response) {
                             if (response.success) {
-                                Swal.fire(
-                                    'Onaylandı!',
-                                    response.message,
-                                    'success'
-                                ).then(() => {
-                                    location.reload();
+                                // Animasyonlu silme efekti
+                                $(`#order-${orderId}`).fadeOut(400, function() {
+                                    $(this).remove();
                                 });
+                                Swal.fire('Onaylandı!', response.message, 'success');
                             } else {
-                                Swal.fire(
-                                    'Hata!',
-                                    response.message,
-                                    'error'
-                                );
+                                Swal.fire('Hata!', response.message, 'error');
                             }
                         },
-                        error: function() {
-                            Swal.fire(
-                                'Hata!',
-                                'Sipariş onaylanırken bir hata oluştu.',
-                                'error'
-                            );
+                        error: function () {
+                            Swal.fire('Hata!', 'Sipariş onaylanırken bir hata oluştu.', 'error');
                         }
                     });
                 }
             });
         }
 
+        // Tüm siparişleri onaylama fonksiyonu
         function approveAllOrders() {
             Swal.fire({
                 title: 'Tüm Siparişleri Onaylamak İstiyor Musunuz?',
@@ -149,35 +249,57 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
-                        url: '@Url.Action("ApproveAllOrders", "Admin")',
+                        url: '/Admin/ApproveAllOrders',
                         type: 'POST',
-                        success: function(response) {
+                        success: function (response) {
                             if (response.success) {
-                                Swal.fire(
-                                    'Onaylandı!',
-                                    response.message,
-                                    'success'
-                                ).then(() => {
-                                    location.reload();
+                                // Tüm bekleyen siparişleri animasyonlu şekilde kaldır
+                                $('.table tbody tr').fadeOut(400, function() {
+                                    $(this).remove();
                                 });
+                                Swal.fire('Onaylandı!', response.message, 'success');
                             } else {
-                                Swal.fire(
-                                    'Hata!',
-                                    response.message,
-                                    'error'
-                                );
+                                Swal.fire('Hata!', response.message, 'error');
                             }
                         },
-                        error: function() {
-                            Swal.fire(
-                                'Hata!',
-                                'Siparişler onaylanırken bir hata oluştu.',
-                                'error'
-                            );
+                        error: function () {
+                            Swal.fire('Hata!', 'Siparişler onaylanırken bir hata oluştu.', 'error');
                         }
                     });
                 }
             });
         }
+
     </script>
 }
+<script>
+
+    function fetchLogs() {
+        $.ajax({
+            url: '@Url.Action("FetchLogs", "Admin")', // FetchLogs action'ı
+            method: 'GET',
+            success: function (data) {
+                $('#logList').html(''); // Mevcut logları temizle
+                data.forEach(function (log) {
+                    const logItem = `
+                        <li>
+                            <span><strong>${log.logType}:</strong> ${log.logDetails}</span>
+                            <div style="font-size: 10px; color: #888; margin-top: 5px;">${log.logDate}</div>
+                        </li>
+                    `;
+                    $('#logList').append(logItem);
+                });
+            },
+            error: function () {
+                console.error("Loglar yüklenemedi.");
+            }
+        });
+    }
+
+    // Logları her saniyede bir güncelle
+    setInterval(fetchLogs, 500);
+
+    // Sayfa yüklendiğinde logları getir
+    $(document).ready(fetchLogs);
+
+</script>
