@@ -42,8 +42,23 @@ namespace SiparisSistemi.Controllers
             }
 
             var products = _context.Products.ToList();
+
+            // Grafik için stok verilerini hesapla
+            var productStockData = products.Select(p => new
+            {
+                ProductName = p.ProductName,
+                Stock = p.Stock,
+                Percentage = (products.Sum(prod => prod.Stock) > 0)
+                    ? (decimal)p.Stock / products.Sum(prod => prod.Stock) * 100
+                    : 0
+            }).ToList();
+
+            // Stok verilerini ViewData ile frontend'e gönder
+            ViewData["ProductStockData"] = Newtonsoft.Json.JsonConvert.SerializeObject(productStockData);
+
             return View(products);
         }
+
 
         // Sipariş onaylama sayfası
         [HttpGet]
@@ -733,6 +748,22 @@ namespace SiparisSistemi.Controllers
                 return Json(new { success = false, message = "Siparişler alınırken bir hata oluştu." });
             }
         }
+        [HttpGet]
+        public JsonResult GetProductStockData()
+        {
+            var products = _context.Products.ToList();
+            var totalStock = products.Sum(p => p.Stock);
+
+            var productData = products.Select(p => new
+            {
+                ProductName = p.ProductName,
+                Stock = p.Stock,
+                Percentage = (double)p.Stock / totalStock * 100
+            });
+
+            return Json(productData);
+        }
+
 
         [HttpGet]
         public async Task<IActionResult> GetNewOrders(int lastOrderId)

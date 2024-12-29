@@ -103,10 +103,27 @@
                 </tbody>
             </table>
         </div>
+
+        <div class="admin-container">
+            <div class="admin-content">
+                <h3>Ürün Stokları</h3>
+                <div style="width:500px; height: 500px; margin: 0 auto;">
+                    <canvas id="productStockChart"></canvas>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
+<style>
+    #productStockChart {
+        display: block; /* Canvas'ı ortalamak için */
+        width: 100%; /* Konteynerin genişliğini kaplasın */
+        height: 100%; /* Konteynerin yüksekliğini kaplasın */
+    }
+</style>
 
 @section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         function deleteProduct(id) {
             Swal.fire({
@@ -145,6 +162,44 @@
             });
         }
 
+             // ViewData'dan ürün verilerini al
+        const productStockData = @Html.Raw(ViewData["ProductStockData"]);
+
+        // Ürün isimlerini, stok miktarlarını ve yüzdelerini ayır
+        const productNames = productStockData.map(p => p.ProductName);
+        const stockValues = productStockData.map(p => p.Stock);
+        const stockPercentages = productStockData.map(p => p.Percentage.toFixed(2));
+
+        // Grafik oluştur
+                const ctx = document.getElementById('productStockChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: productNames,
+                datasets: [{
+                    label: 'Stok Miktarı',
+                    data: stockValues,
+                    backgroundColor: [
+                        '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true, // Grafiğin duyarlı olmasını sağlar
+                maintainAspectRatio: false, // Boyutlandırmada oranı korumaz
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function(tooltipItem) {
+                                return `${productNames[tooltipItem.dataIndex]}: ${stockValues[tooltipItem.dataIndex]} adet (${stockPercentages[tooltipItem.dataIndex]}%)`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
         // Arama fonksiyonu
         $("#searchInput").on("keyup", function() {
             var value = $(this).val().toLowerCase();
@@ -153,33 +208,4 @@
             });
         });
     </script>
-} 
-<script>
-        function fetchLogs() {
-        $.ajax({
-            url: '@Url.Action("FetchLogs", "Admin")', // FetchLogs action'ı
-            method: 'GET',
-            success: function (data) {
-                $('#logList').html(''); // Mevcut logları temizle
-                data.forEach(function (log) {
-                    const logItem = `
-                        <li>
-                            <span><strong>${log.logType}:</strong> ${log.logDetails}</span>
-                            <div style="font-size: 10px; color: #888; margin-top: 5px;">${log.logDate}</div>
-                        </li>
-                    `;
-                    $('#logList').append(logItem);
-                });
-            },
-            error: function () {
-                console.error("Loglar yüklenemedi.");
-            }
-        });
-    }
-
-    // Logları her saniyede bir güncelle
-    setInterval(fetchLogs, 500);
-
-    // Sayfa yüklendiğinde logları getir
-    $(document).ready(fetchLogs);
-</script>
+}

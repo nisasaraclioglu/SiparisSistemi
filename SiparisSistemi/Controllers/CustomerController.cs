@@ -220,6 +220,13 @@ namespace SiparisSistemi.Controllers
                 .Include(o => o.Product) // Ürün bilgilerini dahil et
                 .ToList();
 
+            // Müşteri bilgilerini al ve ViewBag'e bütçeyi ekle
+            var customer = _context.Customers.FirstOrDefault(c => c.CustomerID == customerId);
+            if (customer != null)
+            {
+                ViewBag.CustomerBalance = customer.Budget;
+            }
+
             if (orders == null || !orders.Any())
             {
                 AddLog(customerId, null, "Uyarı", $"Müşteri için sipariş bulunamadı.");
@@ -228,6 +235,7 @@ namespace SiparisSistemi.Controllers
 
             return View(orders);
         }
+
 
         [HttpPost]
         public async Task<IActionResult> ApproveAllCart()
