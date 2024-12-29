@@ -1143,6 +1143,170 @@
       ]
     },
     {
+      "Route": "images/products/d2c88e2a-0f50-45ac-ae8f-16338aed9062_msi.ix1yi46fhg.jpeg",
+      "AssetFile": "images/products/d2c88e2a-0f50-45ac-ae8f-16338aed9062_msi.jpeg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "99403"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"ur9OxGqO08jyePsZXrZqlSsF+jv8osqqbDlNcNNYc2k=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 29 Dec 2024 10:03:45 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "ix1yi46fhg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-ur9OxGqO08jyePsZXrZqlSsF+jv8osqqbDlNcNNYc2k="
+        },
+        {
+          "Name": "label",
+          "Value": "images/products/d2c88e2a-0f50-45ac-ae8f-16338aed9062_msi.jpeg"
+        }
+      ]
+    },
+    {
+      "Route": "images/products/d2c88e2a-0f50-45ac-ae8f-16338aed9062_msi.jpeg",
+      "AssetFile": "images/products/d2c88e2a-0f50-45ac-ae8f-16338aed9062_msi.jpeg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "99403"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"ur9OxGqO08jyePsZXrZqlSsF+jv8osqqbDlNcNNYc2k=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 29 Dec 2024 10:03:45 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-ur9OxGqO08jyePsZXrZqlSsF+jv8osqqbDlNcNNYc2k="
+        }
+      ]
+    },
+    {
+      "Route": "images/products/d4b1dc55-e88c-4757-8ed3-314d2dfda7be_msi.ix1yi46fhg.jpeg",
+      "AssetFile": "images/products/d4b1dc55-e88c-4757-8ed3-314d2dfda7be_msi.jpeg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "99403"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"ur9OxGqO08jyePsZXrZqlSsF+jv8osqqbDlNcNNYc2k=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 29 Dec 2024 10:04:16 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "ix1yi46fhg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-ur9OxGqO08jyePsZXrZqlSsF+jv8osqqbDlNcNNYc2k="
+        },
+        {
+          "Name": "label",
+          "Value": "images/products/d4b1dc55-e88c-4757-8ed3-314d2dfda7be_msi.jpeg"
+        }
+      ]
+    },
+    {
+      "Route": "images/products/d4b1dc55-e88c-4757-8ed3-314d2dfda7be_msi.jpeg",
+      "AssetFile": "images/products/d4b1dc55-e88c-4757-8ed3-314d2dfda7be_msi.jpeg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "99403"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"ur9OxGqO08jyePsZXrZqlSsF+jv8osqqbDlNcNNYc2k=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 29 Dec 2024 10:04:16 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-ur9OxGqO08jyePsZXrZqlSsF+jv8osqqbDlNcNNYc2k="
+        }
+      ]
+    },
+    {
       "Route": "images/products/default.jpg",
       "AssetFile": "images/products/default.jpg",
       "Selectors": [],

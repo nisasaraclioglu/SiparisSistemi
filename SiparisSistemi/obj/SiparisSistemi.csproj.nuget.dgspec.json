@@ -1,15 +1,15 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\nisa_\\Source\\Repos\\SiparisSistemi\\SiparisSistemi\\SiparisSistemi.csproj": {}
+    "C:\\Users\\nisa_\\source\\repos\\SiparisSistemi\\SiparisSistemi\\SiparisSistemi.csproj": {}
   },
   "projects": {
-    "C:\\Users\\nisa_\\Source\\Repos\\SiparisSistemi\\SiparisSistemi\\SiparisSistemi.csproj": {
+    "C:\\Users\\nisa_\\source\\repos\\SiparisSistemi\\SiparisSistemi\\SiparisSistemi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\nisa_\\Source\\Repos\\SiparisSistemi\\SiparisSistemi\\SiparisSistemi.csproj",
+        "projectUniqueName": "C:\\Users\\nisa_\\source\\repos\\SiparisSistemi\\SiparisSistemi\\SiparisSistemi.csproj",
         "projectName": "SiparisSistemi",
-        "projectPath": "C:\\Users\\nisa_\\Source\\Repos\\SiparisSistemi\\SiparisSistemi\\SiparisSistemi.csproj",
+        "projectPath": "C:\\Users\\nisa_\\source\\repos\\SiparisSistemi\\SiparisSistemi\\SiparisSistemi.csproj",
         "packagesPath": "C:\\Users\\nisa_\\.nuget\\packages\\",
         "outputPath": "C:\\Users\\nisa_\\Source\\Repos\\SiparisSistemi\\SiparisSistemi\\obj\\",
         "projectStyle": "PackageReference",

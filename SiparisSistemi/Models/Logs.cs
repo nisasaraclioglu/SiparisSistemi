@@ -8,7 +8,7 @@ namespace SiparisSistemi.Models
         [Key]
         public int LogID { get; set; }
 
-        public int CustomerID { get; set; }
+        public int? CustomerID { get; set; }
         public int? OrderID { get; set; }
 
         [Required]

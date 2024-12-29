@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "bvgm5O0H+Ho=",
+  "dgSpecHash": "7oupz6Cwqqg=",
   "success": true,
-  "projectFilePath": "C:\\Users\\nisa_\\Source\\Repos\\SiparisSistemi\\SiparisSistemi\\SiparisSistemi.csproj",
+  "projectFilePath": "C:\\Users\\nisa_\\source\\repos\\SiparisSistemi\\SiparisSistemi\\SiparisSistemi.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\nisa_\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\nisa_\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\6.0.0\\microsoft.bcl.asyncinterfaces.6.0.0.nupkg.sha512",
