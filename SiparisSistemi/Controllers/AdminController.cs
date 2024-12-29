@@ -614,6 +614,38 @@ namespace SiparisSistemi.Controllers
             return View(allOrders);
         }
 
+        [HttpPost]
+        public IActionResult DeleteOrder(int orderId)
+        {
+            try
+            {
+                // Siparişi veritabanından bul
+                var order = _context.Orders
+                    .FirstOrDefault(o => o.OrderID == orderId);
+
+                if (order == null)
+                {
+                    return Json(new { success = false, message = "Sipariş bulunamadı." });
+                }
+
+                // Siparişin durumunu 'Cancelled' olarak güncelle
+                order.OrderStatus = "Cancelled";
+
+                // Değişiklikleri kaydet
+                _context.SaveChanges();
+
+                // Log ekle: İptal edilen sipariş
+                AddLog(order.CustomerID, orderId, "Bilgilendirme", $"Sipariş {orderId} iptal edildi.");
+                return Json(new { success = true, message = "Sipariş başarıyla iptal edildi." });
+            }
+            catch (Exception ex)
+            {
+                // Hata mesajını logla
+                AddLog(null, orderId, "Hata", $"Sipariş iptal edilirken hata oluştu: {ex.Message}");
+                return Json(new { success = false, message = $"Sipariş iptal edilirken hata oluştu: {ex.Message}" });
+            }
+        }
+
         [HttpGet]
         public JsonResult FetchLogs()
         {
