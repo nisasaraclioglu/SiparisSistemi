@@ -26,6 +26,21 @@ namespace SiparisSistemi.Controllers
             {
                 return RedirectToAction("CustomerLogin", "Login");
             }
+
+            var lockedId = HttpContext.Session.GetInt32("LockedProductID");
+            if (lockedId.HasValue)
+            {
+                var p = _context.Products.Find(lockedId.Value);
+                if (p != null && p.IsLocked)
+                {
+                    p.IsLocked = false;
+                    _context.SaveChanges();
+                }
+
+                // Session’dan sil
+                HttpContext.Session.Remove("LockedProductID");
+            }
+
             var products = _context.Products.ToList();
             return View(products);
         }
@@ -34,6 +49,20 @@ namespace SiparisSistemi.Controllers
         [HttpGet]
         public IActionResult OrdersApproval()
         {
+            var lockedId = HttpContext.Session.GetInt32("LockedProductID");
+            if (lockedId.HasValue)
+            {
+                var p = _context.Products.Find(lockedId.Value);
+                if (p != null && p.IsLocked)
+                {
+                    p.IsLocked = false;
+                    _context.SaveChanges();
+                }
+
+                // Session’dan sil
+                HttpContext.Session.Remove("LockedProductID");
+            }
+
             try
             {
                 var awaitingApprovalOrders = _context.Orders
@@ -52,10 +81,10 @@ namespace SiparisSistemi.Controllers
 
         // Tek sipariş onaylama
         [HttpPost]
-public IActionResult ApproveOrder(int orderId)
-{
-    try
-    {
+        public IActionResult ApproveOrder(int orderId)
+        {
+            try
+            {
         // Siparişi veritabanından çek
         var order = _context.Orders
             .Include(o => o.Product)
@@ -95,13 +124,13 @@ public IActionResult ApproveOrder(int orderId)
 
         AddLog(order.CustomerID, orderId, "Bilgilendirme", $"Sipariş {order.OrderID} başarıyla onaylandı.");
         return Json(new { success = true, message = "Sipariş başarıyla onaylandı." });
-    }
-    catch (Exception ex)
-    {
-        AddLog(null, orderId, "Hata", $"Sipariş onaylanırken hata: {ex.Message}");
-        return Json(new { success = false, message = $"Bir hata oluştu: {ex.Message}" });
-    }
-}
+        }
+        catch (Exception ex)
+            {
+            AddLog(null, orderId, "Hata", $"Sipariş onaylanırken hata: {ex.Message}");
+            return Json(new { success = false, message = $"Bir hata oluştu: {ex.Message}" });
+            }
+        }
 
         // Logları frontend'e gönderen endpoint
         [HttpGet]
@@ -125,6 +154,19 @@ public IActionResult ApproveOrder(int orderId)
 
         public IActionResult AllOrders()
         {
+            var lockedId = HttpContext.Session.GetInt32("LockedProductID");
+            if (lockedId.HasValue)
+            {
+                var p = _context.Products.Find(lockedId.Value);
+                if (p != null && p.IsLocked)
+                {
+                    p.IsLocked = false;
+                    _context.SaveChanges();
+                }
+
+                // Session’dan sil
+                HttpContext.Session.Remove("LockedProductID");
+            }
             var orders = _context.Orders
                 .Include(o => o.Customer)
                 .Include(o => o.Product)
@@ -293,6 +335,19 @@ public IActionResult ApproveOrder(int orderId)
         [HttpGet]
         public IActionResult AddProduct()
         {
+            var lockedId = HttpContext.Session.GetInt32("LockedProductID");
+            if (lockedId.HasValue)
+            {
+                var p = _context.Products.Find(lockedId.Value);
+                if (p != null && p.IsLocked)
+                {
+                    p.IsLocked = false;
+                    _context.SaveChanges();
+                }
+
+                // Session’dan sil
+                HttpContext.Session.Remove("LockedProductID");
+            }
             return View();
         }
 
@@ -305,6 +360,10 @@ public IActionResult ApproveOrder(int orderId)
             {
                 return NotFound();
             }
+            product.IsLocked = true;
+            _context.SaveChanges();
+
+            HttpContext.Session.SetInt32("LockedProductID", id);
             return View(product);
         }
 
@@ -438,6 +497,7 @@ public IActionResult ApproveOrder(int orderId)
                     existingProduct.Price = product.Price;
                     existingProduct.Stock = product.Stock;
 
+                    existingProduct.IsLocked = false;
                     await _context.SaveChangesAsync();
 
                     // Log kaydı
@@ -531,6 +591,19 @@ public IActionResult ApproveOrder(int orderId)
         [HttpGet]
         public IActionResult ApprovedOrders()
         {
+            var lockedId = HttpContext.Session.GetInt32("LockedProductID");
+            if (lockedId.HasValue)
+            {
+                var p = _context.Products.Find(lockedId.Value);
+                if (p != null && p.IsLocked)
+                {
+                    p.IsLocked = false;
+                    _context.SaveChanges();
+                }
+
+                // Session’dan sil
+                HttpContext.Session.Remove("LockedProductID");
+            }
             // Tüm siparişleri getir
             var allOrders = _context.Orders
                 .Include(o => o.Product) // Ürün bilgilerini dahil et

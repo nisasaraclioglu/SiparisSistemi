@@ -28,6 +28,8 @@ namespace SiparisSistemi.Models
         [StringLength(255, ErrorMessage = "Resim yolu en fazla 255 karakter olabilir.")]
         public string? ImagePath { get; set; }
 
+        public bool IsLocked { get; set; }
+
         public virtual ICollection<Orders>? Orders { get; set; }
     }
 }

@@ -151,6 +151,12 @@ namespace SiparisSistemi.Controllers
                     return Json(new { success = false, message = "Ürün bulunamadı." });
                 }
 
+                if (product.IsLocked)
+                {
+                    AddLog(customerId, null, "Uyarı", $"Ürün kilitli durumda: {product.ProductName}");
+                    return Json(new { success = false, message = "Bu ürün şu anda güncelleniyor, lütfen daha sonra tekrar deneyin." });
+                }
+
                 // Stok kontrolü
                 if (product.Stock < quantity)
                 {

@@ -49,6 +49,7 @@ namespace SiparisSistemi.Models
                       .IsRequired()
                       .HasMaxLength(100);
                 entity.Property(e => e.ImagePath).HasMaxLength(255);
+                entity.Property(e => e.IsLocked).HasDefaultValue(false);
             });
 
             // Orders tablosu için konfigürasyon
