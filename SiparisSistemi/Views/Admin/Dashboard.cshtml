@@ -162,7 +162,7 @@
             });
         }
 
-             // ViewData'dan ürün verilerini al
+         // ViewData'dan ürün verilerini al
         const productStockData = @Html.Raw(ViewData["ProductStockData"]);
 
         // Ürün isimlerini, stok miktarlarını ve yüzdelerini ayır
@@ -171,7 +171,7 @@
         const stockPercentages = productStockData.map(p => p.Percentage.toFixed(2));
 
         // Grafik oluştur
-                const ctx = document.getElementById('productStockChart').getContext('2d');
+        const ctx = document.getElementById('productStockChart').getContext('2d');
         new Chart(ctx, {
             type: 'pie',
             data: {
@@ -180,7 +180,7 @@
                     label: 'Stok Miktarı',
                     data: stockValues,
                     backgroundColor: [
-                        '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40'
+                        '#F0E44A', '#47F058', '#F04132', '#F57AC8', '#8127F0', '#62A5F0', '#F0A829'
                     ],
                     borderWidth: 1
                 }]
@@ -209,3 +209,34 @@
         });
     </script>
 }
+
+<script>
+    function fetchLogs() {
+        $.ajax({
+            url: '@Url.Action("FetchLogs", "Admin")', // FetchLogs action'ı
+            method: 'GET',
+            success: function (data) {
+                $('#logList').html(''); // Mevcut logları temizle
+                data.forEach(function (log) {
+                    const logItem = `
+                        <li>
+                            <span><strong>${log.logType}:</strong> ${log.logDetails}</span>
+                            <div style="font-size: 10px; color: #888; margin-top: 5px;">${log.logDate}</div>
+                        </li>
+                    `;
+                    $('#logList').append(logItem);
+                });
+            },
+            error: function () {
+                console.error("Loglar yüklenemedi.");
+            }
+        });
+    }
+
+    // Logları her saniyede bir güncelle
+    setInterval(fetchLogs, 500);
+
+    // Sayfa yüklendiğinde logları getir
+    $(document).ready(fetchLogs);
+
+</script>

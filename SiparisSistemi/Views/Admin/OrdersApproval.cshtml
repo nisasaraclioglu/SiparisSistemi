@@ -63,6 +63,7 @@
                         <th>Toplam Fiyat</th>
                         <th>Sipariş Tarihi</th>
                         <th>Durum</th>
+                        <th>Öncelik Skoru</th>
                         <th>İşlem</th>
                     </tr>
                 </thead>
@@ -169,32 +170,31 @@
                 const tbody = $('.table tbody');
                 tbody.html('');
 
-                ordersWithScore.forEach(order => {
-                    const formattedDate = formatDate(order.orderDate);
-                    const row = `
-                        <tr id="order-${order.orderID}" data-order-date="${order.orderDate}">
-                            <td>${order.orderID}</td>
-                            <td>${order.productName || 'Belirtilmemiş'}</td>
-                            <td>${order.customerID || 'Belirtilmemiş'}</td>
-                            <td>${order.quantity || 0}</td>
-                            <td>₺${order.totalPrice ? order.totalPrice.toFixed(2) : '0.00'}</td>
-                            <td>${formattedDate}</td>
-                            <td>${getStatusBadge(order.status)}</td>
-                            <td>
-                                <div class="d-flex align-items-center gap-2">
-                                    <span class="badge bg-info">Öncelik: ${order.priorityScore.toFixed(2)}</span>
-                                    <button onclick="approveOrder(${order.orderID})" class="btn btn-sm btn-success" title="Onayla">
-                                        <i class="fas fa-check"></i> Onayla
-                                    </button>
-                                    <button onclick="deleteOrder(${order.orderID})" class="btn btn-sm btn-danger" title="Sil">
-                                        <i class="fas fa-trash-alt"></i> Sil
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                    `;
-                    tbody.append(row);
-                });
+                    ordersWithScore.forEach(order => {
+            const formattedDate = formatDate(order.orderDate);
+            const row = `
+                <tr id="order-${order.orderID}" data-order-date="${order.orderDate}">
+                    <td>${order.orderID}</td>
+                    <td>${order.productName || 'Belirtilmemiş'}</td>
+                    <td>${order.customerID || 'Belirtilmemiş'}</td>
+                    <td>${order.quantity || 0}</td>
+                    <td>₺${order.totalPrice ? order.totalPrice.toFixed(2) : '0.00'}</td>
+                    <td>${formattedDate}</td>
+                    <td>${getStatusBadge(order.status)}</td>
+                    <td style="color: black;">${order.priorityScore.toFixed(2)}</td> <!-- Öncelik skoru sütunu -->
+                    <td> <!-- Butonlar sütunu -->
+                        <button onclick="approveOrder(${order.orderID})" class="btn btn-sm btn-success" title="Onayla">
+                            <i class="fas fa-check"></i> Onayla
+                        </button>
+                        <button onclick="deleteOrder(${order.orderID})" class="btn btn-sm btn-danger" title="Sil">
+                            <i class="fas fa-trash-alt"></i> Sil
+                        </button>
+                    </td>
+                </tr>
+            `;
+            tbody.append(row);
+        });
+
             } catch (error) {
                 console.error('Tablo güncelleme hatası:', error);
             }
@@ -215,8 +215,8 @@
                             try {
                                 const orderData = {
                                     orderID: parseInt($row.attr('id').replace('order-', '')),
-                                    customerID: $row.find('td:eq(1)').text(),
                                     productName: $row.find('td:eq(2)').text(),
+                                    customerID: $row.find('td:eq(1)').text(),
                                     quantity: parseInt($row.find('td:eq(3)').text()) || 0,
                                     totalPrice: parseFloat($row.find('td:eq(4)').text().replace(' ₺', '')) || 0,
                                     orderDate: new Date($row.data('order-date')),
@@ -254,8 +254,8 @@
                 // Sipariş verilerini tablodan al
                 const orderData = {
                     orderID: parseInt($row.attr('id').replace('order-', '')),
-                    customerID: $row.find('td:eq(1)').text(),
                     productName: $row.find('td:eq(2)').text(),
+                    customerID: $row.find('td:eq(1)').text(),
                     quantity: parseInt($row.find('td:eq(3)').text()),
                     totalPrice: parseFloat($row.find('td:eq(4)').text().replace(' ₺', '')),
                     orderDate: new Date($row.find('td:eq(5)').text()), // Tarihi doğrudan tablodan oku
@@ -468,12 +468,11 @@
             // Yeni siparişleri kontrol et
             setInterval(checkNewOrders, 500);
 
-            // Her 5 saniyede bir mevcut siparişlerin önceliklerini güncelle
-            setInterval(updateExistingOrdersPriority, 5000);
+            // Her 1 saniyede bir mevcut siparişlerin önceliklerini güncelle
+            setInterval(updateExistingOrdersPriority, 1000);
         });
     </script>
 }
-
 <script>
     function fetchLogs() {
         $.ajax({

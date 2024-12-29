@@ -347,3 +347,4 @@ C:\Users\nisa_\Source\Repos\SiparisSistemi\SiparisSistemi\obj\Debug\net9.0\stati
 C:\Users\nisa_\Source\Repos\SiparisSistemi\SiparisSistemi\obj\Debug\net9.0\compressed\rr0dbmp4x1-horvjqdhfj.gz
 C:\Users\asliy\Source\Repos\SiparisSistemi\SiparisSistemi\obj\Debug\net9.0\compressed\rr0dbmp4x1-horvjqdhfj.gz
 C:\Users\asliy\Source\Repos\SiparisSistemi\SiparisSistemi\bin\Debug\net9.0\Newtonsoft.Json.dll
+C:\Users\nisa_\Source\Repos\SiparisSistemi\SiparisSistemi\bin\Debug\net9.0\Newtonsoft.Json.dll

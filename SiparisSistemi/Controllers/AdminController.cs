@@ -131,6 +131,22 @@ namespace SiparisSistemi.Controllers
         order.Customer.Budget -= order.TotalPrice;
         order.Customer.TotalSpent += order.TotalPrice;
 
+                // Müşteri tipini kontrol et ve güncelle
+        if (order.Customer.TotalSpent >= 2000 && order.Customer.CustomerType == "Standard")
+            {
+            order.Customer.CustomerType = "Premium";
+
+            // Premium'a yükselme log kaydı
+            _context.Logs.Add(new Logs
+                    {
+                        CustomerID = order.CustomerID,
+                        OrderID = order.OrderID,
+                        LogDate = DateTime.Now,
+                        LogType = "Bilgilendirme",
+                        LogDetails = $"Müşteri {order.Customer.CustomerName} toplam {order.Customer.TotalSpent:C2} harcama ile Premium üyeliğe yükseltildi."
+                    });
+                }
+
         // Sipariş durumunu güncelle
         order.OrderStatus = "Completed";
 
@@ -245,6 +261,22 @@ namespace SiparisSistemi.Controllers
                             order.Customer.Budget -= order.TotalPrice;
                             order.Customer.TotalSpent += order.TotalPrice;
                             order.OrderStatus = "Completed";
+
+                            // Müşteri tipini kontrol et ve güncelle
+                            if (order.Customer.TotalSpent >= 2000 && order.Customer.CustomerType == "Standard")
+                            {
+                                order.Customer.CustomerType = "Premium";
+
+                                // Premium'a yükselme log kaydı
+                                _context.Logs.Add(new Logs
+                                {
+                                    CustomerID = order.CustomerID,
+                                    OrderID = order.OrderID,
+                                    LogDate = DateTime.Now,
+                                    LogType = "Bilgilendirme",
+                                    LogDetails = $"Müşteri {order.Customer.CustomerName} toplam {order.Customer.TotalSpent:C2} harcama ile Premium üyeliğe yükseltildi."
+                                });
+                            }
 
                             // Başarılı sipariş log kaydı
                             _context.Logs.Add(new Logs

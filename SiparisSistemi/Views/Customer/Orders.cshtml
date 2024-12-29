@@ -13,11 +13,8 @@
     }
     else
     {
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2 class="text-center mb-4">Siparişlerim</h2>
-            <div class="text-end">
-                <span class="badge bg-info text-dark" style="font-size: 1.2rem;">Bakiye: ₺@ViewBag.CustomerBalance.ToString("N2")</span>
-            </div>
+        <div class="text-end">
+            <strong style="font-size: 1.2rem;">Bakiye: ₺@ViewBag.CustomerBalance.ToString("N2")</strong>
         </div>
 
         <!-- Sepeti Onayla Butonu -->
@@ -162,20 +159,21 @@
 </div>
 @section Scripts {
     <script>
-                $(document).on('click', '#approve-all-cart-btn', function () {
+                // Sepeti Onayla Butonu İşlemi
+        $(document).on('click', '#approve-all-cart-btn', function () {
             $.post('/Customer/ApproveAllCart', function (response) {
                 if (response.success) {
-                    alert(response.message); // Başarı mesajını göster
-                    location.reload(); // Sayfayı yenile
+                    alert(response.message);
+                    location.reload(); // Sayfayı tamamen yenile
                 } else {
-                    alert(response.message); // Hata mesajını göster
+                    alert(response.message);
                 }
             }).fail(function () {
                 alert("Sepeti onaylama işlemi sırasında bir hata oluştu.");
             });
         });
 
-        // Geri sayım fonksiyonu
+        // Geri Sayım Fonksiyonu
         function startCountdown() {
             const timers = document.querySelectorAll('.countdown-timer');
 
@@ -187,76 +185,110 @@
                     const remainingTime = expiryTime - now;
 
                     if (remainingTime <= 0) {
-                        timer.textContent = "Süre Doldu";
-                        timer.classList.add('text-danger');
+                timer.textContent = "Süre Doldu";
+                timer.classList.add('text-danger');
 
-                        // Süresi dolmuş siparişleri kontrol et ve DOM'u güncelle
-                        checkExpiredOrders();
-                    } else {
-                        const minutes = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60));
-                        const seconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
-                        timer.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-                    }
+                // Süresi dolan siparişi iptal et
+                const orderRow = timer.closest('tr');
+                const orderIdElement = orderRow.querySelector('.delete-order-btn');
+
+                if (orderIdElement) {
+                    const orderId = orderIdElement.getAttribute('data-id');
+                    cancelOrder(orderId, true);
                 }
 
-                updateTimer(); // İlk güncelleme
-                const interval = setInterval(updateTimer, 1000); // Her saniye çalıştır
-                timer.dataset.intervalId = interval; // Geri sayım kontrolü için ID sakla
-            });
-        }
-
-        // Geri sayımları temizle
-        function clearCountdowns() {
-            const timers = document.querySelectorAll('.countdown-timer');
-            timers.forEach(timer => {
-                const intervalId = timer.dataset.intervalId;
-                if (intervalId) {
-                    clearInterval(intervalId);
-                }
-            });
-        }
-
-        // Süresi dolmuş siparişleri kontrol eden fonksiyon
-                function checkExpiredOrders() {
-            $.post('/Customer/CancelExpiredOrders', function (response) {
-                if (response.success) {
-                    showAlert(response.message, 'success'); // Başarı mesajı
-                    updateOrdersUI(); // DOM'u güncelle
+                // Geri sayımı durdur ve sıfırla
+                clearInterval(timer.dataset.intervalId);
+                timer.dataset.intervalId = null;
                 } else {
-                    showAlert(response.message, 'error'); // Hata mesajı
+                const minutes = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
+                timer.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                }
+                }
+
+                updateTimer();
+                const interval = setInterval(updateTimer, 1000);
+                timer.dataset.intervalId = interval;
+            });
+        }
+
+        // Sipariş İptal Fonksiyonu
+        function cancelOrder(orderId, isExpired = false) {
+            $.post('/Customer/CancelOrder', { orderId: orderId }, function (response) {
+                if (response.success) {
+                    // Bekleyen siparişler tablosundan satırı kaldır
+                    const orderRow = $(`.delete-order-btn[data-id="${orderId}"]`).closest('tr');
+                    const orderData = {
+                        orderID: orderRow.find('td:eq(0)').text(),
+                        productName: orderRow.find('td:eq(1)').text(),
+                        quantity: orderRow.find('td:eq(2)').text(),
+                        totalPrice: orderRow.find('td:eq(3)').text(),
+                        orderDate: orderRow.find('td:eq(4)').text()
+                    };
+
+                    // İptal edilen siparişler tablosuna ekle
+                    addToCancelledOrdersTable(orderData);
+
+                    // Bekleyen siparişlerden kaldır
+                    orderRow.remove();
+
+                    // Sepet toplamını güncelle
+                    updateCartTotal();
+
+                    if (!isExpired) {
+                        alert("Sipariş başarıyla iptal edildi.");
+                    }
+                } else {
+                    alert(response.message || "Sipariş iptal edilirken bir hata oluştu.");
                 }
             }).fail(function () {
-                showAlert("Süresi dolmuş siparişleri kontrol ederken bir hata oluştu.", 'error');
+                alert("Bir hata oluştu. Lütfen tekrar deneyin.");
             });
         }
 
-        // DOM'u yenilemeden sipariş listesini güncelle
-        function updateOrdersUI() {
-            $.get('/Customer/Orders', function (html) {
-                const newContent = $(html).find('.container').html(); // Yeni içerik
-                $('.container').html(newContent); // Mevcut içeriği değiştir
-                startCountdown(); // Geri sayımı yeniden başlat
-            });
+        // İptal Edilen Siparişler Tablosuna Ekleme
+        function addToCancelledOrdersTable(order) {
+            const cancelledOrdersTableBody = $('h3:contains("İptal Edilmiş Siparişler")').next('table').find('tbody');
+            const newRow = `
+                <tr>
+                    <td>${order.orderID}</td>
+                    <td>${order.productName}</td>
+                    <td>${order.quantity}</td>
+                    <td>${order.totalPrice}</td>
+                    <td>${order.orderDate}</td>
+                    <td><span class="badge bg-danger">İptal Edildi</span></td>
+                </tr>
+            `;
+            cancelledOrdersTableBody.append(newRow);
         }
 
-        // Sayfa yüklendiğinde geri sayımı başlat
-        document.addEventListener('DOMContentLoaded', startCountdown);
+        // Sepet Toplamını Güncelleme
+        function updateCartTotal() {
+            let total = 0;
+            $('h3:contains("Bekleyen Siparişler")').next('table').find('tbody tr').each(function () {
+                const priceText = $(this).find('td:eq(3)').text();
+                const price = parseFloat(priceText.replace('₺', '').replace('.', '').replace(',', '.'));
+                if (!isNaN(price)) {
+                    total += price;
+                }
+            });
 
-        // Sil Butonu
+            $('.text-end.mt-2 strong').text(`Sepet Toplamı: ₺${total.toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`);
+        }
+
+        // Sil Butonu için Event Handler
         $(document).on('click', '.delete-order-btn', function () {
             const orderId = $(this).data('id');
             if (confirm("Bu siparişi iptal etmek istediğinize emin misiniz?")) {
-                $.post('/Customer/CancelOrder', { orderId: orderId }, function (response) {
-                    if (response.success) {
-                        alert(response.message);
-                        updateOrdersUI(); // Sadece DOM'u güncelle
-                    } else {
-                        alert(response.message);
-                    }
-                }).fail(function () {
-                    alert("Bir hata oluştu. Lütfen tekrar deneyin.");
-                });
+                cancelOrder(orderId);
             }
         });
+
+        // Sayfa Yüklendiğinde Geri Sayımı Başlat
+        $(document).ready(function () {
+            startCountdown();
+        });
+
     </script>
 }
